@@ -1,4 +1,4 @@
-# <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/204px-Tux.svg.png" width="30"> dotfiles
+# <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/204px-Tux.svg.png" width="30"> Scripts
 Collection of shell and python scripts that helps with usual tasks and enhance workstation utility.
 
 
