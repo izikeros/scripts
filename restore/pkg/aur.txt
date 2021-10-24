@@ -1,28 +1,20 @@
-anki                 # Helps you remember facts (like words/phrases in a foreign language) efficiently
+anki-bin             # Helps you remember facts (like words/phrases in a foreign language) efficiently
 auto-cpufreq         # Automatic CPU speed & power optimizer
-bashnapi             # bashnapi is a napiprojekt.pl bash client bundled with subotage - a universal subtitles format converter
 bfg                  # Removes large or troublesome blobs like git-filter-branch does, but faster.
 bitaddress-git       # JavaScript Client-Side Bitcoin Wallet Generator
-bonsai.sh-git        # bonsai tree generator written in bash
 brave-bin            # Web browser that blocks ads and trackers by default (binary release)
 candy-icons-git      # Sweet gradient icons
-celestia-addon-voyagers # Celestia addon: Spacecraft: Other: Voyagers 1 & 2
-cht.sh               # The only cheat sheet you need (command line client for cheat.sh)
+cht.sh-git           # The only cheat sheet you need (command line client for cheat.sh)
 deepspeech-bin       # A TensorFlow implementation of Baidu's DeepSpeech architecture - C++ native client + devel files.
 dnstracer            # Determines where a given DNS server gets its information from, and follows the chain of DNS servers
 dropbox              # A free service that lets you bring your photos, docs, and videos anywhere and share them easily.
-dropbox-cli          # Command line interface for Dropbox
 etcher-bin           # Flash OS images to SD cards & USB drives, safely and easily
 exercism-bin         # Command line client for exercism.io
 ezthumb              # A video thumbnail generator based on ffmpeg
 filebot47            # [Newer but paid version exist] The ultimate tool to rename TV/anime shows, download subtitles, and validate checksums.
 findimagedupes       # Tool to find visually similar or duplicate images
-fortune-mod-cybersuntzu # #Cyber Sun Tzu fortune cookie file
-fortune-mod-matrix   # Fortune cookies: The Matrix trilogy
-fortune-mod-vimtips  # Vim fortune cookies
 gimp-plugin-deskew-git # Auto straighten lines of text in scanned documents
 gimp-script-divide-scanned-images # GIMP Scheme (.scm) script for splitting separate sub-images from a composite image that has a uniform background. Creates a new image from each; will call the \'deskew\' plugin on each image (if it is installed).
-gitextensions        # Graphical user interface for Git that allows you control Git without using the command line.
 git-quick-stats      # `git-quick-stats` is a simple and efficient way to access various statistics in git repository.
 gitwatch-git         # A bash script to watch a file or folder and commit changes to a git repo
 google-earth-pro     # 3D interface to explore the globe, terrain, streets, buildings and other planets (Pro version)
@@ -30,8 +22,6 @@ gotop                # A terminal based graphical activity monitor inspired by g
 gsview               # A nice looking GUI for ghostscript with some extraction features
 gtimelog             # Small GTK+ app for keeping track of your time
 gulp-cli             # The streaming build system
-ix                   # A command line pastebin - shell
-jdownloader2         # Download manager, written in Java, for one-click hosting sites like Rapidshare and Megaupload. Uses its own updater.
 jmtpfs               # FUSE and libmtp based filesystem for accessing MTP (Media Transfer Protocol) devices
 lf-bin               # A terminal file manager inspired by ranger (Precompiled binary from official repository)
 logtop               # Display real time statistics of whatever you want.
@@ -40,11 +30,9 @@ mindmaster_en        # Multi-functional, good-looking, easy-to-use professional 
 miniconda3           # Mini version of Anaconda Python distribution.
 mop-git              # Stock market tracker for hackers
 mycrypto-bin         # Open-source, client-side tool for generating Ether Wallets, handling ERC-20 tokens, and interacting with the blockchain more easily
-napi-bash            # Lightweight, easy and fast polish subtitle downloader from the napiprojekt.pl
 nerd-fonts-source-code-pro # Patched font SourceCodePro from nerd-fonts library
 num-utils            # Set of programs for dealing with numbers from the command line.
 nvm                  # Node Version Manager - Simple bash script to manage multiple active node.js versions
-onedrive-git         # Free OneDrive client written in D
 onlyoffice-bin       # An office suite that combines text, spreadsheet and presentation editors
 pdfposter            # Print large posters on multiple sheets
 pdfsam               # A free open source tool to split and merge pdf documents
@@ -54,7 +42,6 @@ pinta                # Drawing/editing program modeled after Paint.NET. It's goa
 polybar              # A fast and easy-to-use status bar
 pomo                 # Pomodoro Command Line Interface
 powerstat-git        # A tool for measuring a laptops power usage via the battery.
-pycharm-professional # Python IDE for Professional Developers. Professional Edition
 pyenv-virtualenv     # pyenv plugin to manage virtualenv (a.k.a. python-virtualenv)
 python36             # Major release 3.6 of the Python high-level programming language
 python38             # Major release 3.8 of the Python high-level programming language
@@ -67,10 +54,8 @@ redsocks-git         # Transparent redirector of any TCP connection to proxy usi
 remmina-plugin-rdesktop # A protocol plugin for Remmina to open a RDP connection with rdesktop.
 rofi-greenclip       # Clipboard manager to use with rofi - Image support and blacklist
 rssowlnix-bin        # RSSOwlnix fork of RSSOwl
-s4cmd-python3-git    # Super S3 command line tool (git) for Python 3
 safeeyes             # A Free and Open Source tool for Linux users to reduce and prevent repetitive strain injury (RSI).
 sayonara-player      # Small, clear and fast audio player for Linux written in C++, supported by the Qt framework. It uses Gstreamer as audio backend.
-scratch3             # Create stories, games, and animations, share with others around the world
 screenkey            # A screencast tool to display your keys inspired by Screenflick
 sent                 # Simple plaintext presentation tool
 simple-mtpfs         # A FUSE filesystem that supports reading/writing from MTP devices
@@ -78,13 +63,10 @@ skypeforlinux-preview-bin # Skype for Linux - Preview/Insider Version
 sublime-merge        # Meet a new Git Client, from the makers of Sublime Text
 sublime-text-4       # Sophisticated text editor for code, html and prose - stable build
 subliminal           # Python library and CLI tool for searching and downloading subtitles.
-teams                # Microsoft Teams for Linux is your chat-centered workspace in Office 365
 typora               # A minimal markdown editor and reader.
-virtualbox-ext-oracle # Oracle VM VirtualBox Extension Pack
 visidata             # Terminal spreadsheet multitool for discovering and arranging data
 visual-studio-code-bin # Visual Studio Code (vscode): Editor for building and debugging modern web and cloud applications (official binary version)
 vlsub-git            # VLC extension to download subtitles from opensubtitles.org
-vrms-arch            # vrms for ArchLinux
 wpa_actiond          # Daemon that connects to wpa_supplicant and handles connect and disconnect events
 xeus                 # C++ implementation of the Jupyter kernel protocol
 xnviewmp             # An efficient multimedia viewer, browser and converter.
