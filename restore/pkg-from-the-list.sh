@@ -23,7 +23,7 @@
 ASK=$2
 echo "Ask is: $ASK"
 TMP_FILE=/tmp/install_list.txt
-CMD=$("$HOME/dotfiles/restore/get-distro-pkg-install-command.sh")
+CMD=$("$HOME/scripts/restore/get-distro-pkg-install-command.sh")
 
 if [ -z "${CMD}" ]; then
     echo "Cannot determine distro and package manager. Aborting."
