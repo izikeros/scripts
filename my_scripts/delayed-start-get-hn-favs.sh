@@ -3,3 +3,4 @@
 
 sleep 1
 ~/dotfiles/scripts/get-my-all-hn-favs.sh
+echo "HN favs downloaded"
