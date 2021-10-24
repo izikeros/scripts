@@ -1,7 +1,10 @@
 #!/bin/bash
 
 set -e
+
+# shellcheck source=./helper_functions.sh
 source ./helper_functions.sh
+
 DCMDR_PATH=".config/doublecmd"
 
 echo "Creating dir: $HOME/$DCMDR_PATH"

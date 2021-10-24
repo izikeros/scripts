@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# shellcheck source=./helper_functions.sh
 source ./helper_functions.sh
+
 PTH=".config/polybar"
 
 symlink_dotfile "$HOME/dotfiles/dotfiles/$PTH/config" "$HOME/$PTH/config"

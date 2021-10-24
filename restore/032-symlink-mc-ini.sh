@@ -4,6 +4,7 @@ set -e
 
 # shellcheck source=./helper_functions.sh
 source ./helper_functions.sh
+
 MC_PATH=".config/mc"
 
 echo "Creating dir: $HOME/$MC_PATH"
