@@ -4,4 +4,4 @@
 source ./helper_functions.sh
 
 # symlink snippets
-symlink_dotfile ~/dotfiles/.config/nvim ~/.config/nvim
+symlink_dotfile ~/dotfiles/dotfiles/.config/nvim ~/.config/nvim
