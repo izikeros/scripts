@@ -1,4 +1,9 @@
 #!/bin/sh
-meld ~/.config/openbox/rc.xml ~/dotfiles/.config/openbox/rc.xml
-meld ~/.config/openbox/autostart ~/dotfiles/.config/openbox/autostart
-meld ~/.config/openbox/environment ~/dotfiles/.config/openbox/environment
+
+# shellcheck source=./helper_functions.sh
+source ./helper_functions.sh
+# symlink_dotfile "$HOME/dotfiles/dotfiles/$PTH/config" "$HOME/$PTH/config"
+
+symlink_dotfile ~/dotfiles/dotfiles/.config/openbox/rc.xml ~/.config/openbox/rc.xml 
+symlink_dotfile ~/dotfiles/dotfiles/.config/openbox/autostart ~/.config/openbox/autostart 
+symlink_dotfile ~/dotfiles/dotfiles/.config/openbox/environment ~/.config/openbox/environment 
