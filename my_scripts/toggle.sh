@@ -37,7 +37,8 @@ toggle_polybar()
     if [[ $(pidof polybar) ]]; then
         pkill polybar
     else
-        al-polybar-session
+        #al-polybar-session
+        polybar openbox-bar &
     fi
 }
 
@@ -84,7 +85,7 @@ toggle_safeeyes()
     while true; do
         echo $(safeeyes --status)
         sleep 2
-    done   
+    done
 }
 
 toggle_redshift()
@@ -149,7 +150,7 @@ case $1 in
     -s|--safeeyes)
         [[ $2 =~ (-t|--toggle) ]] && opt=1
         toggle_safeeyes
-        ;;        
+        ;;
     -f|--caffeine)
         [[ $2 =~ (-t|--toggle) ]] && opt=1
         toggle_caffeine
