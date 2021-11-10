@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # usage: ./install_from_the_list.sh packages_list.txt [--ask]
 # if there is --ask (or anything else) after filename then youwill be prompted to confirm installation of each package
 
@@ -20,8 +20,11 @@
 # e.g. grep list and create separate files with packages specific for ubuntu
 # and arch, split arch to pacman and yaourt lists:
 
-ASK=$2
-echo "Ask is: $ASK"
+if [[ $ASK ]]; then
+	ASK=$2
+	echo "Ask is: $ASK"
+fi
+
 TMP_FILE=/tmp/install_list.txt
 CMD="yay -S --noconfirm"
 
