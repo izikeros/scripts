@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # usage: ./install_from_the_list.sh packages_list.txt [--ask]
 
 PKG_LIST_FILE="$1"

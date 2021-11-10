@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # usage: ./install_from_the_list.sh packages_list.txt [--ask]
 # if there is --ask (or anything else) after filename then youwill be prompted to confirm installation of each package
 

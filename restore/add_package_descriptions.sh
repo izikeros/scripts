@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # usage: ./add_package_descriptions packages_list.txt [--ask]
 
 PKG_LIST_FILE="$1"

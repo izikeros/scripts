@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 ./pkg-yay-from-the-list.sh ./pkg/aur.txt

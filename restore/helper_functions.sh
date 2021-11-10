@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # helper functions for setup restore
 
 # Logging functions

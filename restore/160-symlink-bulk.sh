@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #BACKUP_DIR="$HOME/backup"
 # exec >> err_file # redirect stdout to logfile
