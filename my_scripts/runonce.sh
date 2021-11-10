@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# runonce.sh script from internetslightly modified by me
 
 help_and_exit() {
     cat << EOF
@@ -11,7 +12,7 @@ Run COMMAND but only once per interval. See '$HOME/.runonce-*' for lock files.
     -i MINS  	interval in minutes (default 480)
 EOF
 
-    exit $1
+    exit "$1"
 }
 
 # A POSIX variable
@@ -41,13 +42,29 @@ if [[ "X" == "X$@" ]]; then
 fi
 
 MYBASENAME="$(basename $(echo -n $@ | cut -d" " -f1))"
-lock="$HOME/.runonce-$MYBASENAME-$(echo -n $@|md5sum|cut -d" " -f1)"
+
+
+
+if [ "$(command -v md5sum)" ]; then
+    # for Linux
+    MD5_CMD=md5sum
+else
+    if [ "$(command -v md5)" ]; then
+        # For MacOs
+        MD5_CMD=md5
+    else
+        echo "No m5s sum command found (md5sum | md5)"
+        exit 1
+    fi
+fi
+
+lock="$HOME/.runonce-$MYBASENAME-$(echo -n $@|$MD5_CMD|cut -d" " -f1)"
 if [[ ! -e $lock ]]; then
     "$@"
     touch $lock
 else # lock exists
     if [[ "`find $lock -mmin +$interval`" ]]; then
         "$@"
-        touch $lock
+        touch "$lock"
     fi
 fi
