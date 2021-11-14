@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 # Run zsh that will invoke zgen and install everything
-# zsh
+zsh
 
 # or run zgen update
-zgen update
+#zgen update
