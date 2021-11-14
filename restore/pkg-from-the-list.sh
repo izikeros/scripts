@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# usage: ./install_from_the_list.sh packages_list.txt [--ask]
-# if there is --ask (or anything else) after filename then youwill be prompted to confirm installation of each package
+# usage: ./pkg-from-the-list.sh packages_list.txt
 
 # 0. preprocess packages list
 # 1. install generic packages
@@ -8,7 +7,6 @@
 # 3. if Arch install yaourt packages
 # 4. if ubuntu install from ppa
 
-# Get system and install command
 #source $HOME/dotfiles/bootstrap/restore/get_distro_pkg_install_command.sh
 
 # ---- Preprocess packages list: ----
@@ -20,9 +18,10 @@
 # e.g. grep list and create separate files with packages specific for ubuntu
 # and arch, split arch to pacman and yaourt lists:
 
-ASK=$2
-echo "Ask is: $ASK"
-TMP_FILE=/tmp/install_list.txt
+
+
+
+# Get system and install command
 CMD=$("$HOME/scripts/restore/get-distro-pkg-install-command.sh")
 
 if [ -z "${CMD}" ]; then
@@ -32,9 +31,11 @@ else
     echo "Using command: $CMD"
 fi
 
-# remove comments
-sed -e "s/#.*$//gi" -e "/^$/d" "$1" > $TMP_FILE
-
+# prepare clean list of packages - remove comments with package description or commented packages
+TMP_FILE=/tmp/install_list.txt
+# i (inset text) was used on Linux - not sure if still needed
+# sed -e "s/#.*$//gi" -e "/^$/d" "$1" > $TMP_FILE
+sed -e "s/#.*$//g" -e "/^$/d" "$1" > $TMP_FILE
 N=$(wc -l "$TMP_FILE")
 
 echo "Found $N packages on the list:"
@@ -44,47 +45,29 @@ do
 done < $TMP_FILE
 echo
 
-do_install=y                      # In batch mode => Default is Yes
-[[ -t 0 ]] &&                  	  # If TTY => Prompt the question
-read -r -n 1 -p $'\e[1;32m
-Continue with installation? (Y/n)\e[0m ' do_install  # Store the answer in $do_xxxx
-if [[ $do_install =~ ^(y|Y|)$ ]]  # Do if 'y' or 'Y' or empty
-then
+if [[ $OSTYPE == 'darwin'* ]]; then
+	# Simplified installation for macOS
+	# missing information on packages not installed
+	brew install $(cat $TMP_FILE)
+else
+	# FIXME: for mac os installation stops after each installed package
+	# need to run script as many times as the lenght of the list of packages
 	NOT_INSTALLED=()
-	if [ -z "${ASK}" ]; then
-		# install without asking
-		while read -r package;
-		do
-			echo "--- $package ---"
-			$CMD "$package"
-			if [ $? == 0 ]; then
-				echo ""
-			else
-				#
-				NOT_INSTALLED+=("$package")
-			fi
+	while read -r package;
+	do
+		echo "--- $package ---"
+		if $CMD "$package"; then	
 			echo ""
-		done < $TMP_FILE
-		rm $TMP_FILE
-	else
-		# FIXME: asking not working
-		# install with asking
-		while read -r package;
-		do
-			read -r -p "Continue (y/n)?" choice
-			case "$choice" in
-			  y|Y ) echo "--- $package ---"
-					$CMD "$package"
-					echo "";;
-			  n|N ) echo "";;
-			  * ) echo "invalid";;
-			esac
-		done < $TMP_FILE
-		rm $TMP_FILE
-	fi
+		else
+			NOT_INSTALLED+=("$package")
+		fi
+		echo ""
+	done < $TMP_FILE
+	echo "=================================="
+	echo "These packages were not installed:"
+	echo "=================================="
+	printf '%s\n' "${NOT_INSTALLED[@]}"
 fi
+rm $TMP_FILE
 
-echo "=================================="
-echo "These packages were not installed:"
-echo "=================================="
-printf '%s\n' "${NOT_INSTALLED[@]}"
+
