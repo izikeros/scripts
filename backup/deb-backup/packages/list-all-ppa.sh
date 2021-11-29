@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/usr/bin/env sh
 # Script to get all the PPA installed on a system
 for APT in `find /etc/apt/ -name \*.list`; do
     grep -Po "(?<=^deb\s).*?(?=#|$)" $APT | while read ENTRY ; do

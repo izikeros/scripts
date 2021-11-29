@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function package_description(){
 dsc=`apt-cache search ^$1$ | awk -F' - ' '{print $2}'`

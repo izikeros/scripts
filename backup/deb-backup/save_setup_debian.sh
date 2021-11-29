@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # uses:
 
 list_ppa_all(){

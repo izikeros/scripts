@@ -1,4 +1,4 @@
-#! /bin/sh 
+#!/usr/bin/env sh
 # listppa Script to get all the PPA installed on a system ready to share for reininstall
 for APT in `find /etc/apt/ -name \*.list`; do
     grep -o "^deb http://ppa.launchpad.net/[a-z0-9\-]\+/[a-z0-9\-]\+" $APT | while read ENTRY ; do

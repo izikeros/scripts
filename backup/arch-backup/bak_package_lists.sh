@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 bd="$HOME/_backup_packages_lists"
 mkdir -p "$bd"

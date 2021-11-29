@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 bd="$HOME/backup_nokia"
 #bd="/mnt/NAS/backup_nok_2019_03/2"
