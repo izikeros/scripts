@@ -1,10 +1,7 @@
-anki-bin             # Helps you remember facts (like words/phrases in a foreign language) efficiently
 auto-cpufreq         # Automatic CPU speed & power optimizer
 bfg                  # Removes large or troublesome blobs like git-filter-branch does, but faster.
 bitaddress-git       # JavaScript Client-Side Bitcoin Wallet Generator
-brave-bin            # Web browser that blocks ads and trackers by default (binary release)
 candy-icons-git      # Sweet gradient icons
-cht.sh-git           # The only cheat sheet you need (command line client for cheat.sh)
 deepspeech-bin       # A TensorFlow implementation of Baidu's DeepSpeech architecture - C++ native client + devel files.
 dnstracer            # Determines where a given DNS server gets its information from, and follows the chain of DNS servers
 dropbox              # A free service that lets you bring your photos, docs, and videos anywhere and share them easily.
@@ -19,58 +16,39 @@ git-quick-stats      # `git-quick-stats` is a simple and efficient way to access
 gitwatch-git         # A bash script to watch a file or folder and commit changes to a git repo
 google-earth-pro     # 3D interface to explore the globe, terrain, streets, buildings and other planets (Pro version)
 gotop                # A terminal based graphical activity monitor inspired by gtop and vtop
-gsview               # A nice looking GUI for ghostscript with some extraction features
-gtimelog             # Small GTK+ app for keeping track of your time
 gulp-cli             # The streaming build system
 jmtpfs               # FUSE and libmtp based filesystem for accessing MTP (Media Transfer Protocol) devices
 lf-bin               # A terminal file manager inspired by ranger (Precompiled binary from official repository)
 logtop               # Display real time statistics of whatever you want.
-mawk                 # An interpreter for the AWK Programming Language
 mindmaster_en        # Multi-functional, good-looking, easy-to-use professional mind mapping software
-miniconda3           # Mini version of Anaconda Python distribution.
 mop-git              # Stock market tracker for hackers
 mycrypto-bin         # Open-source, client-side tool for generating Ether Wallets, handling ERC-20 tokens, and interacting with the blockchain more easily
-nerd-fonts-source-code-pro # Patched font SourceCodePro from nerd-fonts library
 num-utils            # Set of programs for dealing with numbers from the command line.
 nvm                  # Node Version Manager - Simple bash script to manage multiple active node.js versions
 onlyoffice-bin       # An office suite that combines text, spreadsheet and presentation editors
 pdfposter            # Print large posters on multiple sheets
-pdfsam               # A free open source tool to split and merge pdf documents
-pdsite-git           # Pandoc-backed static site generator shell script with precompiled binary dependencies.
 perl-gtk2-unique     # Perl bindings for the C library libunique
-pinta                # Drawing/editing program modeled after Paint.NET. It's goal is to provide a simplified alternative to GIMP for casual users
-polybar              # A fast and easy-to-use status bar
 pomo                 # Pomodoro Command Line Interface
 powerstat-git        # A tool for measuring a laptops power usage via the battery.
-pyenv-virtualenv     # pyenv plugin to manage virtualenv (a.k.a. python-virtualenv)
-python36             # Major release 3.6 of the Python high-level programming language
-python38             # Major release 3.8 of the Python high-level programming language
-opencv 				 # 
 python-pydotplus     # Interface to Graphviz’s Dot language
 python-pyment-git    # Create, update or convert docstrings in existing Python files, managing several styles.
+python36             # Major release 3.6 of the Python high-level programming language
+python38             # Major release 3.8 of the Python high-level programming language
 qnapi                # Qt client for downloading movie subtitles from NapiProjekt, OpenSubtitles, Napisy24
 qsync                # QNap's synchronization client
 redsocks-git         # Transparent redirector of any TCP connection to proxy using your firewall
 remmina-plugin-rdesktop # A protocol plugin for Remmina to open a RDP connection with rdesktop.
 rofi-greenclip       # Clipboard manager to use with rofi - Image support and blacklist
 rssowlnix-bin        # RSSOwlnix fork of RSSOwl
-safeeyes             # A Free and Open Source tool for Linux users to reduce and prevent repetitive strain injury (RSI).
 sayonara-player      # Small, clear and fast audio player for Linux written in C++, supported by the Qt framework. It uses Gstreamer as audio backend.
 screenkey            # A screencast tool to display your keys inspired by Screenflick
-sent                 # Simple plaintext presentation tool
 simple-mtpfs         # A FUSE filesystem that supports reading/writing from MTP devices
-skypeforlinux-preview-bin # Skype for Linux - Preview/Insider Version
-sublime-merge        # Meet a new Git Client, from the makers of Sublime Text
-sublime-text-4       # Sophisticated text editor for code, html and prose - stable build
-subliminal           # Python library and CLI tool for searching and downloading subtitles.
-typora               # A minimal markdown editor and reader.
+veracrypt
 visidata             # Terminal spreadsheet multitool for discovering and arranging data
 visual-studio-code-bin # Visual Studio Code (vscode): Editor for building and debugging modern web and cloud applications (official binary version)
 vlsub-git            # VLC extension to download subtitles from opensubtitles.org
 wpa_actiond          # Daemon that connects to wpa_supplicant and handles connect and disconnect events
 xeus                 # C++ implementation of the Jupyter kernel protocol
-xnviewmp             # An efficient multimedia viewer, browser and converter.
-yay                  # Yet another yogurt. Pacman wrapper and AUR helper written in go.
 yed                  # Very powerful graph editor written in java
 ytmdl                # Download songs from YouTube with metadata from sources like Itunes, Gaana, Deezer etc.
 zenmap               # Graphical Nmap frontend and results viewer

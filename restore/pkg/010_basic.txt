@@ -1,3 +1,4 @@
+# programs essential for inital work
 curl                 # An URL retrieval utility and library
 git                  # the fast distributed version control system
 gh

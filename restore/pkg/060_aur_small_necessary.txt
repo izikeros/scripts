@@ -1,0 +1,24 @@
+anki-bin             # Helps you remember facts (like words/phrases in a foreign language) efficiently
+brave-bin            # Web browser that blocks ads and trackers by default (binary release)
+gsview               # A nice looking GUI for ghostscript with some extraction features
+gtimelog             # Small GTK+ app for keeping track of your time
+miniconda3           # Mini version of Anaconda Python distribution.
+mawk                 # An interpreter for the AWK Programming Language
+pdfsam               # A free open source tool to split and merge pdf documents
+pdsite-git           # Pandoc-backed static site generator shell script with precompiled binary dependencies.
+nerd-fonts-source-code-pro # Patched font SourceCodePro from nerd-fonts library
+cht.sh-git           # The only cheat sheet you need (command line client for cheat.sh)
+xnviewmp             # An efficient multimedia viewer, browser and converter.
+pinta                # Drawing/editing program modeled after Paint.NET. It's goal is to provide a simplified alternative to GIMP for casual users
+polybar              # A fast and easy-to-use status bar
+yay                  # Yet another yogurt. Pacman wrapper and AUR helper written in go.
+opencv 				 # 
+safeeyes             # A Free and Open Source tool for Linux users to reduce and prevent repetitive strain injury (RSI).
+pyenv-virtualenv     # pyenv plugin to manage virtualenv (a.k.a. python-virtualenv)
+sent                 # Simple plaintext presentation tool
+skypeforlinux-preview-bin # Skype for Linux - Preview/Insider Version
+sublime-merge        # Meet a new Git Client, from the makers of Sublime Text
+sublime-text-4       # Sophisticated text editor for code, html and prose - stable build
+subliminal           # Python library and CLI tool for searching and downloading subtitles.
+typora               # A minimal markdown editor and reader.
+python-virtualenv

@@ -1,3 +1,6 @@
+#
+# Specialised packages that should be installed on the need-basis
+#
 antiword             # A free MS Word reader for Linux and RISC OS
 docker               # Pack, ship and run any application as a lightweight container
 docker-compose       # Fast, isolated development environments using Docker

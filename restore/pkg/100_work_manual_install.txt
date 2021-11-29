@@ -1,0 +1,5 @@
+python-virtualenv
+networkmanager-openvpn
+networkmanager
+docker
+docker-compose

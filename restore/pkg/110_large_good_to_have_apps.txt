@@ -5,6 +5,8 @@ audacity
 calibre
 chromium
 darktable
+docker
+docker-compose
 gimp
 graphviz
 guvcview
