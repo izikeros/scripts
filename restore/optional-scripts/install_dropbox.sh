@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ======= install Dropbox
 if hash dropbox 2>/dev/null; then

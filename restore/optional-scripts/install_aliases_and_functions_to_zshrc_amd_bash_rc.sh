@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # aliases are now in .zsh_aliases and functions in .zsh_functions
 

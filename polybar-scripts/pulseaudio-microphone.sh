@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 status() {
   MUTED=$(pacmd list-sources | awk '/\*/,EOF {print}' | awk '/muted/ {print $2; exit}')

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # z can be replaced with fasd
 
 # ======== install z

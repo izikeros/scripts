@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ======= install k
 if [ ! -d $HOME/.oh-my-zsh/custom/plugins/k ]; then

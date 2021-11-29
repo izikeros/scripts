@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # define-colors.sh - define colors to be used inside bash script (source this content)
 
 #TODO: make snippet out of it
