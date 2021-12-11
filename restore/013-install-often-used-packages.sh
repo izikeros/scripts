@@ -5,6 +5,6 @@
 #  to enable further setup of the system.
 # Basic packages list contains typically top-10 most useful packages
 
-./pkg-from-the-list.sh ./pkg/010_basic.txt
+./pkg-from-the-list.sh ./pkg/020_ext_often_used.txt
 
-echo "### Basic packages installed"
+echo "### Often used packages installed"
