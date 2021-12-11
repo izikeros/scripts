@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # list projects from my github configured to be accessed via https instead of ssh
 
 if [ -d "$HOME"/projects/_priv/ ]; then

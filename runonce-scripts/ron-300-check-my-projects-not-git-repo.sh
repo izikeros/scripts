@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -d "$HOME"/projects/priv ]; then
     # Text color variables
