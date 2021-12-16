@@ -1,8 +1,10 @@
 # programs essential for inital work
 curl                 # An URL retrieval utility and library
+gcc
 git                  # the fast distributed version control system
 gh
 github-cli
+make
 mc                   # text based file manager/shell that emulates Norton Commander
 openssh              # Premier connectivity tool for remote login with the SSH protocol
 rsync                # A file transfer program to keep remote files in sync
