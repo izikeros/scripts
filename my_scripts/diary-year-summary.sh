@@ -7,6 +7,8 @@
 
 set -e
 
+[ -d "/usr/local/opt/coreutils/libexec/gnubin" ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+
 find "$HOME/vimwiki/diary" -type f -name '*.md' | \
     grep $1 |\
     xargs head -q -n1 |\
