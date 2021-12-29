@@ -20,7 +20,7 @@ DIR_NAME=${PWD##*/}
 
 # git pull --set-upstream origin main
 
-gh repo create "$DIRNAME" --private
+gh repo create "$DIR_NAME" --private
 
 # create .gitignore
 echo "-- creating .gitignore"
@@ -28,14 +28,22 @@ touch .gitignore
 
 # add all files, commit and push
 echo "-- add all files, commit and push"
-git add . && git commit -m "initial commit" && git push
+git add . && git commit -m "initial commit"
+
+git remote add origin git@github.com:izikeros/$DIR_NAME.git
+git branch -M main
+git push -u origin main
 
 echo "-- setting upstream"
 # git set-upstream is a git alias
-git set-upstream
-
+#git set-upstream
+git branch --set-upstream-to=origin/$(git symbolic-ref --short HEAD)
 echo "-- setting authentication with the ssh-keys"
 
+
 # set ssh authentication
+# for macOS use GNU version of sed
+[ -d "/usr/local/opt/coreutils/libexec/gnubin" ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH
+
 sed -i 's/url = https:\/\/github.com\//url = github:/' .git/config
 sed -i 's/url = git@github.com/url = github/' .git/config
