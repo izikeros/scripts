@@ -25,6 +25,7 @@ gh repo create "$DIR_NAME" --private
 # create .gitignore
 echo "-- creating .gitignore"
 touch .gitignore
+echo ".idea/" > .gitignore
 
 # add all files, commit and push
 echo "-- add all files, commit and push"

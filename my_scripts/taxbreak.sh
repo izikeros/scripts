@@ -23,14 +23,28 @@ FILES_MODIFIED_DOCS=$HOME/Documents/taxbreak/${DATE}_taxbreak_modified_docs.txt
 FILES_MODIFIED_CODE=$HOME/Documents/taxbreak/${DATE}_taxbreak_modified_proj.txt
 
 # TODO: improve rule: .py to capture both \.py and \.ipynb
+echo "Git changes"
 git whatchanged --since "${DATE-01}" --until "${TOMORROW}" --oneline --name-status --pretty=format: | sort | uniq | grep ^A > "$FILES_ADDED"
-find ~/Documents/brain -type f -ctime -30 -exec stat -c "%w %n" {} \; | grep "$(date  +%Y-%m)" | cut -d' ' -f1,4- >> "$FILES_ADDED_DOCS"
-find ~/Documents/brain -type f -mtime -30 -exec stat -c "%w %n" {} \; | grep "$(date  +%Y-%m)" | cut -d' ' -f1,4- >> "$FILES_MODIFIED_DOCS"
-find ~/projects/nokia -type f -mtime -30 -exec stat -c "%w %n" {} \; | grep -v '.git' | grep "$(date  +%Y-%m)" | cut -d' ' -f1,4- >> "$FILES_MODIFIED_CODE"
-echo "Files added to git repo and brain folder saved to: $FILES_ADDED"
 
+echo "~/Documents/EY - Added"
+find ~/Documents/EY -type f -ctime -30 -exec stat -c "%w %n" {} \; | grep "$(date  +%Y-%m)" | cut -d' ' -f1,4- >> "$FILES_ADDED_DOCS"
+
+echo "~/Documents/EY - modified"
+find ~/Documents/EY -type f -mtime -30 -exec stat -c "%w %n" {} \; | grep "$(date  +%Y-%m)" | cut -d' ' -f1,4- >> "$FILES_MODIFIED_DOCS"
+
+for dir in ~/projects/eyproj/*/     # list directories in the "
+do
+    dir=${dir%*/}      # remove the trailing "/"
+    echo "-- ${dir##*/}"    # print everything after the final "/"
+done
+
+#echo "~/projects/eyproj - modified"
+#find ~/projects/eyproj -type f -mtime -30 -exec stat -c "%w %n" {} \; | grep -v '.git' | grep -v '.tox' | grep "$(date  +%Y-%m)" | cut -d' ' -f1,4- >> "$FILES_MODIFIED_CODE"
+#echo " - Files added to git repo and ${pwd} folder saved to: $FILES_ADDED"
+
+echo "Commits..."
 FILE_COMMITS=$HOME/Documents/taxbreak/${DATE}_taxbreak_commits.txt
 git log --pretty=format:"%C(yellow)%h %ad%Cred%d %Creset%s%Cblue [%cn]" --decorate --date=short --since="$DATE-01" | grep "$AUTHOR_NAME" | grep "$DATE" > "$FILE_COMMITS"
-echo "Commits to git repo saved to: $FILE_COMMITS"
+echo "- Commits to git repo saved to: $FILE_COMMITS"
 
-xdg-open ~/Documents/taxbreak &
+#xdg-open ~/Documents/taxbreak &
