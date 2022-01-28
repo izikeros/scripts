@@ -20,12 +20,12 @@ DIR_NAME=${PWD##*/}
 
 # git pull --set-upstream origin main
 
-gh repo create "$DIR_NAME" --private
+gh repo create "$DIR_NAME" --private || echo "not creating repo"
 
 # create .gitignore
 echo "-- creating .gitignore"
 touch .gitignore
-echo ".idea/" > .gitignore
+echo ".idea/" >> .gitignore
 
 # add all files, commit and push
 echo "-- add all files, commit and push"
