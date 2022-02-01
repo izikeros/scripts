@@ -12,6 +12,8 @@ fi
 # install or upgrade pre-commit
 pip install --upgrade pre-commit
 
+pre-commit autoupdate
+
 # download .flake8 config
 if [ ! -f .flake8 ]; then
   curl -L https://gist.github.com/izikeros/c938c49f5ad38dcc74a5671e85f694e7/raw -o .flake8
