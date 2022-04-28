@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-~/dotfiles/scripts/getstarred.sh | \
+~/scripts/my_scripts/getstarred.sh | \
 # replace quoted csv with commaas separator with unquoted with ^ as separator
 sed 's/^\"//g' | sed 's/\",\"/\^/g' | sed 's/\"$//g' | \
 # remove duplicates

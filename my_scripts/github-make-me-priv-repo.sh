@@ -44,7 +44,7 @@ echo "-- setting authentication with the ssh-keys"
 
 # set ssh authentication
 # for macOS use GNU version of sed
-[ -d "/usr/local/opt/coreutils/libexec/gnubin" ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH
+[ -d "/usr/local/opt/coreutils/libexec/gnubin" ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 sed -i 's/url = https:\/\/github.com\//url = github:/' .git/config
 sed -i 's/url = git@github.com/url = github/' .git/config
