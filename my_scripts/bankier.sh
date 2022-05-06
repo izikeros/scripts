@@ -25,7 +25,7 @@ SYMBOLS=("$@")
 usage="Usage: $0 TICKER_1 [TICKER_2] [TICKER_N]"
 
 if [ -z "$SYMBOLS" ]; then
-  echo $usage
+  echo "$usage"
   exit
 fi
 
@@ -41,11 +41,11 @@ OUTPUT=''
 S=' '
 for symbol in $(IFS=' '; echo "${SYMBOLS[*]}" | tr '[:lower:]' '[:upper:]'); do
 	raw=""
-	if [ $symbol = 'EUR' ]; then
+	if [ "$symbol" = 'EUR' ]; then
 		raw=$(wget -qO- https://www.bankier.pl/waluty/kursy-walut/nbp/EUR | grep -A4 'div class="right textNowrap"')
 	fi
 
-	if [ $symbol = 'USD' ]; then
+	if [ "$symbol" = 'USD' ]; then
 		raw=$(wget -qO- https://www.bankier.pl/waluty/kursy-walut/nbp/USD | grep -A4 'div class="right textNowrap"')
 	fi
 
@@ -53,8 +53,8 @@ for symbol in $(IFS=' '; echo "${SYMBOLS[*]}" | tr '[:lower:]' '[:upper:]'); do
 		raw=$(wget -qO- https://www.bankier.pl/inwestowanie/profile/quote.html\?symbol\=$symbol | grep -A4 'div class="right textNowrap"')
 	fi
 
-	vals=$(echo $raw | sed -e 's/<[^>]*>//g' | sed -e 's/&nbsp;//g'| sed '/^\s*$/d')
-	vals=$(echo $vals | sed 's/ zł/_zł/g'| sed 's/ USD\/uncja/_USD\/uncja/g'| sed 's/ USD\/baryłka/_USD\/baryłka/g')
+	vals=$(echo "$raw" | sed -e 's/<[^>]*>//g' | sed -e 's/&nbsp;//g'| sed '/^\s*$/d')
+	vals=$(echo "$vals" | sed 's/ zł/_zł/g'| sed 's/ USD\/uncja/_USD\/uncja/g'| sed 's/ USD\/baryłka/_USD\/baryłka/g')
 
 	# echo -e "vals: $vals|"
 	val=$(echo "$vals" | awk -F' ' '{print $1}')
@@ -65,10 +65,10 @@ for symbol in $(IFS=' '; echo "${SYMBOLS[*]}" | tr '[:lower:]' '[:upper:]'); do
 
 	# set color
 	color="$white"
-	if echo $raw | grep -q "change up"; then
+	if echo "$raw" | grep -q "change up"; then
     	color="$green"
 	fi
-	if echo $raw | grep -q "change down"; then
+	if echo "$raw" | grep -q "change down"; then
     	color="$red"
 	fi
 	OUTPUT="$OUTPUT$txtbld$symbol$txtrst$S$color$val$S$color$percent$txtrst\n"

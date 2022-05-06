@@ -20,16 +20,16 @@ AUTHOR_NAME="Krystian Safjan"
 FILES_ADDED=$HOME/Documents/taxbreak/${DATE}_taxbreak_git_added_files.txt
 FILES_ADDED_DOCS=$HOME/Documents/taxbreak/${DATE}_taxbreak_added_docs.txt
 FILES_MODIFIED_DOCS=$HOME/Documents/taxbreak/${DATE}_taxbreak_modified_docs.txt
-FILES_MODIFIED_CODE=$HOME/Documents/taxbreak/${DATE}_taxbreak_modified_proj.txt
+#FILES_MODIFIED_CODE=$HOME/Documents/taxbreak/${DATE}_taxbreak_modified_proj.txt
 
 # TODO: improve rule: .py to capture both \.py and \.ipynb
 echo "Git changes"
 git whatchanged --since "${DATE-01}" --until "${TOMORROW}" --oneline --name-status --pretty=format: | sort | uniq | grep ^A > "$FILES_ADDED"
 
-echo "~/Documents/EY - Added"
+echo "$HOME/Documents/EY - Added"
 find ~/Documents/EY -type f -ctime -30 -exec stat -c "%w %n" {} \; | grep "$(date  +%Y-%m)" | cut -d' ' -f1,4- >> "$FILES_ADDED_DOCS"
 
-echo "~/Documents/EY - modified"
+echo "$HOME/Documents/EY - modified"
 find ~/Documents/EY -type f -mtime -30 -exec stat -c "%w %n" {} \; | grep "$(date  +%Y-%m)" | cut -d' ' -f1,4- >> "$FILES_MODIFIED_DOCS"
 
 for dir in ~/projects/eyproj/*/     # list directories in the "

@@ -22,10 +22,10 @@ CROP_SIZE=1292x724
 OUT_NAME=$1
 #VIDEO_FILE="$OUT_DIR"/"$OUT_NAME".mkv
 RES=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 "$OUT_NAME")
-echo $RES
-if [ $RES = "1920x1080" ]; then
+echo "$RES"
+if [ "$RES" = "1920x1080" ]; then
 	CROP_SIZE="1932x1084"
-elif [ $RES = "1280x720" ]; then
+elif [ "$RES" = "1280x720" ]; then
 	CROP_SIZE="1292x724"
 else
 	exit 1

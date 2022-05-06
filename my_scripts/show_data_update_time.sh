@@ -12,7 +12,7 @@ hn_favs.csv
 for f in $FILES
 do
 	if [[ -f "$HOME/data/$f" ]]; then
-        MODDATE=$(stat -c %y $HOME/data/"$f")
+        MODDATE=$(stat -c %y "$HOME"/data/"$f")
 	    MODDATE=${MODDATE%% *}
         NUM_LINES=$(wc -l < "$HOME/data/$f")
         FILESIZE=$(stat -c %s "$HOME/data/$f" | numfmt --to=iec)
