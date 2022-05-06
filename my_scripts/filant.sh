@@ -66,7 +66,7 @@ rm -rf "$OUT_DIR_NAME"/frames
 # reverse order in uniq_frames
 IFS=$'\n' # the input field separators include space by default
 i=1
-for f in $(ls -r "$OUT_DIR_NAME"/uniq_frames/*.jpg); do 
+for f in $(ls -r "$OUT_DIR_NAME"/uniq_frames/*.jpg); do
     echo mv "$f" "IMG_$(printf %04d $i)".jpg
     (( i++ ))
 done

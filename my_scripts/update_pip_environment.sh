@@ -29,4 +29,3 @@ pip install --upgrade < "$UP_TOP"
 #echo "finding no top-level packages to update, saving list to: $UP_NO_TOP"
 #comm -23 "$OUT" "$TOP" | sort | tee "$UP_NO_TOP"
 #pip install --upgrade < "$UP_NO_TOP"
-

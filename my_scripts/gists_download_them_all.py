@@ -29,8 +29,8 @@ from pathlib import Path
 import requests
 
 # gists are stored in ~/gists/gihub_username
-HOME_DIR = os.path.expanduser('~')
-GIST_DIR = 'gists'
+HOME_DIR = os.path.expanduser("~")
+GIST_DIR = "gists"
 
 if len(sys.argv) > 1:
     gh_user = sys.argv[1]
@@ -63,8 +63,7 @@ class cd:
         os.chdir(self.savedPath)
 
 
-
-user_gist_dir_name = Path(home_dir) / "gists" / gh_user
+user_gist_dir_name = Path(HOME_DIR) / "gists" / gh_user
 
 Path(user_gist_dir_name).mkdir(parents=True, exist_ok=True)
 
@@ -76,8 +75,8 @@ with cd(user_gist_dir_name):
 
         description_file = f"./{i['id']}/description.txt"
         with open(description_file, "w") as f:
-            f.write("{0}\n".format(i["description"]))
-        contents[i["id"]]={}
+            f.write("{}\n".format(i["description"]))
+        contents[i["id"]] = {}
         contents[i["id"]]["git_pull_url"] = i["git_pull_url"]
         contents[i["id"]]["description"] = description
     with open("contents.json", "wt") as cf:

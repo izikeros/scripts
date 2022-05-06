@@ -14,5 +14,3 @@ info=${bldwht}*${txtrst}        # Feedback
 pass=${bldblu}*${txtrst}
 warn=${bldred}*${txtrst}
 ques=${bldblu}?${txtrst}
-
-

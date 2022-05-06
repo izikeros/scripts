@@ -28,7 +28,3 @@ rsync -avzhm --delete --exclude={\
 '*/.pytest_cache/',\
 '*/__pycache__/'\
 } /home/safjan/projects/nokia /mnt/NAS/projects
-
-
-
-

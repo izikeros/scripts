@@ -6,4 +6,3 @@ set -e
 
 git config user.email "krystian.safjan@gds.ey.com"
 git config user.name "Krystian Safjan"
-

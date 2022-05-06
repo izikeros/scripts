@@ -12,4 +12,3 @@ HN_FAV_FNAME=$HOME/data/hn_favs.csv
     mv /tmp/favs.csv "$HN_FAV_FNAME" &&\
     echo "Moved temp file to data folder"
 echo "Completed"
-

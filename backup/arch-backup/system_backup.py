@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ---
 # jupyter:
 #   jupytext:
@@ -18,14 +17,11 @@
 # #! /usr/bin/env python
 
 import os
-import shutil
-import time
-import re
-import argparse
-import sys
-from sh import rsync, du
-from pathlib import Path
 import subprocess
+from pathlib import Path
+
+from sh import du
+from sh import rsync
 
 # %% [markdown]
 # # Backup script
@@ -121,8 +117,9 @@ for dir_name, dir_conf in backup_dirs.items():
         dst = Path(BDIR) / os.path.join("home", USER, dir_name)
         try:
             size = du("-sh", src).split("\t")[0]
-        except:
+        except Exception as ex:
             print(f">>> Cannot read {src}")
+            print(ex)
         if DISPLAY_DST:
             print(f"{size}\t{dir_name}\tdst: {dst}")
         else:
@@ -155,14 +152,14 @@ for dir_name, dir_conf in backup_dirs.items():
                 "--info=skip0",
                 "--exclude=*.tox/*",
                 "--exclude=prolog",  # separate job for that (honoring gitignore)
-                "--exclude=filecluster", # separate job for that
+                "--exclude=filecluster",  # separate job for that
                 "--exclude=slidev-demo",
                 "--exclude=Cache",
                 src,
                 dst_parrent,
             )
-            print(o)            
-        except ErrorReturnCode as e:
+            print(o)
+        except Exception as e:
             print(e)
 
 
@@ -174,16 +171,20 @@ for dir_name, dir_conf in backup_dirs.items():
     if dir_conf["enable"]:
         src = os.path.join("/home", USER, dir_name)
         dst = Path(BDIR) / os.path.join("home", USER, dir_name)
+        src_size = ""
+        dst_size = ""
         try:
             src_size = du("-sh", src).split("\t")[0]
-        except:
+        except Exception as ex:
             print(f">>> Cannot read {src}")
-            
+            print(ex)
+
         try:
             dst_size = du("-sh", dst).split("\t")[0]
-        except:
+        except Exception as ex:
             print(f">>> Cannot read {src}")
-            
+            print(ex)
+
         print(f"{src_size}\t{dst_size}\t{dir_name}")
 
 # %% [markdown]
@@ -215,12 +216,12 @@ for src, dst in dirs:
 #    --archive, -a            archive mode; equals -rlptgoD (no -H,-A,-X)
 #    --verbose, -v            increase verbosity
 #    --update, -u             skip files that are newer on the receiver
-#    -P                       same as --partial --progress       
+#    -P                       same as --partial --progress
 #    --stats
 #    --delete
 #    --filter=':- .gitignore'
 #    --links, -l              copy symlinks as symlinks
-#     
+#
 #     add args to exclude
 #     "--exclude=lost+found",
 #     "--exclude=/sys",

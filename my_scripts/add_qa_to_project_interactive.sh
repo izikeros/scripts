@@ -9,7 +9,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     mv /tmp/requirements-dev.txt .
 else
-	rm /tmp/requirements-dev.txt 
+	rm /tmp/requirements-dev.txt
 fi
 
 # .bandit
@@ -21,7 +21,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     mv /tmp/.bandit .
 else
-	rm /tmp/.bandit 
+	rm /tmp/.bandit
 fi
 
 # mypy.ini

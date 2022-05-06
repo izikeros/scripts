@@ -16,5 +16,3 @@ cp -r "$src_dir/settings/firefox/chrome/" "$HOME/.mozilla/firefox/*.default"
 
 echo "### Fix for firefox dark themes added"
 echo "Restart firefox to see the effect"
-
-

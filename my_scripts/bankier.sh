@@ -14,7 +14,7 @@
 #
 # sample usage:
 #   ./stock-bankier.sh WIG20 JSW mWIG40
-# 
+#
 # author: Krystian Safjan (ksafjan@gmail.com)
 # Licence MIT
 
@@ -41,11 +41,11 @@ OUTPUT=''
 S=' '
 for symbol in $(IFS=' '; echo "${SYMBOLS[*]}" | tr '[:lower:]' '[:upper:]'); do
 	raw=""
-	if [ $symbol = 'EUR' ]; then		
+	if [ $symbol = 'EUR' ]; then
 		raw=$(wget -qO- https://www.bankier.pl/waluty/kursy-walut/nbp/EUR | grep -A4 'div class="right textNowrap"')
 	fi
-	
-	if [ $symbol = 'USD' ]; then		
+
+	if [ $symbol = 'USD' ]; then
 		raw=$(wget -qO- https://www.bankier.pl/waluty/kursy-walut/nbp/USD | grep -A4 'div class="right textNowrap"')
 	fi
 
@@ -73,4 +73,4 @@ for symbol in $(IFS=' '; echo "${SYMBOLS[*]}" | tr '[:lower:]' '[:upper:]'); do
 	fi
 	OUTPUT="$OUTPUT$txtbld$symbol$txtrst$S$color$val$S$color$percent$txtrst\n"
 done
-echo -e "$OUTPUT" | column -t 
+echo -e "$OUTPUT" | column -t

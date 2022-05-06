@@ -14,4 +14,3 @@ symlink_dotfile "$HOME/dotfiles/dotfiles/$PTH/modules.conf" "$HOME/$PTH/modules.
 mkdir -p ~/.local/share/Trash/files
 
 echo "### polybar configuration symlinked"
-

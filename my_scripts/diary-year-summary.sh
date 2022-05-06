@@ -14,4 +14,3 @@ find "$HOME/vimwiki/diary" -type f -name '*.md' | \
     xargs head -q -n1 |\
     sed 's/^#\s//' |\
     sort > "./y-$1.txt"
-

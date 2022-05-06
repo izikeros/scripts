@@ -16,4 +16,3 @@ date -r $FILE "+%m-%d-%Y %H:%M:%S"
 cd ~/projects/ext/filter-and-sort-dynamically-created-table-with-vanilla-javascript-demo
 python3 -m http.server 9000 &
 open "http://localhost:9000"
-

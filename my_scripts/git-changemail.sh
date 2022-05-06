@@ -23,9 +23,9 @@ fi
 # init {{{
 REPLACE="author"
 DRY_RUN=0
-# }}} 
+# }}}
 
-# functions {{{ 
+# functions {{{
 function help {
    local scriptname="$(basename $0)"
    cat >&2 <<EOF
@@ -54,7 +54,7 @@ Examples:
  # change author matchings on current branch
  $ $scriptname -a old@email.com -n newname -m new@email.com
 
- # change author and committer matchings on <branch> and <branch2>. Pass `-f` 
+ # change author and committer matchings on <branch> and <branch2>. Pass `-f`
  # to filter-branch to allow rewriting backups
  $ $scriptname -b old@email.com -n newname -m new@email.com -- -f <branch> <branch2>
 
@@ -88,12 +88,12 @@ $1 will be matched to replace:
 EOF
 }
 
-# }}} 
+# }}}
 
-# parse args {{{ 
+# parse args {{{
 
 parse_args "a:c:b:n:m:" "author:,committer:,both:,name:,mail:,dry-run,show-authors,show-committers,show-both" "$@"
-   
+
 # process script arguments
 eval set -- "$TEMP"
 
@@ -168,7 +168,7 @@ do
          ;;
       --)
          shift
-         break 
+         break
          ;;
       *)
          cat <&2 <<EOF
@@ -181,7 +181,7 @@ EOF
    esac
    shift
 done
-# }}} 
+# }}}
 
 # exec {{{
 if [ $DRY_RUN == 1 ]
@@ -233,6 +233,6 @@ export GIT_COMMITTER_NAME="$cn"
 export GIT_COMMITTER_EMAIL="$cm"
 git commit-tree "$@"
 ' $@
-# }}} 
+# }}}
 
 # vim: fdm=marker

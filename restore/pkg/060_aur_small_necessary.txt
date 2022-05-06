@@ -12,7 +12,7 @@ xnviewmp             # An efficient multimedia viewer, browser and converter.
 pinta                # Drawing/editing program modeled after Paint.NET. It's goal is to provide a simplified alternative to GIMP for casual users
 polybar              # A fast and easy-to-use status bar
 yay                  # Yet another yogurt. Pacman wrapper and AUR helper written in go.
-opencv 				 # 
+opencv 				 #
 safeeyes             # A Free and Open Source tool for Linux users to reduce and prevent repetitive strain injury (RSI).
 pyenv-virtualenv     # pyenv plugin to manage virtualenv (a.k.a. python-virtualenv)
 sent                 # Simple plaintext presentation tool

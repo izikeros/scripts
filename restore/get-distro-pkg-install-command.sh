@@ -6,7 +6,7 @@
 
 # --- Determine operating system ------
 SYS=""
-if [[ -f /etc/issue ]]; then 
+if [[ -f /etc/issue ]]; then
     grep -q  "Ubuntu" /etc/issue && SYS="ubuntu"
     grep -q  "Arch\|archlabs" /etc/issue && SYS="arch"
 fi

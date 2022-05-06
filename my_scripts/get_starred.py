@@ -13,7 +13,7 @@ def download_paged_json():
     page = 0
     get_next_page = True
     while get_next_page:
-        print("Downloading page {}".format(page))
+        print(f"Downloading page {page}")
         url = f"https://api.github.com/users/{GITHUB_USER}/starred?per_page=100&page={page}"
         raw_response = requests.get(url, headers=headers)
         if raw_response.status_code != 200:
@@ -35,6 +35,9 @@ def extract_interesting_info(project_dict):
             license_info = ""
     except TypeError:
         license_info = ""
+
+    if license_info == "":
+        pass
 
     return {
         # "starred_at": project_dict["starred_at"],
@@ -60,7 +63,10 @@ if __name__ == "__main__":
     res = download_paged_json()
     filtered_res = [extract_interesting_info(project_dict) for project_dict in res]
     jd = "export const orders = " + json.dumps(filtered_res, indent=2)
-    file = "/Users/krystian.safjan/projects/ext/filter-and-sort-dynamically-created-table-with-vanilla-javascript-demo/js/orders.js"
+    file = (
+        "/Users/krystian.safjan/projects/ext/filter-and-sort-dynamically-created-table-with"
+        "-vanilla-javascript-demo/js/orders.js "
+    )
     with open(file, "w") as f:
         write_res = f.write(jd)
 

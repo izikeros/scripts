@@ -15,4 +15,3 @@ else
     "$HOME"/projects/priv/hacker-news-favourites-downloader/hafado.py -u izik > "$HN_FAV_FNAME"
 fi
 echo "Done"
-

@@ -16,4 +16,3 @@ symlink_dotfile "$B/src" "$HOME/src"
 
 echo "Consider symlinking Dropbox also"
 # symlink_dotfile "$B/Dropbox" "~/Dropbox"
-

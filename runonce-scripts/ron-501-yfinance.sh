@@ -2,7 +2,7 @@
 set -e
 
 # if [[ -d ~/.virtualenvs/yfinance/bin/activate ]]; then
-# 	source ~/.virtualenvs/yfinance/bin/activate	
+# 	source ~/.virtualenvs/yfinance/bin/activate
 
 # 	# run python script here
 # 	echo "> yfinance advanced analysis will go here <"

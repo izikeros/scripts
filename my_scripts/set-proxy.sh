@@ -27,4 +27,3 @@ else
         echo Some sort of error
     fi
 fi
-

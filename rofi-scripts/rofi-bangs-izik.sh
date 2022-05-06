@@ -112,7 +112,7 @@ function print_menu()
 {
     for key in "${!LABELS[@]}"
     do
-    
+
     #echo "$key    ${LABELS}"
     echo "$key    ${LABELS[$key]}"
      # my top version just shows the first field in labels row, not two words side by side

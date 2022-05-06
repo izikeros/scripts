@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # Andy's very mini virtualenvwrapper-ish zsh plugin
 
 # This is a simple, lightweight zsh plugin providing these four

@@ -14,5 +14,3 @@ for ((i=1;i<=10;i++)); do
 	    echo "$status_txt"
     fi
 done
-
-

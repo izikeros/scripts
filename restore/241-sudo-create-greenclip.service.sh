@@ -14,4 +14,3 @@ WantedBy=default.target
 EOF
 
 systemctl --user enable greenclip.service
-

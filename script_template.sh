@@ -39,7 +39,7 @@
 #     2018/02/01 : mvongvilay : Add Parrallelism (bg jobs) management with ipcf
 #     2018/02/01 : mvongvilay : Change lock with mkdir to be more mutex
 #     2018/02/01 : mvongvilay : Change exec_cmd to use ipcf and tag stderr output
-# 
+#
 #================================================================
 #  DEBUG OPTION
 #    set -n  # Uncomment to check your syntax, without execution.
@@ -75,7 +75,7 @@ fecho() {
 			cat -un - | while read LINE; do \
 				[[ ${OLDSECONDS:=$(( ${SECONDS}-1 ))} -lt ${SECONDS} ]] && OLDSECONDS=$(( ${SECONDS}+1 )) \
 				&& TSTAMP="$( date ${SCRIPT_TIMELOG_FORMAT} ) "; printf "${TSTAMP}${_Tag} ${LINE}\n"; \
-			done 
+			done
 		fi
 	fi
 }
@@ -106,7 +106,7 @@ debug() { [[ ${flagDbg} -ne 0 ]] && fecho DBG "DEBUG: ${*}" 1>&2; }
 
 tag() { [[ "x$1" == "x--eol" ]] && awk '$0=$0" ['$2']"; fflush();' || awk '$0="['$1'] "$0; fflush();' ; }
 infotitle() { _txt="-==# ${*} #==-"; _txt2="-==#$( echo " ${*} " | tr '[:print:]' '#' )#==-" ;
-	info "$_txt2"; info "$_txt"; info "$_txt2"; 
+	info "$_txt2"; info "$_txt"; info "$_txt2";
 }
 
   #== startup and finish functions ==#
@@ -134,10 +134,10 @@ scriptinfo() { headFilter="^#-"
 	head -${SCRIPT_HEADSIZE:-99} ${0} | grep -e "${headFilter}" | sed -e "s/${headFilter}//g" -e "s/\${SCRIPT_NAME}/${SCRIPT_NAME}/g"; }
 
   #== Inter Process Communication File functions (ipcf) ==#
-#== Create semaphore on fd 101 #==  Not use anymore ==# 
+#== Create semaphore on fd 101 #==  Not use anymore ==#
 # ipcf_cre_sem() { SCRIPT_SEM_RC="${SCRIPT_DIR_LOCK}/pipe-rc-${$}";
 # 	mkfifo "${SCRIPT_SEM_RC}" && exec 101<>"${SCRIPT_SEM_RC}" && rm -f "${SCRIPT_SEM_RC}"; }
-#==  Use normal file instead for persistency ==# 
+#==  Use normal file instead for persistency ==#
 ipcf_save() { # Usage: ipcf_save <TYPE> <ID> <DATA>
 	_Line="${1}|${2}"
 	shift 2 && _Line+="|${*}"
@@ -227,9 +227,9 @@ wait_cmd() { # Usage: wait_cmd [<TIMEOUT>] ;
 		unset -v _cmd_rc_a
 		[[ "x$BASH" == "x" ]] && typeset -A _cmd_rc_a || declare -A _cmd_rc_a #Other: ps -ocomm= -q $$
 		eval $( tail -n +${_num_start_line:-0} ${ipcf_file} | grep "^RC_${ipcf_IFS}" | cut -d"${ipcf_IFS}" -f2,3 | xargs | sed "s/\([0-9]*\)|\([0-9]*\)/_cmd_rc_a[\1]=\2\;/g" ) ;
-		
+
 		#debug "wait_cmd: \$_cmd_id_list='$_cmd_id_list' ; \${_cmd_rc_a[@]}=${_cmd_rc_a[@]}; \${!_cmd_rc_a[@]}=${!_cmd_rc_a[@]};"
-		
+
 		for __cmd_id in ${_cmd_id_list}; do
 			#_tmp_rc="$(ipcf_load_rc ${__cmd_id} 2>/dev/null)"
 			if [[ "${_cmd_rc_a[$__cmd_id]}" ]]; then
@@ -238,7 +238,7 @@ wait_cmd() { # Usage: wait_cmd [<TIMEOUT>] ;
 				[[ "${_cmd_rc_a[$__cmd_id]}" -ne 0 ]] && _cmd_id_fail+="${__cmd_id} "
 			fi
 		done
-		
+
 		_num_run_jobs="$( jobs -l | grep -i "Running.*${_tmp_grep_bash}" | wc -l )"
 		[[ $((_num_timer%5)) -eq 0 ]] && info "wait_cmd: Waiting for ${_num_run_jobs} bg jobs to finish: $( echo ${_cmd_id_list} | sed -e "s/\([0-9]*\)/[\1]/g" ) (elapsed: ${_num_timer}s)"
 		((++_num_timer))
@@ -249,25 +249,25 @@ wait_cmd() { # Usage: wait_cmd [<TIMEOUT>] ;
 			warning "wait_cmd: Time out reached (${_num_timer}s) ${_tmp_txt} - exit function"
 			return 255
 		fi
-		
+
 		[[ "$( echo "${_cmd_id_list}" | wc -w )" -eq 0 ]] && break
-		
+
 		[[ "${_num_run_jobs}" -eq 0 ]] \
 			&& warning "wait_cmd: No more running jobs but there is still cmd_id left: ${_cmd_id_list}" \
 			&& _cmd_id_fail+="${_cmd_id_list} " && break
 		sleep 1;
 	done
-	
+
 	_num_run_jobs="$( jobs -l | grep -i "Running.*${_tmp_grep_bash}" | wc -l )"
 	[[ ${_num_run_jobs} -gt 1 ]] \
 		&& warning "wait_cmd: No more cmd but Still have running jobs: $( jobs -p | xargs echo )"
-	
+
 	_num_fail_cmd="$( echo ${_cmd_id_fail} | wc -w )"
 	[[ ${_num_fail_cmd} -eq 0 ]] && info "wait_cmd: All cmd_id succeeded" \
 		|| warning "wait_cmd: ${_num_fail_cmd} cmd_id failed: $( echo ${_cmd_id_fail} | sed -e "s/\([0-9]*\)/[\1]/g" )"
-	
+
 	ipcf_save "CHK" "0" "${_cmd_id_check}"
-	
+
 	return $_num_fail_cmd
 }
 
@@ -350,9 +350,9 @@ while getopts ${SCRIPT_OPTS} OPTION ; do
 		[[ $LONG_OPTIND -ne -1 ]] && eval LONG_OPTARG="\$$LONG_OPTIND"
 		OPTION=${ARRAY_OPTS[$LONG_OPTION]}
 		[[ "x$OPTION" = "x" ]] &&  OPTION="?" OPTARG="-$LONG_OPTION"
-		
+
 		if [[ $( echo "${SCRIPT_OPTS}" | grep -c "${OPTION}:" ) -eq 1 ]]; then
-			if [[ "x${LONG_OPTARG}" = "x" ]] || [[ "${LONG_OPTARG}" = -* ]]; then 
+			if [[ "x${LONG_OPTARG}" = "x" ]] || [[ "${LONG_OPTARG}" = -* ]]; then
 				OPTION=":" OPTARG="-$LONG_OPTION"
 			else
 				OPTARG="$LONG_OPTARG";
@@ -366,7 +366,7 @@ while getopts ${SCRIPT_OPTS} OPTION ; do
 	fi
 
 	#== options follow by another option instead of argument ==#
-	if [[ "x${OPTION}" != "x:" ]] && [[ "x${OPTION}" != "x?" ]] && [[ "${OPTARG}" = -* ]]; then 
+	if [[ "x${OPTION}" != "x:" ]] && [[ "x${OPTION}" != "x?" ]] && [[ "${OPTARG}" = -* ]]; then
 		OPTARG="$OPTION" OPTION=":"
 	fi
 
@@ -376,26 +376,26 @@ while getopts ${SCRIPT_OPTS} OPTION ; do
 			[[ "${OPTARG}" = *"DEFAULT" ]] && fileLog="$( echo ${OPTARG} | sed -e "s/DEFAULT/${SCRIPT_UNIQ_DATED}.log/g" )"
 			flagOptLog=1
 		;;
-		
+
 		t ) flagOptTimeLog=1
 			SCRIPT_TIMELOG_FLAG=1
 		;;
-		
+
 		x ) flagOptIgnoreLock=1
 		;;
-		
+
 		h ) usagefull
 			exit 0
 		;;
-		
+
 		v ) scriptinfo
 			exit 0
 		;;
-		
+
 		: ) error "${SCRIPT_NAME}: -$OPTARG: option requires an argument"
 			flagOptErr=1
 		;;
-		
+
 		? ) error "${SCRIPT_NAME}: -$OPTARG: unknown option"
 			flagOptErr=1
 		;;
@@ -432,7 +432,7 @@ while [[ flagScriptLock -eq 0 ]]; do
 			warning "${SCRIPT_NAME}: ${SCRIPT_DIR_LOCK}: Remove stale lock (no filePid)"
 		elif [[ "x$( ps -ef | grep $(head -1 "${filePid}"))" == "x" ]]; then
 			warning "${SCRIPT_NAME}: ${SCRIPT_DIR_LOCK}: Remove stale lock (no running pid)"
-		else 
+		else
 			error "${SCRIPT_NAME}: ${SCRIPT_DIR_LOCK}: Lock detected (running pid: $(head -1 "${filePid}")) - exit program" && exit 3
 		fi
 		rm -fr "${SCRIPT_DIR_LOCK}" 1>/dev/null 2>&1

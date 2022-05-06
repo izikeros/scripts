@@ -157,4 +157,3 @@ case $1 in
         ;;
     *) echo -e "Option does not exist: $1" && usage && exit 1
 esac
-

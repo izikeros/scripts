@@ -8,7 +8,7 @@ cat <<EOF >>/tmp/nasreport
 # NAS Report by Patrick Wilson
 # see: http://forum.qnap.com/viewtopic.php?f=185&t=82260#p366188
 #
-# 
+#
 echo "[code]*********************"
 echo "** QNAP NAS Report **"
 echo "*********************"
@@ -19,12 +19,12 @@ echo "System Name:    \$(/bin/hostname)"
 echo "Workgroup:      \$(getcfg system workgroup)"
 echo "Base Directory: \$(dirname \$(getcfg -f /etc/config/smb.conf Public path))"
 echo "NAS IP address: \$(ifconfig \$(getcfg network 'Default GW Device') | grep addr: | awk '{ print \$2 }' | cut -d: -f2)"
-echo " " 
-echo "Default Gateway Device: \$(getcfg network 'Default GW Device')" 
+echo " "
+echo "Default Gateway Device: \$(getcfg network 'Default GW Device')"
 echo " "
 ifconfig \$(getcfg network 'Default GW Device') | grep -v HWaddr
 echo " "
-echo -n "DNS Nameserver(s):" 
+echo -n "DNS Nameserver(s):"
 cat /etc/resolv.conf | grep nameserver | cut -d' ' -f2
 echo " "
 echo " "
@@ -55,7 +55,7 @@ echo "Disk Space:"
 echo " "
 df -h | grep -v qpkg
 echo " "
-echo "Mount Status:" 
+echo "Mount Status:"
 echo " "
 mount | grep -v qpkg
 echo " "
@@ -63,26 +63,26 @@ echo " "
 #echo " "
 #ls -lF \$(dirname \$(getcfg -f /etc/config/smb.conf Public path))/
 echo " "
-echo "Windows Shares:" 
+echo "Windows Shares:"
 echo " "
-for i in \$(grep \] /etc/config/smb.conf | sed 's/^\[//g' | sed 's/\]//g' | grep -v global) ;do 
+for i in \$(grep \] /etc/config/smb.conf | sed 's/^\[//g' | sed 's/\]//g' | grep -v global) ;do
    echo -n "\$i:"
-   testparm -s -l --section-name="\$i" --parameter-name=path 2>/dev/null 
+   testparm -s -l --section-name="\$i" --parameter-name=path 2>/dev/null
 done
 #echo " "
 #echo "QNAP Media Scanner / Transcoder processes running: "
-#echo " " 
+#echo " "
 #/bin/ps | grep medialibrary | grep -v grep
-#echo " " 
-#echo -n "MediaLibrary Configuration file: " 
+#echo " "
+#echo -n "MediaLibrary Configuration file: "
 #ls -alF /etc/config/medialibrary.conf
-#echo " " 
+#echo " "
 #echo "/etc/config/medialibrary.conf:"
 #cat /etc/config/medialibrary.conf
 echo " "
 echo "iTunes Music Store: \$(getcfg -f /etc/config/mt-daapd.conf general mp3_dir)"
 echo " "
-echo "Memory Information:" 
+echo "Memory Information:"
 echo " "
 free | grep -v cache:
 echo " "

@@ -8,4 +8,3 @@ set -e
 #TODO: make date first column, sort by date
 find $1 -name "*.py" | xargs grep -n "TODO:\|FIXME:"
 find $1 -name "*.py" | xargs grep -n "TODO:\|FIXME:" | wc -l
-

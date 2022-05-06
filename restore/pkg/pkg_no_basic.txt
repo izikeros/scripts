@@ -9,7 +9,7 @@ binutils             # A set of programs to assemble and manipulate binary and o
 broot                # Fuzzy Search + tree + cd
 cifs-utils           # CIFS filesystem user-space tools
 cups                 # The CUPS Printing System - daemon package
-dnsutils             # 
+dnsutils             #
 docker-compose       # Fast, isolated development environments using Docker
 docker               # Pack, ship and run any application as a lightweight container
 doublecmd-qt5        # twin-panel (commander-style) file manager (Qt5)
@@ -44,7 +44,7 @@ pinta                # Drawing/editing program modeled after Paint.NET. It's goa
 postgresql           # Sophisticated object-relational DBMS
 powertop             # A tool to diagnose issues with power consumption and power management
 pydf                 # A colorized df clone
-python3              # 
+python3              #
 python-pipenv        # Sacred Marriage of Pipfile, Pip, & Virtualenv.
 python-pip           # The PyPA recommended tool for installing Python packages
 python-virtualenvwrapper # Extensions to Ian Bicking's virtualenv tool

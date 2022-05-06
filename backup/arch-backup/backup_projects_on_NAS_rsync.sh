@@ -17,8 +17,3 @@ rsync -avzhm --delete /home/safjan/projects/archive /mnt/NAS/projects
 rsync -avzhm --delete /home/safjan/projects/Dockerfiles /mnt/NAS/projects
 rsync -avzhm --delete /home/safjan/projects/priv /mnt/NAS/projects
 rsync -avzhm --delete /home/safjan/projects/ext /mnt/NAS/projects
-
-
-
-
-

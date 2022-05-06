@@ -8,4 +8,3 @@ for f in $HOME/scripts/runonce-scripts/*.sh; do
     zsh "$f" -H
 done
 # fi
-

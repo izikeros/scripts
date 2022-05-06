@@ -16,4 +16,3 @@
 # playlist: rofi      https://www.youtube.com/playlist?list=PLqv94xWU9zZ0LVP1SEFQsLEYjZC_SUB3m
 
 xdg-open "$(lolcate Documents | rofi -threads 0 -width 100 -dmenu -i -p "locate:")"
-

@@ -3,183 +3,183 @@
 # Developed by Fred Weinhaus 12/30/2015 .......... revised 1/4/2020
 #
 # ------------------------------------------------------------------------------
-# 
+#
 # Licensing:
-# 
+#
 # Copyright © Fred Weinhaus
-# 
+#
 # My scripts are available free of charge for non-commercial use, ONLY.
-# 
-# For use of my scripts in commercial (for-profit) environments or 
-# non-free applications, please contact me (Fred Weinhaus) for 
+#
+# For use of my scripts in commercial (for-profit) environments or
+# non-free applications, please contact me (Fred Weinhaus) for
 # licensing arrangements. My email address is fmw at alink dot net.
-# 
-# If you: 1) redistribute, 2) incorporate any of these scripts into other 
-# free applications or 3) reprogram them in another scripting language, 
-# then you must contact me for permission, especially if the result might 
+#
+# If you: 1) redistribute, 2) incorporate any of these scripts into other
+# free applications or 3) reprogram them in another scripting language,
+# then you must contact me for permission, especially if the result might
 # be used in a commercial or for-profit environment.
-# 
-# My scripts are also subject, in a subordinate manner, to the ImageMagick 
+#
+# My scripts are also subject, in a subordinate manner, to the ImageMagick
 # license, which can be found at: http://www.imagemagick.org/script/license.php
-# 
+#
 # ------------------------------------------------------------------------------
-# 
+#
 ####
 #
-# USAGE: multicrop2 [-c coords] [-b bcolor] [-f fuzzval] [-d discard] 
-# [-u unrotate] [-i innertrim] [-e extend] [-m mask] [-t threshold] 
+# USAGE: multicrop2 [-c coords] [-b bcolor] [-f fuzzval] [-d discard]
+# [-u unrotate] [-i innertrim] [-e extend] [-m mask] [-t threshold]
 # [-r resize] [-D density] [-S sortval] [-s showstats] [-v vc] infile outfile
 # USAGE: multicrop [-h or -help]
-# 
+#
 # OPTIONS:
-# 
-# -c     coords        pixel coordinate to extract background color; 
+#
+# -c     coords        pixel coordinate to extract background color;
 #                      may be expressed as gravity value (NorthWest, etc)
 #                      or as "x,y" value; default is NorthWest=(0,0)
 # -b     bcolor        background color to use instead of option -c;
 #                      any valid IM color; default is to use option -c
-# -f     fuzzval       fuzz value for separating background color; expressed 
+# -f     fuzzval       fuzz value for separating background color; expressed
 #                      as (integer) percent 0 to 100; default=0 (uniform color)
 # -d     discard       discard any region that has an area smaller than
 #                      this size; integer>0; default is to keep all
-# -u     unrotate      unrotate method; choices are 1 for -deskew, 2 for 
+# -u     unrotate      unrotate method; choices are 1 for -deskew, 2 for
 #                      unrotate script and 3 for no unrotate; default=1
 # -i     innertrim     trims inside the cropped area to an orthogonal rectangle;
-#                      yes or no; default=no      
-# -e     extend        extend crop on each side in pixels; integer; default=0  
-# -m     mask          mask presentation method; choices are view, 
-#                      save (to file) or output mask only; default 
+#                      yes or no; default=no
+# -e     extend        extend crop on each side in pixels; integer; default=0
+# -m     mask          mask presentation method; choices are view,
+#                      save (to file) or output mask only; default
 #                      is none of the above, just output the images
-# -t     threshold     threshold on number of objects; aborts if more than 
-#                      threshold number of objects are detected; integer>0; 
+# -t     threshold     threshold on number of objects; aborts if more than
+#                      threshold number of objects are detected; integer>0;
 #                      default is no abort and keep all objects.
-# -r     resize        resize percent to scale the image down; float>0;  
+# -r     resize        resize percent to scale the image down; float>0;
 #                      default is no resizing.
-# -D     density       density to use when reading a single page of a PDF; 
+# -D     density       density to use when reading a single page of a PDF;
 #                      integer>0; default is no assigned density
-# -S     sortval       sort regions by upper left bounding box x,y coordinates 
-#                      rounded to the specified positive integer increment; 
+# -S     sortval       sort regions by upper left bounding box x,y coordinates
+#                      rounded to the specified positive integer increment;
 #                      default is no sorting
 # -s     showstats     show connected components stats; yes or no; default=no
-# -v                   keep virtual canvas; default is not to keep virtual canvas; 
-#                      only valid for -u=3 (no unrotate) and for output format that 
+# -v                   keep virtual canvas; default is not to keep virtual canvas;
+#                      only valid for -u=3 (no unrotate) and for output format that
 #                      supports virtual canvas such as PNG or TIFF.
-# 
+#
 ###
-# 
+#
 # NAME: MULTICROP2
-# 
+#
 # PURPOSE: To crop and unrotate multiple images from a scanned image.
-# 
+#
 # DESCRIPTION: MULTICROP2 crops and unrotates multiple images from a scanned image.
-# The images must be well separated so that background color shows between them. 
-# The process uses a floodfill technique based upon a seed coordinate and a fuzz 
-# value to separate the individual images from the background of the scan. 
-# The correct choice of fuzz factor is very important. If too small, the images 
-# will not be separate. If too large, parts of the outer area of the image 
-# containing similar colors will be lost and the image may be separated into 
-# multiple parts. There are two unrotate methods. The first uses the IM deskew 
-# function, but is limited to 5 degrees of rotate or less. The second uses my 
-# unrotate script. It allows much larger rotations, but will be slower. If 
+# The images must be well separated so that background color shows between them.
+# The process uses a floodfill technique based upon a seed coordinate and a fuzz
+# value to separate the individual images from the background of the scan.
+# The correct choice of fuzz factor is very important. If too small, the images
+# will not be separate. If too large, parts of the outer area of the image
+# containing similar colors will be lost and the image may be separated into
+# multiple parts. There are two unrotate methods. The first uses the IM deskew
+# function, but is limited to 5 degrees of rotate or less. The second uses my
+# unrotate script. It allows much larger rotations, but will be slower. If
 # using the second method, my unrotate script must be downloaded and installed.
-# 
+#
 # IMPORTANT: The images in the scanned file must be well separated in x and y
-# so that their bounding boxes do not overlap. This is especially important 
+# so that their bounding boxes do not overlap. This is especially important
 # if the images have a significant rotation.
-# 
-# The output images will be named from the specified outfile and -000, -001, 
+#
+# The output images will be named from the specified outfile and -000, -001,
 # -002 etc, will be appended before the .suffix.
-# 
-# Arguments: 
-# 
-# -c coords ... COORDS is any location within the background (non-image) area 
-# for the algorithm to find the background color. It may be specified in terms  
-# of gravity parameters (NorthWest, North, NorthEast, East, SouthEast, South, 
-# SouthWest or West) or as a pixel coordinate "x,y". The default is the 
+#
+# Arguments:
+#
+# -c coords ... COORDS is any location within the background (non-image) area
+# for the algorithm to find the background color. It may be specified in terms
+# of gravity parameters (NorthWest, North, NorthEast, East, SouthEast, South,
+# SouthWest or West) or as a pixel coordinate "x,y". The default is the
 # upper left corner = NorthWest = "0,0".
-# 
-# -b bcolor ... BCOLOR is the background color to use for flood fill instead 
-# of extracting this color from the image. This is useful when an image has 
-# no borders so that the sub-images are hard against the edges. The bcolor 
-# will be used to put a one pixel border around the image and coords will be 
+#
+# -b bcolor ... BCOLOR is the background color to use for flood fill instead
+# of extracting this color from the image. This is useful when an image has
+# no borders so that the sub-images are hard against the edges. The bcolor
+# will be used to put a one pixel border around the image and coords will be
 # set to 0,0. Any valid IM color is allowed. The default is to use option -c.
-# 
+#
 # -f fuzzval ... FUZZVAL is the fuzz amount specified as an integer percent
 # value between 0 to 100 (without the % sign). The correct choice of fuzz
 # factor is very important. If too small, the images will not be separate.
 # If too larger, parts of the outer area of the image containing similar
 # colors will be lost and the image may be separated into multiple parts.
 # Typical values are probably between 5 and 20 percent. The default=10
-# 
-# -d discard ... DISCARD any region that has an area smaller than the 
-# specified discard size. Values are integer>0. The default is to keep all 
+#
+# -d discard ... DISCARD any region that has an area smaller than the
+# specified discard size. Values are integer>0. The default is to keep all
 # regions.
-# 
+#
 # -u unrotate ... UNROTATE is the unrotation method. Choices are: 1, 2 or 3.
-# The default is unrotate=1, which is fast and uses the IM -deskew function, 
+# The default is unrotate=1, which is fast and uses the IM -deskew function,
 # but is limited to images that are rotated no more than 5 degrees in the scan
-# and generally a light background color. Option unrotate=2 uses my unrotate 
-# script. It can handle larger rotations, but is slower. If using the latter 
-# method, my unrotate script must be downloaded and also installed so that it 
-# is available for this script to use. Option unrotate=3 makes no attempt to 
+# and generally a light background color. Option unrotate=2 uses my unrotate
+# script. It can handle larger rotations, but is slower. If using the latter
+# method, my unrotate script must be downloaded and also installed so that it
+# is available for this script to use. Option unrotate=3 makes no attempt to
 # unrotate the images.
-# 
-# -i innertrim ... INNERTRIM trims inside the cropped area to an orthogonal 
-# rectangle. Requires my script, autotrim. The choices are: yes or no. 
+#
+# -i innertrim ... INNERTRIM trims inside the cropped area to an orthogonal
+# rectangle. Requires my script, autotrim. The choices are: yes or no.
 # The default=no.
 #
-# -e extend ... EXTEND crop on each side for the output images in pixels. 
-# The extended region will come from the background of the image. Values are integers. 
-# Positive makes the results larger. Negative makes the results smaller. Positive 
+# -e extend ... EXTEND crop on each side for the output images in pixels.
+# The extended region will come from the background of the image. Values are integers.
+# Positive makes the results larger. Negative makes the results smaller. Positive
 # values are only allowed for unrotate=3 (no unrotation) and innertrim=no. The default=0.
-# 
-# -m mask ... MASK provides several options for reviewing the initial mask that 
+#
+# -m mask ... MASK provides several options for reviewing the initial mask that
 # is generated by the fuzz value. The choices are: view (display to X11 window),
 # save (to disk) along with the images, or output (without processing the images).
 # The default is to simply process the images without showing or saving the mask.
-# If using the view mode, then processing will stop until the image is closed. 
-# But this allows you to then kill the script if the mask is not appropriate. 
-# A good approach is to use the output mode repeatedly with various fuzzvals 
-# until a reasonable mask is created. Note that the mask must separate the 
-# images, but the background can "eat" a little into the images so long as no 
+# If using the view mode, then processing will stop until the image is closed.
+# But this allows you to then kill the script if the mask is not appropriate.
+# A good approach is to use the output mode repeatedly with various fuzzvals
+# until a reasonable mask is created. Note that the mask must separate the
+# images, but the background can "eat" a little into the images so long as no
 # full edge is lost or the images is split into multiple parts.
-# 
-# -t threshold ... THRESHOLD on the number of objects. The script aborts, if 
-# more than the threshold number of objects are detected. Value must be 
-# integers greater than 0. The default is no abort and keep all objects. 
-# To avoid an abort, use the -d discard option. 
-# 
-# -r resize ... RESIZE amount in percent to scale the image down. Values are floats>0.  
-# The default is no resizing. This is useful to improve speed and floodfilling 
-# when you have a large image, especially if the background is grainy. Note: do not 
+#
+# -t threshold ... THRESHOLD on the number of objects. The script aborts, if
+# more than the threshold number of objects are detected. Value must be
+# integers greater than 0. The default is no abort and keep all objects.
+# To avoid an abort, use the -d discard option.
+#
+# -r resize ... RESIZE amount in percent to scale the image down. Values are floats>0.
+# The default is no resizing. This is useful to improve speed and floodfilling
+# when you have a large image, especially if the background is grainy. Note: do not
 # include the % symbol.
 #
-# -D density ... DENSITY to use when reading a single page of a PDF. Multipage pdf 
+# -D density ... DENSITY to use when reading a single page of a PDF. Multipage pdf
 # files are not permitted. Values are integers>0. The default is no assigned density.
-# 
-# -S sortval ... SORT regions by their upper left bounding box x,y coordinates 
-# rounded to the specified positive integer increment. The default is 
+#
+# -S sortval ... SORT regions by their upper left bounding box x,y coordinates
+# rounded to the specified positive integer increment. The default is
 # no sorting.
-#                      
-# -s showstats ... SHOWSTATS shows the connected components statistics. 
+#
+# -s showstats ... SHOWSTATS shows the connected components statistics.
 # Choices are: yes (y) or no (n). The default=no.
-# 
-# -v ... keep VIRTUAL CANVAS. The default is not to keep virtual canvas. This option  
-# is only valid for -u=3 (no unrotate) and for output format that supports virtual 
+#
+# -v ... keep VIRTUAL CANVAS. The default is not to keep virtual canvas. This option
+# is only valid for -u=3 (no unrotate) and for output format that supports virtual
 # canvas such as PNG or TIFF.
-# 
+#
 # REQUIREMENTS: IM 6.8.9.10 due to the use of -connected-components.
-# If using unrotate method 2, then my script, unrotate, is required. 
+# If using unrotate method 2, then my script, unrotate, is required.
 # If using innertrim, then my script, autotrim is required.
-# 
-# CAVEAT: No guarantee that this script will work on all platforms, 
-# nor that trapping of inconsistent parameters is complete and 
-# foolproof. Use At Your Own Risk. 
-# 
+#
+# CAVEAT: No guarantee that this script will work on all platforms,
+# nor that trapping of inconsistent parameters is complete and
+# foolproof. Use At Your Own Risk.
+#
 ######
 #
 
-# set default values 
+# set default values
 coords=""			# initial coord for finding background color
 bcolor=""      			# initial background color
 fuzzval=10 				# fuzz amount in percent for making background transparent
@@ -203,13 +203,13 @@ dir="."    # suggestions are dir="." or dir="/tmp"
 PROGNAME=`type $0 | awk '{print $3}'`  # search for executable on path
 PROGDIR=`dirname $PROGNAME`            # extract directory of program
 PROGNAME=`basename $PROGNAME`          # base name of program
-usage1() 
+usage1()
 	{
 	echo >&2 ""
 	echo >&2 "$PROGNAME:" "$@"
 	sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //;  4,$p' "$PROGDIR/$PROGNAME"
 	}
-usage2() 
+usage2()
 	{
 	echo >&2 ""
 	echo >&2 "$PROGNAME:" "$@"
@@ -254,7 +254,7 @@ else
 				   ;;
 			-f)    # fuzzval
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID FUZZVAL SPECIFICATION ---"
 				   checkMinus "$1"
 				   fuzzval=`expr "$1" : '\([0-9]*\)'`
@@ -265,7 +265,7 @@ else
 				   ;;
 			-c)    # coords
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID COORDS SPECIFICATION ---"
 				   checkMinus "$1"
 				   coords=$1
@@ -280,7 +280,7 @@ else
 				   ;;
 			-d)    # discard
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID DISCARD SPECIFICATION ---"
 				   checkMinus "$1"
 				   discard=`expr "$1" : '\([0-9]*\)'`
@@ -290,7 +290,7 @@ else
 				   ;;
 			-e)    # extend
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID EXTEND SPECIFICATION ---"
 				   #checkMinus "$1"
 				   extend=`expr "$1" : '\([-0-9]*\)'`
@@ -298,7 +298,7 @@ else
 				   ;;
 			-u)    # unrotate
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID UNROTATE SPECIFICATION ---"
 				   checkMinus "$1"
 				   unrotate=`expr "$1" : '\([0-9]\)'`
@@ -306,20 +306,20 @@ else
 				   ;;
 			-i)    # get innertrim
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID INNERTRIM SPECIFICATION ---"
 				   checkMinus "$1"
 				   innertrim="$1"
 				   innertrim=`echo "$innertrim" | tr "[:upper:]" "[:lower:]"`
-				   case "$innertrim" in 
+				   case "$innertrim" in
 						yes|y) innertrim="yes" ;;
 						no|n) innertrim="no" ;;
-						*) errMsg "--- INNERTRIM=$innertrim IS AN INVALID VALUE ---" 
+						*) errMsg "--- INNERTRIM=$innertrim IS AN INVALID VALUE ---"
 					esac
 				   ;;
 			-m)    # mask
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID MASK SPECIFICATION ---"
 				   checkMinus "$1"
 				   mask=`echo "$1" | tr "[:upper:]" "[:lower:]"`
@@ -327,7 +327,7 @@ else
 				   ;;
 			-t)    # threshold
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID THRESHOLD SPECIFICATION ---"
 				   checkMinus "$1"
 				   threshold=`expr "$1" : '\([0-9]*\)'`
@@ -337,7 +337,7 @@ else
 				   ;;
 			-r)    # resize
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID RESIZE SPECIFICATION ---"
 				   checkMinus "$1"
 				   resize=`expr "$1" : '\([.0-9]*\)'`
@@ -347,7 +347,7 @@ else
 				   ;;
 			-D)    # density
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID DENSITY SPECIFICATION ---"
 				   checkMinus "$1"
 				   density=`expr "$1" : '\([0-9]*\)'`
@@ -357,7 +357,7 @@ else
 				   ;;
 			-S)    # sortval
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID SORTVAL SPECIFICATION ---"
 				   checkMinus "$1"
 				   sortval=`expr "$1" : '\([0-9]*\)'`
@@ -366,7 +366,7 @@ else
 				   ;;
 			-s)    # showstats
 				   shift  # to get the next parameter
-				   # test if parameter starts with minus sign 
+				   # test if parameter starts with minus sign
 				   errorMsg="--- INVALID SHOWSTATS SPECIFICATION ---"
 				   checkMinus "$1"
 				   showstats=`echo "$1" | tr "[:upper:]" "[:lower:]"`
@@ -483,8 +483,8 @@ elif [ "$coords1" != "" -a "$resize" = "" ]; then
 	x=`echo "$coords1" | cut -d, -f1`
 	y=`echo "$coords1" | cut -d, -f2`
 	# account for pad of 1
-	x=$((x+1))	
-	y=$((y+1))	
+	x=$((x+1))
+	y=$((y+1))
 	coords="$x,$y"
 	bcolor=`convert $tmpA1 -format "%[pixel:u.p{$coords}]" info:`
 elif [ "$coords1" = "" ]; then
@@ -654,6 +654,3 @@ done
 echo ""
 
 exit 0
-
-
-

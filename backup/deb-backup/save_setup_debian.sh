@@ -87,7 +87,7 @@ pip freeze > $SETTINGS_DIR/pip_systemwide_requrements.txt
 
 ### VIRTUAL ENVS:
 echo
-echo "saving requirements from virtual environments:" 
+echo "saving requirements from virtual environments:"
 VE_DIR=$HOME/.virtualenvs
 ESCAPED_VE_DIR="\/home\/$USER\/\.virtualenvs"
 VE_BACKUP_DIR="virtualenvs_requirements"

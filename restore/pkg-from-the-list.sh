@@ -56,7 +56,7 @@ else
 	while read -r package;
 	do
 		echo "--- $package ---"
-		if $CMD "$package"; then	
+		if $CMD "$package"; then
 			echo ""
 		else
 			NOT_INSTALLED+=("$package")
@@ -69,5 +69,3 @@ else
 	printf '%s\n' "${NOT_INSTALLED[@]}"
 fi
 rm $TMP_FILE
-
-

@@ -27,7 +27,7 @@ def sanitize_file(accented_filename: str, verbose: bool):
         try:
             os.rename(accented_filename, filename)
             if verbose:
-                print(f'{accented_filename} -> {filename}')
+                print(f"{accented_filename} -> {filename}")
         except Exception as ex:
             print(ex)
 
@@ -53,7 +53,9 @@ def sanitize_target(target=None, recursive=False, verbose=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Make filenames sane by replacing spaces with _ and removing non-ascii characters. Without any args - process all files and dirs (non-recursively) in current directory."
+        description="Make filenames sane by replacing spaces with _ and removing non-ascii "
+        "characters. Without any args - process all files and dirs (non-recursively) "
+        "in current directory. "
     )
     # positional arguments
     parser.add_argument(
@@ -73,10 +75,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "-v",
-        "--verbose",
-        help="print original and changed name",
-        action='store_true'
+        "-v", "--verbose", help="print original and changed name", action="store_true"
     )
 
     args = parser.parse_args()

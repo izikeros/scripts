@@ -4,4 +4,3 @@
 # Licence MIT
 
 vim $(which $1)
-
