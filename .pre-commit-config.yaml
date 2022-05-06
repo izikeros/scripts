@@ -18,7 +18,7 @@ repos:
       - id: mixed-line-ending         # replaces or checks mixed line ending.
       - id: detect-private-key        # detects the presence of private keys.
       - id: fix-byte-order-marker     # removes utf-8 byte order marker.
-      - id: check-executables-have-shebangs      # ensures that (non-binary) executables have a shebang. 
+      - id: check-executables-have-shebangs      # ensures that (non-binary) executables have a shebang.
 #      - id: check-shebang-scripts-are-executable # ensures that (non-binary) files with a shebang are executable. (Gives false positives on macOS)
 
   # - repo: https://github.com/shellcheck-py/shellcheck-py

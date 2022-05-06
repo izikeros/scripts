@@ -12,3 +12,6 @@ Contains:
 * `rofi-scripts` - scripts to be used with rofi
 * `runonce-scripts` - scripts that are used to be run only once a day
 ```
+
+This repository has pre-commit hooks installed to automatically run checks and fixes. Shellcheck is disabled in pre commit hook.
+There are too many issues but scripts are gradually being fixed.
