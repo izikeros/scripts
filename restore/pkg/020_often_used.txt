@@ -1,4 +1,4 @@
-choose
+rofi
 exa                  # ls replacement
 fasd                 # Command-line productivity booster, offers quick access to files and directories
 ffmpeg
@@ -22,4 +22,4 @@ tldr                 # Command line client for tldr, a collection of simplified 
 tmux                 # A terminal multiplexer
 tree                 # A directory listing program displaying a depth indented list of files
 vlc                  # Multi-platform MPEG, VCD/DVD, and DivX player
-youtube-dl
+yt-dlp
