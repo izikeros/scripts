@@ -8,6 +8,7 @@ make
 mc                   # text based file manager/shell that emulates Norton Commander
 openssh              # Premier connectivity tool for remote login with the SSH protocol
 rsync                # A file transfer program to keep remote files in sync
+vim
 neovim               # Vi Improved, a highly configurable, improved version of the vi text editor
 wget                 # Network utility to retrieve files from the Web
 zsh                  # A very advanced and programmable command interpreter (shell) for UNIX
