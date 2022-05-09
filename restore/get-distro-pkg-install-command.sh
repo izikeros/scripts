@@ -30,7 +30,8 @@ fi
 
 if [ "$SYS" == "arch" ]; then
     #echo "Arch Linux detected, using pacman"
-    CMD="sudo pacman -Sy --noconfirm"
+    #CMD="sudo pacman -Sy --noconfirm"
+    CMD="sudo yay -Sy --noconfirm"
 fi
 
 if [[ "$SYS" == "macOS" ]]; then
