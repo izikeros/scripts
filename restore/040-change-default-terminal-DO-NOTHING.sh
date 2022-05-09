@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-echo "Arch jgmenu -> settings -> Default applications -> Terminal: Terminator"
+echo "Arch jgmenu -> Preferences -> Default applications -> Terminal: Terminator"
