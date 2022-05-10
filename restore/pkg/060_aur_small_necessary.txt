@@ -20,5 +20,5 @@ skypeforlinux-preview-bin # Skype for Linux - Preview/Insider Version
 sublime-merge        # Meet a new Git Client, from the makers of Sublime Text
 sublime-text-4       # Sophisticated text editor for code, html and prose - stable build
 subliminal           # Python library and CLI tool for searching and downloading subtitles.
-typora               # A minimal markdown editor and reader.
+typora-free          # A minimal markdown editor and reader.
 python-virtualenv

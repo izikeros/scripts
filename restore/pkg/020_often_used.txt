@@ -16,6 +16,7 @@ ranger               # Simple, vim-like file manager
 ripgrep              # A search tool that combines the usability of ag with the raw speed of grep
 rofi
 shellcheck           # Shell script analysis tool
+terminator
 the_silver_searcher  # Code searching tool similar to Ack, but faster
 tig                  # Text-mode interface for Git.
 tldr                 # Command line client for tldr, a collection of simplified and community-driven man pages.
