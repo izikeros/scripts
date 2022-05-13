@@ -5,6 +5,6 @@
 #
 
 set -e
-./pkg-from-the-list.sh ./pkg/ext.txt
+./pkg-from-the-list.sh ./pkg/021_ask__large_good_to_have_apps.txt
 
 echo "### Workstation packages installed"

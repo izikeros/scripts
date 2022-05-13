@@ -1,4 +1,4 @@
-anki-bin             # Helps you remember facts (like words/phrases in a foreign language) efficiently
+anki-bin             # Helps you remember facts (like words/phrases in a foreign language) efficiently. Installed with wheel.
 brave-bin            # Web browser that blocks ads and trackers by default (binary release)
 gsview               # A nice looking GUI for ghostscript with some extraction features
 gtimelog             # Small GTK+ app for keeping track of your time
@@ -12,7 +12,7 @@ xnviewmp             # An efficient multimedia viewer, browser and converter.
 pinta                # Drawing/editing program modeled after Paint.NET. It's goal is to provide a simplified alternative to GIMP for casual users
 polybar              # A fast and easy-to-use status bar
 yay                  # Yet another yogurt. Pacman wrapper and AUR helper written in go.
-opencv 				 #
+opencv               # Open Source Computer Vision Library
 safeeyes             # A Free and Open Source tool for Linux users to reduce and prevent repetitive strain injury (RSI).
 pyenv-virtualenv     # pyenv plugin to manage virtualenv (a.k.a. python-virtualenv)
 sent                 # Simple plaintext presentation tool
@@ -21,4 +21,5 @@ sublime-merge        # Meet a new Git Client, from the makers of Sublime Text
 sublime-text-4       # Sophisticated text editor for code, html and prose - stable build
 subliminal           # Python library and CLI tool for searching and downloading subtitles.
 typora-free          # A minimal markdown editor and reader.
-python-virtualenv
+python-virtualenv    # Virtual Python Environment builder
+gdmap                # Tool to inspect the used space of folders.
