@@ -1,0 +1,85 @@
+bash: Bourne-Again SHell, a UNIX command interpreter
+bat: Clone of cat(1) with syntax highlighting and Git integration
+bfg: Remove large files or passwords from Git history like git-filter-branch
+black: Python code formatter
+c-blosc: Blocking, shuffling and loss-less compression library
+choose-gui: Fuzzy matcher that uses std{in,out} and a native GUI
+cmake: Cross-platform make
+curl: Get a file from an HTTP, HTTPS or FTP server
+k9s: Kubernetes CLI To Manage Your Clusters In Style!
+diff-pdf: Visually compare two PDF files
+diff-so-fancy: Good-lookin' diffs with diff-highlight and more
+diffoscope: In-depth comparison of files, archives, and directories
+difftastic: Diff that understands syntax
+docker: Pack, ship and run any application as a lightweight container
+docker-compose: Isolated development environments using Docker
+docker-machine: Create Docker hosts locally and on cloud providers
+exa: Modern replacement for 'ls'
+fasd: CLI tool for quick access to files and directories
+fd: Simple, fast and user-friendly alternative to find
+figlet: Banner-like program prints strings as ASCII art
+fping: Scriptable ping program for checking if multiple hosts are up
+gdmap: Tool to inspect the used space of folders
+geeqie: Lightweight Gtk+ based image viewer
+gh: GitHub command-line tool
+git: Distributed revision control system
+git-gui: Tcl/Tk UI for the git revision control system
+gitwatch: Watch a file or folder and automatically commit changes to a git repo easily
+glances: Alternative to top/htop
+grc: Colorize logfiles and command output
+hdf5: File format designed to store large amounts of data
+htop: Improved top (interactive process viewer)
+httrack: Website copier/offline browser
+hugo: Configurable static site generator
+hyperkit: Toolkit for embedding hypervisor capabilities in your application
+jq: Lightweight and flexible command-line JSON processor
+yabai: A tiling window manager for macOS based on binary space partitioning.
+kubernetes-cli: Kubernetes command-line interface
+lepton: Tool and file format for losslessly compressing JPEGs
+libxft: X.Org: X FreeType library
+libxmu: X.Org: X miscellaneous utility routines library
+lima: Linux virtual machines
+luajit-openresty: OpenResty's Branch of LuaJIT 2
+mas: Mac App Store command-line interface
+mawk: Interpreter for the AWK Programming Language
+midnight-commander: Terminal-based visual file manager
+most: Powerful paging program
+navi: Interactive cheatsheet tool for the command-line
+neofetch: Fast, highly customisable system info script
+neovim: Ambitious Vim-fork focused on extensibility and agility
+nvm: Manage multiple Node.js versions
+ocrmypdf: Adds an OCR text layer to scanned PDF files
+openssh: OpenBSD freely-licensed SSH connectivity tools
+pandoc: Swiss-army knife of markup format conversion
+parallel: Shell command parallelization utility
+pcal: Generate Postscript calendars without X
+pipenv: Python dependency management tool
+podman: Tool for managing OCI containers and pods
+poetry: Python package management tool
+prettier: Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
+pyenv-virtualenv: Pyenv plugin to manage virtualenv
+pygobject3: GNOME Python bindings (based on GObject Introspection)
+qt: Cross-platform application and UI framework
+ranger: File browser
+ripgrep: Search tool like grep and The Silver Searcher
+rsync: Utility that provides fast incremental file transfer
+sevenzip: 7-Zip is a file archiver with a high compression ratio
+shellcheck: Static analysis and lint tool, for (ba)sh scripts
+sphinx-doc: Tool to create intelligent and beautiful documentation
+syncthing: Open source continuous file synchronization application
+ta-lib: Tools for market analysis
+tesseract-lang: Enables extra languages support for Tesseract
+the_silver_searcher: Code-search similar to ack
+tig: Text interface for Git repositories
+tkdiff: Graphical side by side diff utility
+tldr: Simplified and community-driven man pages
+tmux: Terminal multiplexer
+tree: Display directories as trees (with optional color/HTML output)
+vim: Vi 'workalike' with many additional features
+virtualenv: Tool for creating isolated virtual python environments
+wget: Internet file retriever
+yank: Copy terminal output to clipboard
+yarn: JavaScript package manager
+youtube-dl: Download YouTube videos from the command-line
+yt-dlp: A youtube-dl fork with additional features and fixes
+zsh: UNIX shell (command interpreter)
