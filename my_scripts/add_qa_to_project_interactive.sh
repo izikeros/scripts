@@ -84,9 +84,22 @@ else
 	rm /tmp/tox.ini
 fi
 
+# pytest.ini
+curl -L https://gist.github.com/izikeros/4c79e2f82b68083b8a0b23badc36204d/raw -o /tmp/pytest.ini
+
+echo "== pytest.ini =="
+read -p "Do you want to add this file? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    mv /tmp/pytest.ini .
+else
+	rm /tmp/pytest.ini
+fi
+
 # README.md
 curl -L https://gist.github.com/izikeros/87b544d1ba644cc89dccca04fc87d65d/raw -o /tmp/README.md
-echo "== README.md =="
+echo "== template README.md =="
 read -p "Do you want to add this file? " -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]

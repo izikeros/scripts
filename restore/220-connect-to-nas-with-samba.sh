@@ -5,4 +5,3 @@ echo "!!! Create ~/.smbcredentials file with contents:"
 echo username=nas_username
 echo password=my_secret_password
 echo domain=nas_IP_here
-

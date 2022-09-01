@@ -15,4 +15,3 @@ echo "5. Create projects:"
 echo " - vimwiki: ~/vimwiki, ~/projects/priv/blog/contents/notes"
 echo " - blog: ~/vimwiki, ~/projects/priv/blog/contents"
 echo " - scripts and dotfiles: ~/scripts, ~/dotfiles"
-

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# diary-year-summary.sh - create file with year summary from the diary entries
+# diary-year-summary.sh - create file (in curent directory) with year summary from the diary entries
 # Usage:
 # diary-year-summary.sh 2019
 # author: Krystian Safjan (ksafjan@gmail.com)
