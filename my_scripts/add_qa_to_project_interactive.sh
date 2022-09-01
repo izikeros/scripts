@@ -108,3 +108,5 @@ then
 else
 	rm /tmp/README.md
 fi
+
+# MIT license
