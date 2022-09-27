@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# runonce.sh script from internetslightly modified by me
+# runonce.sh script from internet slightly modified by me
 
 help_and_exit() {
     cat << EOF
@@ -43,8 +43,6 @@ fi
 
 MYBASENAME="$(basename $(echo -n $@ | cut -d" " -f1))"
 
-
-
 if [ "$(command -v md5sum)" ]; then
     # for Linux
     MD5_CMD=md5sum
@@ -61,7 +59,7 @@ fi
 lock="$HOME/.runonce-$MYBASENAME-$(echo -n $@|$MD5_CMD|cut -d" " -f1)"
 if [[ ! -e $lock ]]; then
     "$@"
-    touch $lock
+    touch "$lock"
 else # lock exists
     if [[ "`find $lock -mmin +$interval`" ]]; then
         "$@"
