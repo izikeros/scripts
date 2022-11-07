@@ -6,6 +6,15 @@
 # exit when any command fails
 set -e
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
 # initialize
 echo "-- initializing local git repo"
 git init -b main
@@ -45,6 +54,11 @@ echo "-- setting authentication with the ssh-keys"
 # set ssh authentication
 # for macOS use GNU version of sed
 [ -d "/usr/local/opt/coreutils/libexec/gnubin" ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+[ -f "/usr/local/bin/gsed" ] && export PATH="/usr/local/bin:$PATH"
+SED_CMD=sed
+if [ "$machine" == "Darwin" ]; then
+    SED_CMD=gsed
+fi
+$SED_CMD -i 's/url = https:\/\/github.com\//url = github:/' .git/config
+$SED_CMD -i 's/url = git@github.com/url = github/' .git/config
 
-sed -i 's/url = https:\/\/github.com\//url = github:/' .git/config
-sed -i 's/url = git@github.com/url = github/' .git/config
