@@ -57,6 +57,7 @@ echo "-- setting authentication with the ssh-keys"
 [ -f "/usr/local/bin/gsed" ] && export PATH="/usr/local/bin:$PATH"
 SED_CMD=sed
 if [ "$machine" == "Darwin" ]; then
+    echo "Using gsed (on Darwin)"
     SED_CMD=gsed
 fi
 $SED_CMD -i 's/url = https:\/\/github.com\//url = github:/' .git/config
