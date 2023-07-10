@@ -16,12 +16,14 @@ def get_list_of_files_in_dir(dir_path: str, ext: str) -> list[str]:
 
 def count_lines_in_file(file_path: str) -> int:
     """Count number of lines in a file."""
-    with open(file_path, "r") as f:
+    with open(file_path) as f:
         return sum(1 for _ in f)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Display files sorted by number of lines.")
+    parser = argparse.ArgumentParser(
+        description="Display files sorted by number of lines."
+    )
     # positional arguments
     parser.add_argument("input_dir", help="Directory with the code to analyse.")
 
@@ -35,11 +37,11 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-    "-l",
-    "--min_length",
-    help="Display only files with this length or more",
-    type=int,
-    default=0,
+        "-l",
+        "--min_length",
+        help="Display only files with this length or more",
+        type=int,
+        default=0,
     )
 
     args = parser.parse_args()

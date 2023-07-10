@@ -11,4 +11,3 @@ git config gpg.format ssh
 git config gpg.ssh.allowedSignersFile ~/.config/git/allowed_ssh_signers
 git config user.signingKey ~/.ssh/ey_azure_devops_rsa.pub
 git config commit.sign true
-

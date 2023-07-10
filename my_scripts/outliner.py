@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import sys
-# import requests
 from urllib.request import urlopen
+
 from bs4 import BeautifulSoup
+
+# import requests
 
 if __name__ == "__main__":
     # take url as command line argument use sys.argv
@@ -13,7 +15,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # read html from url using requests and pass it to BeautifulSoup to run html parser
-    #html = requests.get(url).text
+    # html = requests.get(url).text
     html = urlopen(url)
     bs = BeautifulSoup(html, "html.parser")
     titles = bs.find_all(["h1", "h2", "h3", "h4", "h5", "h6"])

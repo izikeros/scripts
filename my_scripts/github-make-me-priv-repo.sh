@@ -62,4 +62,3 @@ if [ "$machine" == "Darwin" ]; then
 fi
 $SED_CMD -i 's/url = https:\/\/github.com\//url = github:/' .git/config
 $SED_CMD -i 's/url = git@github.com/url = github/' .git/config
-

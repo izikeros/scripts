@@ -25,7 +25,7 @@ def clean_file(input_file, output_file=None, quiet=False):
     if output_file is None:
         output_file = input_file
     # Read the input markdown file
-    with open(input_file, "r") as f:
+    with open(input_file) as f:
         lines = f.readlines()
 
     # Process lines and write the output markdown file

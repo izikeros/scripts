@@ -2,9 +2,9 @@
 """Check markdown file for broken links and create output markdown document with
  broken links annotated with HTML comment."""
 
+import argparse
 import re
 import urllib.request
-import argparse
 
 
 def check_markdown_file(input_file, output_file, comment_out=False, quiet=False):
@@ -12,7 +12,7 @@ def check_markdown_file(input_file, output_file, comment_out=False, quiet=False)
     num_working_links = 0
 
     # Read the input markdown file
-    with open(input_file, "r") as f:
+    with open(input_file) as f:
         lines = f.readlines()
 
     # Check each line for a link
