@@ -13,3 +13,5 @@ pacman -Qqe | grep -v "$(pacman -Qqm)" > $bd/pacman_Qqe-Qqm.lst
 pacman -Qm > $bd/pacman_Qm.lst
 
 pip list > $bd/pip.txt
+pipx list > $bd/pipx.txt
+
