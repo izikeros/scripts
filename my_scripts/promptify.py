@@ -3,6 +3,7 @@
 import argparse
 import glob
 import os
+from pprint import pprint
 
 
 def create_prompt_file(directory, instruction, file_extensions, exclude, system_role):
@@ -41,10 +42,12 @@ def create_prompt_file(directory, instruction, file_extensions, exclude, system_
 
     # add code from each file to the prompt file
     sources = "Project content:\n"
+    files = {}
     for file_path in included_files:
         with open(file_path, "r") as f:
             code = f.read()
             if code:
+                files[file_path] = len(code) / 4
                 sources += f"# file: {file_path}\n"
                 sources += f"{code}\n\n"
 
@@ -53,9 +56,11 @@ def create_prompt_file(directory, instruction, file_extensions, exclude, system_
     with open("prompt.txt", "w") as f:
         f.write(prompt)
 
-    print(f"Prompt file created: prompt.txt")
-    print(f"Included files: {', '.join(included_files)}")
-    print(f"Approximate number of tokens: {len(prompt)}")
+    print("Prompt file created: prompt.txt")
+    print(f"Approximate number of tokens: {int(len(prompt) / 4)}")
+    # sort files dict by value, descending
+    files = dict(sorted(files.items(), key=lambda item: item[1], reverse=True))
+    pprint(files)
 
 
 def main():
