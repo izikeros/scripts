@@ -11,6 +11,8 @@
 # - remote location
 # - user name
 # TODO: add dir size
+# see similar tool: multi-git-status
+#
 
 # Text color variables
 txtbld=$(tput bold)             # Bold
@@ -34,6 +36,7 @@ st_clean="$bldwht[clean ]$txtrst"
 st_dirty="$bldred[dirty ]$txtrst"
 st_n_git="$bldorg[norepo]$txtrst"
 
+echo "consider using mgitstatus: https://github.com/fboender/multi-git-status"
 for repo in "${list[@]}"
 do
 	# echo $repo
