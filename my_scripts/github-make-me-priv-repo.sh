@@ -6,6 +6,7 @@
 # exit when any command fails
 set -e
 
+# Get system name
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     machine=Linux;;
@@ -15,50 +16,49 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
-# initialize
+# Initialize git repository
 echo "-- initializing local git repo"
 git init -b main
 
-# set user
+# Set git user
+echo "-- setting user data"
 git config user.email "ksafjan@gmail.com"
 git config user.name "Krystian Safjan"
-echo "-- setting user data"
 
-echo "-- creating github repo: $DIR_NAME"
+# Create GitHub repository
 DIR_NAME=${PWD##*/}
-
-# git pull --set-upstream origin main
-
+echo "-- creating github repo: $DIR_NAME"
 gh repo create "$DIR_NAME" --private || echo "not creating repo"
 
-# create .gitignore
-echo "-- creating .gitignore"
-touch .gitignore
+# Create .gitignore file if not exists, append .idea/ to it
+echo "-- appending .idea/ to .gitignore"
+if [ ! -f .gitignore ]; then
+    touch .gitignore
+    echo "  -- created .gitignore"
+fi
 echo ".idea/" >> .gitignore
 
-# add all files, commit and push
+# Commit code
 echo "-- add all files, commit and push"
-git add . && git commit -m "initial commit"
+git add .
+git commit -m "initial commit" --quiet
 
-git remote add origin git@github.com:izikeros/$DIR_NAME.git
+# Push to the remote repository
+git remote add origin git@github.com:izikeros/"$DIR_NAME.git"
 git branch -M main
-git push -u origin main
+git push -u origin main --quiet
 
+# Set upstream branch
 echo "-- setting upstream"
-# git set-upstream is a git alias
-#git set-upstream
-git branch --set-upstream-to=origin/$(git symbolic-ref --short HEAD)
+git branch --set-upstream-to=origin/"$(git symbolic-ref --short HEAD)" main --quiet
+
+# Set SSH authentication
 echo "-- setting authentication with the ssh-keys"
-
-
-# set ssh authentication
-# for macOS use GNU version of sed
-[ -d "/usr/local/opt/coreutils/libexec/gnubin" ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-[ -f "/usr/local/bin/gsed" ] && export PATH="/usr/local/bin:$PATH"
 SED_CMD=sed
-if [ "$machine" == "Darwin" ]; then
-    echo "Using gsed (on Darwin)"
+
+if [ "$machine" == "Mac" ]; then
+    # echo "Using gsed (on Darwin)"
     SED_CMD=gsed
 fi
-$SED_CMD -i 's/url = https:\/\/github.com\//url = github:/' .git/config
-$SED_CMD -i 's/url = git@github.com/url = github/' .git/config
+# echo $(which $SED_CMD)
+$SED_CMD -i 's|url = https://github.com/|url = git@github.com:|' .git/config
