@@ -36,7 +36,7 @@ st_clean="$bldwht[clean ]$txtrst"
 st_dirty="$bldred[dirty ]$txtrst"
 st_n_git="$bldorg[norepo]$txtrst"
 
-echo "consider using mgitstatus: https://github.com/fboender/multi-git-status"
+echo "consider using mgitstatus: https://github.com/fboender/multi-git-status" mgitstatus
 for repo in "${list[@]}"
 do
 	# echo $repo

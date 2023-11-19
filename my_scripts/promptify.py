@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
+"""Create a prompt file with code and context from a Python project.
 
+The context convey structure of the code - functions, classes, methods with their signatures and docstrings.
+"""
 import argparse
 import glob
 import os
@@ -10,31 +13,7 @@ def create_prompt_file(directory, instruction, file_extensions, exclude, system_
     included_files = []
     structure = "Project structure:\n"
 
-    files = []
-    # use glob to find files with the given extensions
-    for ext in file_extensions:
-        files.extend(glob.glob(f"**/*{ext}", recursive=True))
-
-    # remove files in the .git, .vscode, .idea directories
-    files = [
-        file
-        for file in files
-        if ".git" not in file and ".vscode" not in file and ".idea" not in file
-    ]
-
-    # remove files in the __pycache__ directory
-    files = [file for file in files if "__pycache__" not in file]
-
-    # remove files from outdated directory
-    files = [file for file in files if "outdated" not in file]
-
-    # remove excluded files
-    files = [file for file in files if file not in exclude]
-
-    # write structure of the project to the prompt file (write full path of each file)
-    for file in files:
-        file_path = os.path.join(directory, file)
-        included_files.append(file_path)
+    _collect_files(directory, exclude, file_extensions, included_files)
 
     # structure of the project (only included files)
     for file in included_files:
@@ -61,6 +40,29 @@ def create_prompt_file(directory, instruction, file_extensions, exclude, system_
     # sort files dict by value, descending
     files = dict(sorted(files.items(), key=lambda item: item[1], reverse=True))
     pprint(files)
+
+
+def _collect_files(directory, exclude, file_extensions, included_files):
+    files = []
+    # use glob to find files with the given extensions
+    for ext in file_extensions:
+        files.extend(glob.glob(f"**/*{ext}", recursive=True))
+    # remove files in the .git, .vscode, .idea directories
+    files = [
+        file
+        for file in files
+        if ".git" not in file and ".vscode" not in file and ".idea" not in file
+    ]
+    # remove files in the __pycache__ directory
+    files = [file for file in files if "__pycache__" not in file]
+    # remove files from outdated directory
+    files = [file for file in files if "outdated" not in file]
+    # remove excluded files
+    files = [file for file in files if file not in exclude]
+    # write structure of the project to the prompt file (write full path of each file)
+    for file in files:
+        file_path = os.path.join(directory, file)
+        included_files.append(file_path)
 
 
 def main():
