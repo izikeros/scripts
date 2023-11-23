@@ -31,8 +31,6 @@ then
 
 	# enable collapsible headings
 
-
-
 	# isortformatter
 	# spellchecker
 	# RISE

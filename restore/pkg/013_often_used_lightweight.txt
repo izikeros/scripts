@@ -7,7 +7,7 @@ gcc                  # The GNU Compiler Collection - C and C++ frontends
 make                 # GNU make utility to maintain groups of programs
 most                 # A terminal pager similar to 'more' and 'less'
 neofetch             # A CLI system information tool written in BASH that supports displaying images.
-parallel             # A shell tool for executing jobs in parallel
+# parallel             # A shell tool for executing jobs in parallel
 python-pipenv        # Sacred Marriage of Pipfile, Pip, & Virtualenv.
 ranger               # Simple, vim-like file manager
 ripgrep              # A search tool that combines the usability of ag with the raw speed of grep
@@ -15,12 +15,12 @@ shellcheck           # Shell script analysis tool
 terminator           # Terminal emulator that supports tabs and grids
 the_silver_searcher  # Code searching tool similar to Ack, but faster
 tig                  # Text-mode interface for Git.
-tldr                 # Command line client for tldr, a collection of simplified and community-driven man pages.
-tmux                 # A terminal multiplexer
+# tldr                 # Command line client for tldr, a collection of simplified and community-driven man pages.
+# tmux                 # A terminal multiplexer
 tree                 # A directory listing program displaying a depth indented list of files
 vlc                  # Multi-platform MPEG, VCD/DVD, and DivX player
 yt-dlp               # A youtube-dl fork with additional features and fixes
 meld                 # Compare files, directories and working copies
-syncthing
+# syncthing
 net-tools
 jq

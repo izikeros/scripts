@@ -3,7 +3,7 @@
 
 Username can be provided from commandline or as environmental variable GITHUB_USER
 
-Use Github CLI to create new gists
+Use GitHub CLI to create new gists
 ===================================
 # publish file 'hello.py' as a public gist
 $ gh gist create --public hello.py

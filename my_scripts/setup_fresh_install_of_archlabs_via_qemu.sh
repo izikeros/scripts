@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # setup_fresh_install_of_archlabs_via_qemu.sh
 
-# remove revious images if exists
-[ -f ~/Downloads/qcow2_archlabs.qcow2 ] && rm ~/Downloads/qcow2_archlabs.qcow2 && echo "** Old image removed **"
+# remove previous images if exists
+[ -f ~/Downloads/qcow2_archlabs.qcow2 ] && \
+rm ~/Downloads/qcow2_archlabs.qcow2 && \
+echo "** Old image removed **"
 
 # create new image
 qemu-img create -f qcow2 ~/Downloads/archlabs.qcow2 20G

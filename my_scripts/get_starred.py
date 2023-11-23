@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""download github starred repos"""
+"""download GitHub starred repos"""
 import json
 
 import requests

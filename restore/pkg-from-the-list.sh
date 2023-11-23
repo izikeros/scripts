@@ -1,25 +1,22 @@
 #!/usr/bin/env bash
 # usage: ./pkg-from-the-list.sh packages_list.txt
 
-# 0. preprocess packages list
 # 1. install generic packages
-# 2. install system specific packages
-# 3. if Arch install yaourt packages
-# 4. if ubuntu install from ppa
-
-#source $HOME/dotfiles/bootstrap/restore/get_distro_pkg_install_command.sh
-
-# ---- Preprocess packages list: ----
-# TODO: ignore comments
-#   1. lines starting with #
-#   2. everything after #
+# 2. install packages from the list using system-specific package manager
+#   - if Arch install yaourt packages
+#   - if Ubuntu install from ppa
+#   - if macOS install from brew
 
 # TODO: support different package names for different systems
 # e.g. grep list and create separate files with packages specific for ubuntu
 # and arch, split arch to pacman and yaourt lists:
-
-
-
+# support syntax:
+#   double-commander, archlinux:doublecmd, macos:doublecommander
+# explanation of the example above:
+#   default: double-commander
+#   archlinux: doublecmd
+#   macos: doublecommander
+# We would rather need python for that
 
 # Get system and install command
 CMD=$("$HOME/scripts/restore/get-distro-pkg-install-command.sh")
@@ -33,9 +30,12 @@ fi
 
 # prepare clean list of packages - remove comments with package description or commented packages
 TMP_FILE=/tmp/install_list.txt
-# i (inset text) was used on Linux - not sure if still needed
-# sed -e "s/#.*$//gi" -e "/^$/d" "$1" > $TMP_FILE
+
+# remove `#` and everything after it
 sed -e "s/#.*$//g" -e "/^$/d" "$1" > $TMP_FILE
+# sed -e "s/#.*$//gi" -e "/^$/d" "$1" > $TMP_FILE
+# i (inset text) was used on Linux - not sure if still needed
+
 N=$(wc -l "$TMP_FILE")
 
 echo "Found $N packages on the list:"
@@ -46,12 +46,17 @@ done < $TMP_FILE
 echo
 
 if [[ $OSTYPE == 'darwin'* ]]; then
-	# Simplified installation for macOS
-	# missing information on packages not installed
-	brew install $(cat $TMP_FILE)
+	# Install packages one by one, skip errors during installation
+  while read -r package;
+  do
+    echo "--- $package ---"
+    $CMD "$package"
+    echo ""
+  done < $TMP_FILE
+
 else
-	# FIXME: for mac os installation stops after each installed package
-	# need to run script as many times as the lenght of the list of packages
+	# FIXME: for macos installation stops after each installed package
+	# need to run script as many times as the length of the list of packages
 	NOT_INSTALLED=()
 	while read -r package;
 	do

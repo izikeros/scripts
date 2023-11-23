@@ -3,7 +3,8 @@
 #
 # Real-time stock tickers from the command-line.
 #
-# ticker.sh is a simple shell script using the Yahoo Finance API as a data source. It features colored output and is able to display pre- and post-market prices.
+# ticker.sh is a simple shell script using the Yahoo Finance API as a data source.
+# It features colored output and is able to display pre- and post-market prices.
 
 set -e
 
