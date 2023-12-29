@@ -7,10 +7,17 @@
 function download_file() {
     local url=$1
     local filename=$2
-    read -p "Do you want to add $filename? [y/n]" -n 1 -r
-    echo    # (optional) move to a new line
+
+    read -p "Do you want to add $filename? [y/n/q] " -n 1 -r
+    echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         curl -sL $url -o $filename
+    elif [[ $REPLY =~ ^[Qq]$ ]]; then
+        read -p "Are you sure you want to exit? [y/n] " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            exit 0
+        fi
     fi
 }
 
