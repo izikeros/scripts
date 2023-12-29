@@ -23,9 +23,10 @@ bldorg=${txtbld}$(tput setaf 3) #  orange
 txtrst=$(tput sgr0)             # Reset
 
 if [ -z "$1" ]; then
-	# if no input dir provided add dotfiles and projects/priv
+	# if no input dir provided add dotfiles, projects/priv, projects ai
 	list=("$HOME"/dotfiles)
 	list+=($(ls -d "$HOME"/projects/priv/*))
+	list+=($(ls -d "$HOME"/projects/ai/*))
 else
 	# otherwise, examine provided dir
 	list=$1
