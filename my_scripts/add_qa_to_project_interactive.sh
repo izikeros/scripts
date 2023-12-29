@@ -9,8 +9,6 @@ function download_file() {
     echo    # (optional) move to a new line
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         curl -sL $url -o $filename
-    else
-        rm -f $filename
     fi
 }
 
@@ -31,4 +29,8 @@ download_file https://gist.github.com/izikeros/1a2243e083d083c2a4f97cf9c19648d9/
 download_file https://gist.github.com/izikeros/4c79e2f82b68083b8a0b23badc36204d/raw ./pytest.ini
 download_file https://gist.github.com/izikeros/beac1ca8de132ad527ab27e32a950a11/raw ./requirements-dev.txt
 download_file https://gist.github.com/izikeros/87b544d1ba644cc89dccca04fc87d65d/raw ./README.md
-# MIT license
+download_file https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore ./.gitignore
+echo "(MIT license)"
+download_file https://raw.githubusercontent.com/licenses/license-templates/master/templates/mit.txt LICENSE
+download_file https://gist.githubusercontent.com/izikeros/d4359ff65052fc21df778a7f7373f0e2 .editorconfig
+
