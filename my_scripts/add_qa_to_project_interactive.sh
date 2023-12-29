@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# This script adds QA tools to a project asking one by one if you want to add them
+# It is interactive and asks for confirmation before adding each file
 
 
 # function to download a file based on user input
