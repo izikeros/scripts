@@ -44,7 +44,7 @@ git add .
 git commit -m "initial commit" --quiet
 
 # Push to the remote repository
-git remote add origin git@github.com:izikeros/"$DIR_NAME.git"
+git remote add origin git@github.com:izikeros/"$DIR_NAME.git" || echo "Remote origin might already exists"
 git branch -M main
 git push -u origin main --quiet
 
