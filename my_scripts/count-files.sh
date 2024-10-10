@@ -2,7 +2,8 @@
 # count-files.sh - count files in each dir in current directory
 #
 
-find . -maxdepth 1 -type d -print0 | while IFS= read -r -d '' i ; do
-    echo -n $i": " ;
-    (find "$i" -type f | wc -l) ;
+for i in */; do
+    i="${i%/}"
+    num_files=$(find "$i" -type f | wc -l)
+    printf "%6d: %s\n" "$num_files" "$i"
 done

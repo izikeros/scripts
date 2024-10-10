@@ -62,3 +62,5 @@ if [ "$machine" == "Mac" ]; then
 fi
 # echo $(which $SED_CMD)
 $SED_CMD -i 's|url = https://github.com/|url = git@github.com:|' .git/config
+
+echo "Visit: https://github.com/izikeros/$DIR_NAME"
