@@ -7,7 +7,12 @@
 #
 # Colors
 GREEN='\033[0;32m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[0;33m'
 NO_COLOR='\033[0m'
+
 
 # Print header
 printf "%-5s %-5s %-30s %-25s %s\n" "Ahead" "Behind" "Branch" "Last Commit" "Creator"
@@ -36,7 +41,7 @@ for branch in $branches; do
 
   # Highlight current branch in green
   if [ $branch == $current_branch ]; then
-    printf "%-5s %-5s ${GREEN}%-30s ${NO_COLOR}%-25s %s %s\n" $ahead $behind $branch "$commit_age" "$creator" "$desc"
+    printf "${GREEN}%-5s %-5s %-30s %-25s %s %s${NO_COLOR}\n" $ahead $behind $branch "$commit_age" "$creator" "$desc"
   else
     printf "%-5s %-5s %-30s %-25s %s %s\n" $ahead $behind $branch "$commit_age" "$creator" "$desc"
   fi

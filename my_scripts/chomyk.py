@@ -1,6 +1,21 @@
 #!/usr/bin/env python3
-# Source: from github - can't find the original source anymore
+"""
+chomyk.py - chomikuj.pl downloader
 
+This script allows downloading files and directories from chomikuj.pl file sharing platform.
+It supports both single file and directory downloads with proper authentication.
+
+Examples:
+    Download a single file:
+        python chomik.py -u username -p password -i "https://chomikuj.pl/path/to/file" -d "/download/path"
+
+    Download directory content:
+        python chomik.py -u username -p password -i "https://chomikuj.pl/path/to/directory" -d "/download/path"
+
+    Download with custom number of threads:
+        python chomik.py -u username -p password -i "https://chomikuj.pl/path/to/content" -t 3 -d "/download/path"
+"""
+# Source: from github - can't find the original source anymore
 import contextlib
 import sys
 import getopt
@@ -30,6 +45,15 @@ class Item(threading.Thread):
         self.progress = None
 
     def getProgress(self):
+        """
+        Returns the progress of the current task.
+
+        If the progress attribute is None, it returns a formatted string indicating 
+        that the task is waiting. Otherwise, it returns the current progress.
+
+        Returns:
+            str: A string representing the progress of the task or a waiting message.
+        """
         if self.progress is None:
             return "{:>2s}. {: <20s} : {}".format(
                 str(self.num),
@@ -457,3 +481,4 @@ def printUsage():
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+
