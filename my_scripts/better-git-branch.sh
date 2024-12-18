@@ -10,7 +10,7 @@ NO_COLOR='\033[0m'
 
 width1=5
 width2=6
-width3=30
+width3=40
 width4=20
 width5=40
 

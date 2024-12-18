@@ -7,11 +7,12 @@
 #
 # Colors
 GREEN='\033[0;32m'
-RED='\033[0;31m'
 GREEN='\033[0;32m'
+NO_COLOR='\033[0m'
 BLUE='\033[0;34m'
 YELLOW='\033[0;33m'
-NO_COLOR='\033[0m'
+RED='\033[0;31m'
+
 
 
 # Print header
@@ -29,20 +30,20 @@ branches=$(echo "$branches" | sort -r)
 # Iterate over branches
 for branch in $branches; do
   #  commit_date=$(git show -s --format=%ci $branch | cut -d' ' -f1) # Extract the date part
-  commit_age=$(git log -1 --pretty=format:"%ar" $branch) # Get the commit age
+  commit_age=$(git log -1 --pretty=format:"%ar" "$branch") # Get the commit age
   #  commit_subject=$(git show -s --format=%s $branch) # Get the last commit's description
-  behind=$(git rev-list --left-only --count $current_branch...$branch)
-  ahead=$(git rev-list --right-only --count $current_branch...$branch)
-  desc=$(git config branch.$branch.description)
+  behind=$(git rev-list --left-only --count "$current_branch"..."$branch")
+  ahead=$(git rev-list --right-only --count "$current_branch"..."$branch")
+  desc=$(git config branch."$branch".description)
   # branch author
-  creator=$(git for-each-ref --format='%(authorname)%09%(refname)' | grep $branch | awk -F "\t" '{ printf "%s\n", $(NF-1)}' | head -1)
+  creator=$(git for-each-ref --format='%(authorname)%09%(refname)' | grep "$branch" | awk -F "\t" '{ printf "%s\n", $(NF-1)}' | head -1)
   # trim the branch name to 30 characters
-  branch=$(echo $branch | cut -c1-30)
+  branch=$(echo "$branch" | cut -c1-30)
 
   # Highlight current branch in green
-  if [ $branch == $current_branch ]; then
-    printf "${GREEN}%-5s %-5s %-30s %-25s %s %s${NO_COLOR}\n" $ahead $behind $branch "$commit_age" "$creator" "$desc"
+  if [ "$branch" == "$current_branch" ]; then
+    printf "${GREEN}%-5s %-5s %-30s %-25s %s %s${NO_COLOR}\n" "$ahead" "$behind" "$branch" "$commit_age" "$creator" "$desc"
   else
-    printf "%-5s %-5s %-30s %-25s %s %s\n" $ahead $behind $branch "$commit_age" "$creator" "$desc"
+    printf "%-5s %-5s %-30s %-25s %s %s\n" "$ahead" "$behind" "$branch" "$commit_age" "$creator" "$desc"
   fi
 done
