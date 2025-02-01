@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Check markdown file for broken links and create output markdown document with
- broken links annotated with HTML comment."""
+broken links annotated with HTML comment."""
 
 import argparse
 import re

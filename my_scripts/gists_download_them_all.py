@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#     "requests",
+# ]
+# ///
 """Clone all gists of GitHub username
 
 Username can be provided from commandline or as environmental variable GITHUB_USER

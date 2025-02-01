@@ -26,7 +26,7 @@ def run_command(command):
 
 
 # Find added and modified files in ~/Documents/EY
-print(f"Looking for modified files in ~/Documents/EY")
+print("Looking for modified files in ~/Documents/EY")
 for file_type in ["Modified"]:
     print(f"{file_type} in {os.getenv('HOME')}/Documents/EY")
     files = run_command(
@@ -37,7 +37,9 @@ for file_type in ["Modified"]:
     ) as f:
         f.write(files)
     lines = len(files.split("\n"))
-    print(f"- {lines} {file_type.lower()} files saved to: {reports_dir}/{date}_taxbreak_{file_type.lower()}_docs.txt")
+    print(
+        f"- {lines} {file_type.lower()} files saved to: {reports_dir}/{date}_taxbreak_{file_type.lower()}_docs.txt"
+    )
 
 print("Looking for added and modified files in git projects in ~/projects/eyproj")
 # Check each project in ~/projects/eyproj

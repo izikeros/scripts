@@ -17,10 +17,10 @@ import os
 import shutil
 
 # Set the source directory
-src_dir = '/Volumes/media/Natalia/Webinary/Anna_Kupisz'
+src_dir = "/Volumes/media/Natalia/Webinary/Anna_Kupisz"
 
 # Set the destination directory
-dst_dir = '/Volumes/media/Natalia/Webinary/Anna_Kupisz'
+dst_dir = "/Volumes/media/Natalia/Webinary/Anna_Kupisz"
 
 # Get a list of all files in the source directory
 files = os.listdir(src_dir)
@@ -33,10 +33,10 @@ for file in files:
     # Get the file name and extension
     name, ext = os.path.splitext(file)
     # Check if the file is a mkv/webm video or an mp3 audio file
-    if ext in ['.mkv', '.webm']:
+    if ext in [".mkv", ".webm"]:
         # Get the base name without extension
         base_name = os.path.basename(name)
-    elif ext == '.mp3':
+    elif ext == ".mp3":
         # Get the base name without extension
         base_name = os.path.basename(name)
     else:
@@ -57,10 +57,10 @@ for base_name in base_names:
         # Get the file name and extension
         name, ext = os.path.splitext(file)
         # Check if the file is a mkv/webm video or an mp3 audio file
-        if ext in ['.mkv', '.webm']:
+        if ext in [".mkv", ".webm"]:
             # Get the base name without extension
             file_base_name = os.path.basename(name)
-        elif ext == '.mp3':
+        elif ext == ".mp3":
             # Get the base name without extension
             file_base_name = os.path.basename(name)
         else:

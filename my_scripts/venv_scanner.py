@@ -3,8 +3,8 @@
 Python Virtual Environment Scanner and Analyzer
 
 Purpose:
-    This script provides a comprehensive tool for discovering and analyzing Python 
-    virtual environments across multiple projects in a directory. It supports 
+    This script provides a comprehensive tool for discovering and analyzing Python
+    virtual environments across multiple projects in a directory. It supports
     various virtual environment management tools and platforms.
 
 Key Features:
@@ -18,7 +18,7 @@ Key Features:
 Detailed Functionality:
 
 Virtual Environment Discovery:
-    The script scans a specified directory for Python projects and attempts to 
+    The script scans a specified directory for Python projects and attempts to
     locate their associated virtual environments through multiple strategies:
 
     a) Local Directory Checks:
@@ -31,28 +31,28 @@ Virtual Environment Discovery:
 
     b) Tool-Specific Virtual Environment Detection:
        Supports multiple virtual environment management tools:
-       - Poetry: 
+       - Poetry:
          * Checks `pyproject.toml` and `poetry.lock`
-         * Scans Poetry's default virtual environment location 
+         * Scans Poetry's default virtual environment location
            (typically `~/.cache/pypoetry/virtualenvs/`)
-       
+
        - Pipenv:
          * Checks `Pipfile` and `Pipfile.lock`
          * Scans Pipenv's default virtual environment location
            (typically `~/.local/share/virtualenvs/`)
-       
+
        - PDM:
          * Checks `pyproject.toml`
-       
+
        - Conda:
          * Checks `environment.yml`
 
     c) Pure Venv Detection:
-       - Detects virtual environments created without a specific management tool 
+       - Detects virtual environments created without a specific management tool
          if `.venv/`, `venv/`, or `env/` directories are present.
 
     d) Fallback Mechanism:
-       - If no specific virtual environment is found, the script attempts to 
+       - If no specific virtual environment is found, the script attempts to
          detect the system Python as a fallback.
 
 Interpreter Detection:
@@ -116,30 +116,30 @@ Limitations:
     - May not detect highly customized or non-standard virtual environments
 """
 
-import os
-import sys
 import argparse
-import subprocess
 import json
-from pathlib import Path
-from typing import Optional, Dict, List
 import shutil
+import subprocess
+import sys
+from pathlib import Path
+from typing import Dict, List, Optional
+
 
 def find_tool_venv_path(project_path: Path, tool: str) -> Optional[Path]:
     """
     Find virtual environment path for specific tools
     """
     home_dir = Path.home()
-    if tool == 'poetry':
-        poetry_venv_base = home_dir / '.cache' / 'pypoetry' / 'virtualenvs'
+    if tool == "poetry":
+        poetry_venv_base = home_dir / ".cache" / "pypoetry" / "virtualenvs"
         if poetry_venv_base.exists():
             project_name = project_path.name
             for venv_dir in poetry_venv_base.glob(f"{project_name}-*"):
                 if venv_dir.is_dir():
                     return venv_dir
 
-    elif tool == 'pipenv':
-        pipenv_venv_base = home_dir / '.local' / 'share' / 'virtualenvs'
+    elif tool == "pipenv":
+        pipenv_venv_base = home_dir / ".local" / "share" / "virtualenvs"
         if pipenv_venv_base.exists():
             project_name = project_path.name
             for venv_dir in pipenv_venv_base.glob(f"{project_name}-*"):
@@ -148,81 +148,87 @@ def find_tool_venv_path(project_path: Path, tool: str) -> Optional[Path]:
 
     return None
 
+
 def find_python_interpreter(venv_path: Path) -> Optional[Dict[str, str]]:
     """
     Find Python interpreter in a virtual environment
     """
     possible_interpreters = [
-        venv_path / 'bin' / 'python',
-        venv_path / 'Scripts' / 'python.exe',
-        venv_path / 'bin' / 'python3',
+        venv_path / "bin" / "python",
+        venv_path / "Scripts" / "python.exe",
+        venv_path / "bin" / "python3",
     ]
     for interpreter in possible_interpreters:
         if interpreter.exists():
             try:
                 version_output = subprocess.check_output(
-                    [str(interpreter), '--version'],
-                    text=True,
-                    stderr=subprocess.STDOUT
+                    [str(interpreter), "--version"], text=True, stderr=subprocess.STDOUT
                 ).strip()
                 return {
-                    'python_version': version_output.split()[1],
-                    'interpreter_path': str(interpreter)
+                    "python_version": version_output.split()[1],
+                    "interpreter_path": str(interpreter),
                 }
             except subprocess.CalledProcessError as e:
                 print(f"Error checking Python version: {e}", file=sys.stderr)
     return None
 
+
 def find_python_venv(project_path: Path) -> Optional[Dict[str, str]]:
     """
     Find Python virtual environment for a project
     """
-    local_venv_paths = [project_path / '.venv', project_path / 'venv', project_path / 'env']
+    local_venv_paths = [
+        project_path / ".venv",
+        project_path / "venv",
+        project_path / "env",
+    ]
     for local_venv in local_venv_paths:
         if local_venv.exists():
             venv_info = find_python_interpreter(local_venv)
             if venv_info:
                 return venv_info
 
-    tools_to_check = ['poetry', 'pipenv', 'pdm']
+    tools_to_check = ["poetry", "pipenv", "pdm"]
     for tool in tools_to_check:
         tool_venv = find_tool_venv_path(project_path, tool)
         if tool_venv:
             venv_info = find_python_interpreter(tool_venv)
             if venv_info:
-                return {**venv_info, 'venv_tool': tool}
+                return {**venv_info, "venv_tool": tool}
 
-    python_executable = shutil.which('python')
+    python_executable = shutil.which("python")
     if python_executable:
         try:
             version_output = subprocess.check_output(
-                [python_executable, '--version'], text=True
+                [python_executable, "--version"], text=True
             ).strip()
             return {
-                'python_version': version_output.split()[1],
-                'interpreter_path': python_executable,
-                'venv_tool': 'system python'
+                "python_version": version_output.split()[1],
+                "interpreter_path": python_executable,
+                "venv_tool": "system python",
             }
         except subprocess.CalledProcessError:
             pass
 
     return None
 
+
 def find_venv_management_tool(project_path: Path) -> List[str]:
     """
     Detect virtual environment management tools
     """
     detection_patterns = {
-        'poetry': ['pyproject.toml', 'poetry.lock'],
-        'pipenv': ['Pipfile', 'Pipfile.lock'],
-        'pdm': ['pyproject.toml', 'pdm.lock'],
-        'conda': ['environment.yml'],
+        "poetry": ["pyproject.toml", "poetry.lock"],
+        "pipenv": ["Pipfile", "Pipfile.lock"],
+        "pdm": ["pyproject.toml", "pdm.lock"],
+        "conda": ["environment.yml"],
     }
     detected_tools = []
     for tool, files in detection_patterns.items():
         if all((project_path / file).exists() for file in files):
             detected_tools.append(tool)
-    return detected_tools if detected_tools else ['unknown']
+    return detected_tools if detected_tools else ["unknown"]
+
 
 def scan_projects(projects_dir: Path) -> List[Dict[str, str]]:
     """
@@ -233,17 +239,28 @@ def scan_projects(projects_dir: Path) -> List[Dict[str, str]]:
         if project_folder.is_dir():
             venv_info = find_python_venv(project_folder)
             if venv_info:
-                results.append({
-                    'project_name': project_folder.name,
-                    **venv_info,
-                    'management_tools': find_venv_management_tool(project_folder)
-                })
+                results.append(
+                    {
+                        "project_name": project_folder.name,
+                        **venv_info,
+                        "management_tools": find_venv_management_tool(project_folder),
+                    }
+                )
     return results
 
+
 def main():
-    parser = argparse.ArgumentParser(description='Find Python virtual environments in project directories')
-    parser.add_argument('projects_dir', type=Path, help='Path to projects directory')
-    parser.add_argument('-f', '--format', choices=['table', 'json'], default='table', help='Output format (default: table)')
+    parser = argparse.ArgumentParser(
+        description="Find Python virtual environments in project directories"
+    )
+    parser.add_argument("projects_dir", type=Path, help="Path to projects directory")
+    parser.add_argument(
+        "-f",
+        "--format",
+        choices=["table", "json"],
+        default="table",
+        help="Output format (default: table)",
+    )
     args = parser.parse_args()
 
     if not args.projects_dir.is_dir():
@@ -251,26 +268,45 @@ def main():
         sys.exit(1)
 
     projects_with_venv = scan_projects(args.projects_dir)
-    if args.format == 'json':
+    if args.format == "json":
         print(json.dumps(projects_with_venv, indent=2))
     else:
         column_widths = {
-            'project_name': max(len('Project Name'), *(len(p['project_name']) for p in projects_with_venv)),
-            'python_version': max(len('Python Version'), *(len(p['python_version']) for p in projects_with_venv)),
-            'management_tools': max(len('Management Tools'), *(len(', '.join(p['management_tools'])) for p in projects_with_venv)),
-            'interpreter_path': max(len('Interpreter Path'), *(len(p['interpreter_path']) for p in projects_with_venv)),
+            "project_name": max(
+                len("Project Name"),
+                *(len(p["project_name"]) for p in projects_with_venv),
+            ),
+            "python_version": max(
+                len("Python Version"),
+                *(len(p["python_version"]) for p in projects_with_venv),
+            ),
+            "management_tools": max(
+                len("Management Tools"),
+                *(len(", ".join(p["management_tools"])) for p in projects_with_venv),
+            ),
+            "interpreter_path": max(
+                len("Interpreter Path"),
+                *(len(p["interpreter_path"]) for p in projects_with_venv),
+            ),
         }
         header_format = f"{{:<{column_widths['project_name']}}} {{:<{column_widths['python_version']}}} {{:<{column_widths['management_tools']}}} {{:<{column_widths['interpreter_path']}}}"
-        print(header_format.format('Project Name', 'Python Version', 'Management Tools', 'Interpreter Path'))
-        print('-' * sum(column_widths.values()))
+        print(
+            header_format.format(
+                "Project Name", "Python Version", "Management Tools", "Interpreter Path"
+            )
+        )
+        print("-" * sum(column_widths.values()))
         for project in projects_with_venv:
-            print(header_format.format(
-                project['project_name'], 
-                project['python_version'], 
-                ', '.join(project['management_tools']), 
-                project['interpreter_path']
-            ))
+            print(
+                header_format.format(
+                    project["project_name"],
+                    project["python_version"],
+                    ", ".join(project["management_tools"]),
+                    project["interpreter_path"],
+                )
+            )
         print(f"\nTotal projects analyzed: {len(projects_with_venv)}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

@@ -3,8 +3,8 @@
 
 Results are written to requirements_pinned.txt file and displayed on stdout.
 """
-import re
 import importlib.metadata
+import re
 
 
 def get_installed_packages():

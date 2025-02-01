@@ -11,4 +11,3 @@ for filename in os.listdir("."):
         newname = f"img_{counter:03d}{file_parts[1]}"
         os.rename(filename, newname)
         counter += 1
-

@@ -2,6 +2,7 @@
 
 import configparser
 
+
 def parse_gitconfig(config_file):
     config = configparser.ConfigParser()
     config.read(config_file)
@@ -17,6 +18,7 @@ def parse_gitconfig(config_file):
             current_alias = line.split("=")[0].strip()
 
     return aliases
+
 
 if __name__ == "__main__":
     gitconfig_file = ".gitconfig"

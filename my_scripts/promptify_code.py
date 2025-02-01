@@ -12,7 +12,6 @@ Example:
 """
 
 import argparse
-import os
 import glob
 
 

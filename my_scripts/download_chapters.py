@@ -1,3 +1,10 @@
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#     "requests",
+# ]
+# ///
 # source: https://stackoverflow.com/a/78215570/3247880
 # author: https://stackoverflow.com/users/10215038/qzdl
 import json

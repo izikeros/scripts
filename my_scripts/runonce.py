@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-import sys
-import os
 import hashlib
+import os
+import sys
 import time
-from typing import List
 
 
 def help_and_exit(exit_code: int = 0) -> None:

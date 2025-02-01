@@ -26,14 +26,14 @@ for item in os.listdir(current_dir):
     if os.path.isfile(item):
         # Get the file name without extension
         file_name = os.path.splitext(item)[0]
-        
+
         # Replace spaces with underscores
-        dir_name = file_name.replace(' ', '_')
-        
+        dir_name = file_name.replace(" ", "_")
+
         # Create the new directory if it doesn't exist
         if not os.path.exists(dir_name):
             os.makedirs(dir_name)
-        
+
         # Move the file into the new directory
         shutil.move(item, os.path.join(dir_name, item))
 

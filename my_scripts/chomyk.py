@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#     "requests",
+# ]
+# ///
+
 """
 chomyk.py - chomikuj.pl downloader
 
@@ -17,18 +24,18 @@ Examples:
 """
 # Source: from github - can't find the original source anymore
 import contextlib
-import sys
 import getopt
 import hashlib
-import requests
 import os
-import time
-import threading
 import re
-
-from xml.etree import ElementTree as et
+import sys
+import threading
+import time
 from collections import OrderedDict
 from getpass import getpass
+from xml.etree import ElementTree as et
+
+import requests
 
 
 class Item(threading.Thread):
@@ -48,7 +55,7 @@ class Item(threading.Thread):
         """
         Returns the progress of the current task.
 
-        If the progress attribute is None, it returns a formatted string indicating 
+        If the progress attribute is None, it returns a formatted string indicating
         that the task is waiting. Otherwise, it returns the current progress.
 
         Returns:
@@ -481,4 +488,3 @@ def printUsage():
 
 if __name__ == "__main__":
     main(sys.argv[1:])
-

@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#     "requests",
+# ]
+# ///
 
 """
 Chomikuj.pl Downloader
@@ -17,8 +23,6 @@ Examples:
         python chomik.py -u username -p password -i "https://chomikuj.pl/path/to/content" -t 3 -d "/download/path"
 """
 
-import argparse
-import contextlib
 import hashlib
 import os
 import re
@@ -26,12 +30,13 @@ import sys
 import threading
 import time
 from collections import OrderedDict
-from getpass import getpass
 from typing import Dict, List, Optional, Union
 from xml.etree import ElementTree as et
 
 import requests
+
 requests.packages.urllib3.disable_warnings()
+
 
 class Item(threading.Thread):
     """Class representing a downloadable item from chomikuj.pl"""
@@ -141,7 +146,7 @@ class Chomik:
         """Print text at specific console line"""
         sys.stdout.write(f"\x1b7\x1b[{line};{2}f{text}\x1b8")
         sys.stdout.flush()
-        
+
     def check_threads(self) -> None:
         """Check and manage download threads status"""
         threads_inprogress = 0
@@ -203,21 +208,25 @@ class Chomik:
         body = et.SubElement(root, "s:Body")
         download_params = {"xmlns": "http://chomikuj.pl/"}
         download = et.SubElement(body, "Download", download_params)
-        
-        download_subtree = OrderedDict([
-            ("token", self.token),
-            ("sequence", [
-                ("stamp", "123456789"),
-                ("part", "0"),
-                ("count", "1")
-            ]),
-            ("disposition", "download"),
-            ("list", [
-                ("DownloadReqEntry", [
-                    ("id", file_url),
-                ]),
-            ]),
-        ])
+
+        download_subtree = OrderedDict(
+            [
+                ("token", self.token),
+                ("sequence", [("stamp", "123456789"), ("part", "0"), ("count", "1")]),
+                ("disposition", "download"),
+                (
+                    "list",
+                    [
+                        (
+                            "DownloadReqEntry",
+                            [
+                                ("id", file_url),
+                            ],
+                        ),
+                    ],
+                ),
+            ]
+        )
 
         self.add_items(download, download_subtree)
 
@@ -230,7 +239,9 @@ class Chomik:
         }
         self.post_data(dts)
 
-    def dl_step_2(self, idx: str, agreement_info: str, cost: Union[int, str] = 0) -> None:
+    def dl_step_2(
+        self, idx: str, agreement_info: str, cost: Union[int, str] = 0
+    ) -> None:
         """Handle second step of download process"""
         root_params = {
             "xmlns:s": "http://schemas.xmlsoap.org/soap/envelope/",
@@ -240,27 +251,37 @@ class Chomik:
         body = et.SubElement(root, "s:Body")
         download_params = {"xmlns": "http://chomikuj.pl/"}
         download = et.SubElement(body, "Download", download_params)
-        
-        download_subtree = OrderedDict([
-            ("token", self.token),
-            ("sequence", [
-                ("stamp", "123456789"),
-                ("part", "0"),
-                ("count", "1")
-            ]),
-            ("disposition", "download"),
-            ("list", [
-                ("DownloadReqEntry", [
-                    ("id", idx),
-                    ("agreementInfo", [
-                        ("AgreementInfo", [
-                            ("name", agreement_info),
-                            ("cost", str(cost)),
-                        ]),
-                    ]),
-                ]),
-            ]),
-        ])
+
+        download_subtree = OrderedDict(
+            [
+                ("token", self.token),
+                ("sequence", [("stamp", "123456789"), ("part", "0"), ("count", "1")]),
+                ("disposition", "download"),
+                (
+                    "list",
+                    [
+                        (
+                            "DownloadReqEntry",
+                            [
+                                ("id", idx),
+                                (
+                                    "agreementInfo",
+                                    [
+                                        (
+                                            "AgreementInfo",
+                                            [
+                                                ("name", agreement_info),
+                                                ("cost", str(cost)),
+                                            ],
+                                        ),
+                                    ],
+                                ),
+                            ],
+                        ),
+                    ],
+                ),
+            ]
+        )
 
         self.add_items(download, download_subtree)
 
@@ -272,7 +293,7 @@ class Chomik:
             "SOAPAction": "http://chomikuj.pl/IChomikBoxService/Download",
         }
         self.post_data(dts)
-        
+
     def login(self) -> None:
         """Authenticate with chomikuj.pl"""
         root_params = {
@@ -284,15 +305,22 @@ class Chomik:
         auth_params = {"xmlns": "http://chomikuj.pl/"}
         auth = et.SubElement(body, "Auth", auth_params)
 
-        auth_subtree = OrderedDict([
-            ("name", self.username),
-            ("passHash", self.password),
-            ("ver", "4"),
-            ("client", OrderedDict([
-                ("name", "chomikbox"),
-                ("version", "2.0.5.0"),
-            ])),
-        ])
+        auth_subtree = OrderedDict(
+            [
+                ("name", self.username),
+                ("passHash", self.password),
+                ("ver", "4"),
+                (
+                    "client",
+                    OrderedDict(
+                        [
+                            ("name", "chomikbox"),
+                            ("version", "2.0.5.0"),
+                        ]
+                    ),
+                ),
+            ]
+        )
 
         self.add_items(auth, auth_subtree)
 
@@ -333,13 +361,19 @@ class Chomik:
         resp_tree = et.fromstring(resp)
 
         # Authentication
-        for dts in resp_tree.findall(".//{http://chomikuj.pl/}AuthResult/{http://chomikuj.pl}status"):
+        for dts in resp_tree.findall(
+            ".//{http://chomikuj.pl/}AuthResult/{http://chomikuj.pl}status"
+        ):
             status = dts.text
             if status and status.upper() == "OK":
                 self.is_logged = True
                 self.last_login_time = time.time()
-                self.token = resp_tree.findall(".//{http://chomikuj.pl/}AuthResult/{http://chomikuj.pl}token")[0].text
-                self.hamster_id = resp_tree.findall(".//{http://chomikuj.pl/}AuthResult/{http://chomikuj.pl}hamsterId")[0].text
+                self.token = resp_tree.findall(
+                    ".//{http://chomikuj.pl/}AuthResult/{http://chomikuj.pl}token"
+                )[0].text
+                self.hamster_id = resp_tree.findall(
+                    ".//{http://chomikuj.pl/}AuthResult/{http://chomikuj.pl}hamsterId"
+                )[0].text
                 self.print_line(1, "Login: OK")
             else:
                 self.is_logged = False
@@ -352,14 +386,18 @@ class Chomik:
         if acc_balance is not None:
             self.acc_balance = acc_balance.text
 
-        for dts in resp_tree.findall(".//{http://chomikuj.pl/}DownloadResult/{http://chomikuj.pl}status"):
+        for dts in resp_tree.findall(
+            ".//{http://chomikuj.pl/}DownloadResult/{http://chomikuj.pl}status"
+        ):
             status = dts.text
             if status and status.upper() == "OK":
-                dl_files = resp_tree.findall(".//{http://chomikuj.pl/}files/{http://chomikuj.pl/}FileEntry")
+                dl_files = resp_tree.findall(
+                    ".//{http://chomikuj.pl/}files/{http://chomikuj.pl/}FileEntry"
+                )
                 if len(dl_files) > self.total_items:
                     self.total_items = len(dl_files)
                     self.print_line(2, f"Files: {self.total_items}")
-                
+
                 for dl_file in dl_files:
                     url = dl_file.find("{http://chomikuj.pl/}url")
                     idx = dl_file.find("{http://chomikuj.pl/}id").text
@@ -373,4 +411,3 @@ class Chomik:
                             "{http://chomikuj.pl/}agreementInfo/{http://chomikuj.pl/}AgreementInfo/{http://chomikuj.pl/}cost"
                         ).text
                         self.dl_step_2(idx, agreement_info, cost_info)
-                        

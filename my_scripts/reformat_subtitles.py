@@ -13,7 +13,7 @@ Example:
     - removing extra line breaks at the end of the file
     - removing extra line breaks at the beginning of the file
     - removing extra line breaks at the beginning of the line
-    """
+"""
 import sys
 
 if len(sys.argv) != 2:
@@ -22,18 +22,18 @@ if len(sys.argv) != 2:
 
 input_filename = sys.argv[1]
 
-with open(input_filename, 'r') as input_file:
+with open(input_filename, "r") as input_file:
     input_text = input_file.read()
 
 # Remove extra line breaks within sentences
-output_text = input_text.replace('\n', ' ')
+output_text = input_text.replace("\n", " ")
 
 # Add line breaks after sentence end
-output_text = output_text.replace('. ', '.\n')
-output_text = output_text.replace('! ', '!\n')
-output_text = output_text.replace('? ', '?\n')
+output_text = output_text.replace(". ", ".\n")
+output_text = output_text.replace("! ", "!\n")
+output_text = output_text.replace("? ", "?\n")
 
 # Write output to a new file
-output_filename = input_filename + '_reformatted'
-with open(output_filename, 'w') as output_file:
+output_filename = input_filename + "_reformatted"
+with open(output_filename, "w") as output_file:
     output_file.write(output_text)

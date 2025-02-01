@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#     "requests",
+#     "beautifulsoup4"
+# ]
+# ///
 import sys
 from urllib.request import urlopen
 

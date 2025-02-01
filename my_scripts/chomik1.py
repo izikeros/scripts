@@ -1,13 +1,19 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#     "requests",
+# ]
+# ///
 
-import hashlib
-import requests
-import os
-import sys
 import getopt
-from xml.etree import ElementTree as et
+import hashlib
+import sys
 from collections import OrderedDict
 from getpass import getpass
+from xml.etree import ElementTree as et
+
+import requests
 
 
 class ChomikDownloader:
