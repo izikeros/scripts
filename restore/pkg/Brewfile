@@ -234,12 +234,8 @@ cask "gifcapture"
 cask "gimp"
 # Genealogy software
 cask "gramps"
-# Open Source Multimedia Framework
-cask "gstreamer-runtime"
 # Desktop automation application
 cask "hammerspoon"
-# Chat client for models on HuggingFace
-cask "huggingchat"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # Menu bar calendar
@@ -248,12 +244,8 @@ cask "itsycal"
 cask "karabiner-elements"
 # Password manager app
 cask "keepassxc"
-# Open source code editor written in Rust
-cask "lapce"
 # Extensible two-pane file manager
 cask "marta"
-# Visual diff and merge tool
-cask "meld"
 # Interactive tool for analyzing MongoDB data
 cask "mongodb-compass"
 # Open-source software for live streaming and screen recording
@@ -280,10 +272,6 @@ cask "sublime-merge"
 cask "time-out"
 # Rust-based terminal
 cask "warp"
-# Compatibility layer to run Windows applications
-cask "wine-stable"
-# Open-source version of the X.Org X Window System
-cask "xquartz"
 # Create diagrams manually, or import external data for analysis
 cask "yed"
 # Multiplayer code editor
