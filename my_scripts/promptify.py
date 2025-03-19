@@ -7,10 +7,11 @@ import argparse
 import glob
 import os
 from pprint import pprint
+from typing import List
 
 
-def create_prompt_file(directory, instruction, file_extensions, exclude, system_role):
-    included_files = []
+def create_prompt_file(directory: str, instruction: str, file_extensions: List[str], exclude: List[str], system_role: str) -> None:
+    included_files: List[str] = []
     structure = "Project structure:\n"
 
     _collect_files(directory, exclude, file_extensions, included_files)
@@ -42,8 +43,8 @@ def create_prompt_file(directory, instruction, file_extensions, exclude, system_
     pprint(files)
 
 
-def _collect_files(directory, exclude, file_extensions, included_files):
-    files = []
+def _collect_files(directory: str, exclude: List[str], file_extensions: List[str], included_files: List[str]) -> None:
+    files: List[str] = []
     # use glob to find files with the given extensions
     for ext in file_extensions:
         files.extend(glob.glob(f"**/*{ext}", recursive=True))
@@ -65,7 +66,7 @@ def _collect_files(directory, exclude, file_extensions, included_files):
         included_files.append(file_path)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Create a prompt file with code and context from a Python project."
     )

@@ -1,4 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#     "unidecode",
+# ]
+# ///
 import argparse
 import os
 import re

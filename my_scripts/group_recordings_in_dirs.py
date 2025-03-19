@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Here's how the script works:
+"""Here's how the script works:
 
 1. It sets the source directory and destination directory.
 2. It gets a list of all files in the source directory.
