@@ -22,7 +22,7 @@ Examples:
     Download with custom number of threads:
         python chomik.py -u username -p password -i "https://chomikuj.pl/path/to/content" -t 3 -d "/download/path"
 """
-# Source: from github - can't find the original source anymore
+# Source: from GitHub - can't find the original source anymore
 import contextlib
 import getopt
 import hashlib
@@ -43,7 +43,7 @@ class Item(threading.Thread):
         threading.Thread.__init__(self)
         self.id = 0
         self.AgreementInfo = "own"
-        self.realId = 0
+        self.real_id = 0
         self.name = ""
         self.url = ""
         self.num = 1
@@ -51,7 +51,7 @@ class Item(threading.Thread):
         self.directory = ""
         self.progress = None
 
-    def getProgress(self):
+    def get_progress(self):
         """
         Returns the progress of the current task.
 
@@ -135,23 +135,23 @@ class Chomyk:
         self.username = username
         self.password = hashlib.md5(password.encode("utf-8")).hexdigest()
         self.cls()
-        self.checkThreads()
+        self.check_threads()
         self.login()
 
     def cls(self):
         os.system("cls" if os.name == "nt" else "clear")
 
-    def printline(self, line, text):
+    def print_line(self, line, text):
         sys.stdout.write("\x1b7\x1b[%d;%df%s\x1b8" % (line, 2, text))
         sys.stdout.flush()
 
-    def checkThreads(self):
+    def check_threads(self):
         threadsInprogress = 0
         threadsOpen = 0
         threadsDone = 0
 
         for it in self.threads:
-            self.printline(it.num + 3, it.getProgress())
+            self.print_line(it.num + 3, it.get_progress())
             if it.status == "inprogress":
                 threadsInprogress += 1
             if it.status == "open":
@@ -170,10 +170,10 @@ class Chomyk:
             print("\r\nWszystkie pliki zostaly pobrane")
             print("\r")
         else:
-            self.threadsChecker = threading.Timer(1.0, self.checkThreads)
+            self.threadsChecker = threading.Timer(1.0, self.check_threads)
             self.threadsChecker.start()
 
-    def postData(self, postVars):
+    def post_data(self, postVars):
         url = "http://box.chomikuj.pl/services/ChomikBoxService.svc"
         body = postVars.get("body")
         headers = {
@@ -189,7 +189,7 @@ class Chomyk:
         }
 
         response = requests.post(url, data=body, headers=headers)
-        self.parseResponse(response.content)
+        self.parse_response(response.content)
 
     def dl(self, url):
         fileUrl = re.search("[http|https]://chomikuj.pl(.*)", url).group(1)
@@ -235,7 +235,7 @@ class Chomyk:
             "body": xmlDoc,
             "SOAPAction": "http://chomikuj.pl/IChomikBoxService/Download",
         }
-        self.postData(dts)
+        self.post_data(dts)
 
     def dl_step_2(self, idx, agreementInfo, cost=0):
         rootParams = {
@@ -291,7 +291,7 @@ class Chomyk:
             "SOAPAction": "http://chomikuj.pl/IChomikBoxService/Download",
         }
 
-        self.postData(dts)
+        self.post_data(dts)
 
     def login(self):
 
@@ -337,7 +337,7 @@ class Chomyk:
             "body": xmlDoc,
             "SOAPAction": "http://chomikuj.pl/IChomikBoxService/Auth",
         }
-        self.postData(dts)
+        self.post_data(dts)
 
     def add_items(self, root, items):
         if type(items) is OrderedDict:
@@ -357,8 +357,8 @@ class Chomyk:
                     subroot = et.SubElement(root, name)
                     self.add_items(subroot, text)
 
-    def parseResponse(self, resp):
-        self.printline(3, f"Maks watkow: {str(self.maxThreads)}")
+    def parse_response(self, resp):
+        self.print_line(3, f"Maks watkow: {self.maxThreads!s}")
         respTree = et.fromstring(resp)
 
         # Autoryzacja
@@ -375,11 +375,11 @@ class Chomyk:
                 self.hamsterId = respTree.findall(
                     ".//{http://chomikuj.pl/}AuthResult/{http://chomikuj.pl}hamsterId"
                 )[0].text
-                self.printline(1, "Login: OK")
+                self.print_line(1, "Login: OK")
 
             else:
                 self.isLogged = False
-                self.printline(1, f"Login: {status}")
+                self.print_line(1, f"Login: {status}")
 
         # Pobieranie urli plikow
         accBalance = respTree.find(
@@ -398,7 +398,7 @@ class Chomyk:
                 )
                 if len(dlfiles) > self.totalItems:
                     self.totalItems = len(dlfiles)
-                    self.printline(2, f"Plikow: {self.totalItems}")
+                    self.print_line(2, f"Plikow: {self.totalItems}")
                 for dlfile in dlfiles:
                     url = dlfile.find("{http://chomikuj.pl/}url")
                     idx = dlfile.find("{http://chomikuj.pl/}id").text
@@ -415,9 +415,7 @@ class Chomyk:
                         if int(self.accBalance) >= int(cost):
                             self.dl_step_2(idx, agreementInfo, cost)
                         else:
-                            self.printline(
-                                2, "Blad: brak wystarczajacego limitu transferu"
-                            )
+                            self.print_line(2, "Blad: brak wystarczajacego limitu transferu")
                     else:
                         self.items = self.items + 1
                         it = Item()
@@ -432,28 +430,24 @@ class Chomyk:
 
 def main(argv):
     url = ""
-    output = ""
     username = ""
     password = ""
     threads = 5
     directory = f"{os.getcwd()}/"
     try:
         opts, args = getopt.getopt(
-            argv, "h:u:p:i:t:d:o", ["help", "username", "password", "ifile", "ofile"]
+            argv, "h:u:p:i:t:d", ["help", "username", "password", "ifile"]
         )
     except getopt.GetoptError:
-        printUsage()
+        print_usage()
         sys.exit(2)
     for opt, arg in opts:
         if opt == "-h":
             print("Help:")
-            printUsage()
+            print_usage()
             sys.exit()
         elif opt in ("-i", "--ifile"):
             url = arg
-
-        elif opt in ("-o", "--ofile"):
-            output = arg
         elif opt in ("-u", "--username"):
             username = arg
         elif opt in ("-p", "--password"):
@@ -464,10 +458,10 @@ def main(argv):
             directory = arg
 
     if len(username) == 0:
-        username = input("Login: ")
+        username = os.getenv("CHOMIKUJ_USER") or input("Login: ")
 
     if len(password) == 0:
-        password = getpass("Haslo: ")
+        password = os.getenv("CHOMIKUJ_PASSWORD") or getpass("Haslo: ")
 
     if len(url) == 0:
         url = input("URL: ")
@@ -478,10 +472,10 @@ def main(argv):
         ch = Chomyk(username, password, threads, directory)
         ch.dl(str(url))
     else:
-        printUsage()
+        print_usage()
 
 
-def printUsage():
+def print_usage():
     print("chomyk.py --u username --p password --i <url>")
     sys.exit(2)
 
