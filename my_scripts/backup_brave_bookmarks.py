@@ -18,7 +18,7 @@ output_file = f"brave_bookmarks_{timestamp}.json"
 output_path = os.path.join(output_dir, output_file)
 
 # Read the Bookmarks file
-with open(bookmarks_path, "r", encoding="utf-8") as f:
+with open(bookmarks_path, encoding="utf-8") as f:
     bookmarks_data = json.load(f)
 
 

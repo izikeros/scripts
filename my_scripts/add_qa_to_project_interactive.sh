@@ -1,21 +1,108 @@
 #!/usr/bin/env bash
-# This script adds QA tools to a project, asking one by one if you want to add them.
-# It is interactive and asks for confirmation before adding each file.
+#
+# Name: add_qa_to_project_interactive.sh
+# Description: Interactively adds quality assurance tools to a Python/JavaScript project
+#
+# This script prompts before adding each QA configuration file to the project:
+# - ruff.toml
+# - pre-commit hooks configuration
+# - flake8 configuration
+# - README template
+# - gitignore for Python
+# - LICENSE (MIT)
+# - editorconfig
+# - bandit security scanner configuration
+# - mypy type checker configuration
+# - tox configuration
+# - pytest configuration
+# - cliff.toml
+#
+# Usage: ./add_qa_to_project_interactive.sh [--help]
+#
+# Author: Your Name <your.email@example.com>
+# Created: $(date +%Y-%m-%d)
+# License: MIT
+#
+# Dependencies:
+# - curl
+# - pip
+# - pre-commit
+#
+# Exit codes:
+#   0 - Success
+#   1 - Required dependency missing
+#
+# shellcheck disable=SC2059  # Allow printf without formatting
 
-# Exit immediately if a command exits with a non-zero status.
-set -e
+set -euo pipefail  # Exit on error, undefined var, pipe failure
 
-# Function to download a file based on user input
+# Function to display help message
+show_help() {
+    echo "Usage: $(basename "$0") [OPTIONS]"
+    echo
+    echo "Interactively adds quality assurance tools to a Python/JavaScript project."
+    echo
+    echo "Options:"
+    echo "  --help    Display this help message and exit"
+    echo
+    echo "This script will prompt before downloading each configuration file."
+    echo "Files that will be offered for download:"
+    echo "  - ruff.toml"
+    echo "  - .pre-commit-config.yaml"
+    echo "  - .flake8"
+    echo "  - README.md template"
+    echo "  - .gitignore for Python"
+    echo "  - LICENSE (MIT)"
+    echo "  - .editorconfig"
+    echo "  - .bandit"
+    echo "  - mypy.ini"
+    echo "  - tox.ini"
+    echo "  - pytest.ini"
+    echo "  - cliff.toml"
+    echo
+    echo "You can quit at any time by responding with 'q'."
+}
+
+# Parse command line arguments
+for arg in "$@"; do
+    case $arg in
+        --help)
+            show_help
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $arg"
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+# Function to download a file with confirmation
 download_file() {
     local url=$1
     local filename=$2
-    read -p "Do you want to add $filename? [y/n/q] " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        curl -sL "$url" -o "$filename"
-    elif [[ $REPLY =~ ^[Qq]$ ]]; then
-        echo "Exiting..."
-        exit 0
+
+    if [ -f "$filename" ]; then
+        read -p "File $filename already exists. Overwrite? [y/n/q] " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            curl -sL "$url" -o "$filename"
+            echo " -- $filename downloaded"
+        elif [[ $REPLY =~ ^[Qq]$ ]]; then
+            echo "Exiting..."
+            exit 0
+        fi
+    else
+        read -p "Do you want to add $filename? [y/n/q] " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            curl -sL "$url" -o "$filename"
+            echo " -- $filename downloaded"
+        elif [[ $REPLY =~ ^[Qq]$ ]]; then
+            echo "Exiting..."
+            exit 0
+        fi
     fi
 }
 
@@ -28,6 +115,14 @@ install_pre_commit() {
         pre-commit autoupdate
     fi
 }
+
+# Check for required dependencies
+for cmd in curl pip; do
+  if ! command -v "$cmd" &> /dev/null; then
+    printf "Error: %s is required but not installed.\n" "$cmd" >&2
+    exit 1
+  fi
+done
 
 # Main execution
 # Most frequently used

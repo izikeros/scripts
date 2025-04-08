@@ -1,4 +1,40 @@
 #!/usr/bin/env bash
+#
+# Name: add_qa_to_project.sh
+# Description: Sets up code quality tools for Python projects
+#
+# This script downloads and configures common quality assurance tools:
+# - pre-commit hooks configuration
+# - flake8 configuration
+# - bandit security scanner configuration
+# - mypy type checker configuration
+#
+# Usage: ./add_qa_to_project.sh
+#
+# Author: Krystian Safjan <ksafjan@gmail.com>
+# Created: $(date +%Y-%m-%d)
+# License: MIT
+#
+# Dependencies:
+# - curl
+# - pip
+# - pre-commit
+#
+# Exit codes:
+#   0 - Success
+#   1 - Required dependency missing
+#
+# shellcheck disable=SC2059  # Allow printf without formatting
+
+set -euo pipefail  # Exit on error, undefined var, pipe failure
+
+# Check for required dependencies
+for cmd in curl pip; do
+  if ! command -v "$cmd" &> /dev/null; then
+    printf "Error: %s is required but not installed.\n" "$cmd" >&2
+    exit 1
+  fi
+done
 
 # download pre-commit hooks configuration if file does not exist
 if [ ! -f .pre-commit-config ]; then
