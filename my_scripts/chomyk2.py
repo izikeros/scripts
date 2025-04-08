@@ -30,7 +30,6 @@ import sys
 import threading
 import time
 from collections import OrderedDict
-from typing import Dict, List, Optional, Union
 from xml.etree import ElementTree as et
 
 import requests
@@ -52,7 +51,7 @@ class Item(threading.Thread):
         self.num: int = 1
         self.status: str = "open"
         self.directory: str = ""
-        self.progress: Optional[str] = None
+        self.progress: str | None = None
 
     def get_progress(self) -> str:
         """Return formatted progress string for the download
@@ -126,11 +125,11 @@ class Chomik:
         self.hamster_id: int = 0
         self.token: str = ""
         self.items: int = 0
-        self.threads: List[Item] = []
-        self.acc_balance: Optional[str] = None
+        self.threads: list[Item] = []
+        self.acc_balance: str | None = None
         self.max_threads: int = int(max_threads)
         self.directory: str = directory
-        self.threads_checker: Optional[threading.Timer] = None
+        self.threads_checker: threading.Timer | None = None
         self.total_items: int = 0
         self.username: str = username
         self.password: str = hashlib.md5(password.encode("utf-8")).hexdigest()
@@ -176,7 +175,7 @@ class Chomik:
             self.threads_checker = threading.Timer(1.0, self.check_threads)
             self.threads_checker.start()
 
-    def post_data(self, post_vars: Dict) -> None:
+    def post_data(self, post_vars: dict) -> None:
         """Send POST request to chomikuj.pl API"""
         url = "http://box.chomikuj.pl/services/ChomikBoxService.svc"
         body = post_vars.get("body")
@@ -240,7 +239,7 @@ class Chomik:
         self.post_data(dts)
 
     def dl_step_2(
-        self, idx: str, agreement_info: str, cost: Union[int, str] = 0
+        self, idx: str, agreement_info: str, cost: int | str = 0
     ) -> None:
         """Handle second step of download process"""
         root_params = {
@@ -333,7 +332,7 @@ class Chomik:
         }
         self.post_data(dts)
 
-    def add_items(self, root: et.Element, items: Union[OrderedDict, List]) -> None:
+    def add_items(self, root: et.Element, items: OrderedDict | list) -> None:
         """Add items to XML tree"""
         if isinstance(items, OrderedDict):
             for name, text in items.items():
@@ -357,7 +356,7 @@ class Chomik:
 
     def parse_response(self, resp: bytes) -> None:
         """Parse API response"""
-        self.print_line(3, f"Max threads: {str(self.max_threads)}")
+        self.print_line(3, f"Max threads: {self.max_threads!s}")
         resp_tree = et.fromstring(resp)
 
         # Authentication

@@ -6,7 +6,7 @@ import sys
 
 def extract_text_from_vtt(file_path):
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
+        with open(file_path, encoding="utf-8") as file:
             vtt_content = file.read()
 
         # Remove header lines
@@ -30,7 +30,7 @@ def extract_text_from_vtt(file_path):
     except FileNotFoundError:
         return f"Error: File not found at {file_path}"
     except Exception as e:
-        return f"An error occurred: {str(e)}"
+        return f"An error occurred: {e!s}"
 
 
 if __name__ == "__main__":

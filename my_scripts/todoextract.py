@@ -5,7 +5,7 @@ import sys
 
 
 def show_help():
-    print("Usage: {} [DIRECTORY]".format(os.path.basename(__file__)))
+    print(f"Usage: {os.path.basename(__file__)} [DIRECTORY]")
     print()
     print("Extract TODO and FIXME from python files. Count number of occurrences.")
     print()
@@ -21,7 +21,7 @@ def find_todos_and_fixmes(directory):
         for file in files:
             if file.endswith(".py"):
                 file_path = os.path.join(root, file)
-                with open(file_path, "r", encoding="utf-8") as f:
+                with open(file_path, encoding="utf-8") as f:
                     for line_num, line in enumerate(f, start=1):
                         if "TODO" in line or "FIXME:" in line:
                             todos.append((file_path, line_num, line.strip()))

@@ -32,10 +32,7 @@ for file in files:
     # Get the file name and extension
     name, ext = os.path.splitext(file)
     # Check if the file is a mkv/webm video or an mp3 audio file
-    if ext in [".mkv", ".webm"]:
-        # Get the base name without extension
-        base_name = os.path.basename(name)
-    elif ext == ".mp3":
+    if ext in [".mkv", ".webm"] or ext == ".mp3":
         # Get the base name without extension
         base_name = os.path.basename(name)
     else:
@@ -56,10 +53,7 @@ for base_name in base_names:
         # Get the file name and extension
         name, ext = os.path.splitext(file)
         # Check if the file is a mkv/webm video or an mp3 audio file
-        if ext in [".mkv", ".webm"]:
-            # Get the base name without extension
-            file_base_name = os.path.basename(name)
-        elif ext == ".mp3":
+        if ext in [".mkv", ".webm"] or ext == ".mp3":
             # Get the base name without extension
             file_base_name = os.path.basename(name)
         else:

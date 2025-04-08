@@ -7,11 +7,10 @@ import argparse
 import glob
 import os
 from pprint import pprint
-from typing import List
 
 
-def create_prompt_file(directory: str, instruction: str, file_extensions: List[str], exclude: List[str], system_role: str) -> None:
-    included_files: List[str] = []
+def create_prompt_file(directory: str, instruction: str, file_extensions: list[str], exclude: list[str], system_role: str) -> None:
+    included_files: list[str] = []
     structure = "Project structure:\n"
 
     _collect_files(directory, exclude, file_extensions, included_files)
@@ -24,7 +23,7 @@ def create_prompt_file(directory: str, instruction: str, file_extensions: List[s
     sources = "Project content:\n"
     files = {}
     for file_path in included_files:
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             code = f.read()
             if code:
                 files[file_path] = len(code) / 4
@@ -43,8 +42,8 @@ def create_prompt_file(directory: str, instruction: str, file_extensions: List[s
     pprint(files)
 
 
-def _collect_files(directory: str, exclude: List[str], file_extensions: List[str], included_files: List[str]) -> None:
-    files: List[str] = []
+def _collect_files(directory: str, exclude: list[str], file_extensions: list[str], included_files: list[str]) -> None:
+    files: list[str] = []
     # use glob to find files with the given extensions
     for ext in file_extensions:
         files.extend(glob.glob(f"**/*{ext}", recursive=True))

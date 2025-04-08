@@ -20,7 +20,7 @@ def transcribe_audio(file_path, prompt, temperature, language, output_file):
     api_key = os.getenv("WHISPER_API_KEY")
 
     if not api_endpoint or not api_key:
-        raise EnvironmentError(
+        raise OSError(
             "API endpoint or API key is missing in the environment variables."
         )
 

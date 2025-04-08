@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 rm -f /tmp/nasreport
 touch /tmp/nasreport
 chmod +x /tmp/nasreport

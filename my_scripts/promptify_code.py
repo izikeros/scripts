@@ -37,7 +37,7 @@ def add_python_files(output_file):
     for filepath in glob.glob("**/*.py", recursive=True):
         with open(output_file, "a") as f:
             f.write(f"File path: {filepath}\n")
-        with open(filepath, "r") as py_file:
+        with open(filepath) as py_file:
             f.write(py_file.read())
             f.write("\n\n")
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # This script is used to move windows accross monitors, if the window manager
 # does not provide any shortcut.
@@ -25,7 +25,7 @@ for line in out.splitlines():
     if m:
         scr += [list(map(int, m.groups()[1:]))]
 
-if 2 < len(sys.argv):
+if len(sys.argv) > 2:
     # Get window id from argument
     win_id = sys.argv[2]
 else:

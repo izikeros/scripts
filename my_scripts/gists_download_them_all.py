@@ -85,5 +85,5 @@ with cd(user_gist_dir_name):
         contents[i["id"]] = {}
         contents[i["id"]]["git_pull_url"] = i["git_pull_url"]
         contents[i["id"]]["description"] = description
-    with open("contents.json", "wt") as cf:
+    with open("contents.json", "w") as cf:
         json.dump(contents, cf)

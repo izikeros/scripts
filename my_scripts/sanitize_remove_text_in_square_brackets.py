@@ -31,6 +31,6 @@ for filename in os.listdir(directory):
             os.rename(filepath, new_filepath)
             print(f"Renamed '{filename}' to '{new_name}'")
         except Exception as e:
-            print(f"Error renaming '{filename}': {str(e)}")
+            print(f"Error renaming '{filename}': {e!s}")
     elif DRY_RUN:
         print(f"Would rename '{filename}' to '{new_name}'")

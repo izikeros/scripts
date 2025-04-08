@@ -122,10 +122,9 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
 
 
-def find_tool_venv_path(project_path: Path, tool: str) -> Optional[Path]:
+def find_tool_venv_path(project_path: Path, tool: str) -> Path | None:
     """
     Find virtual environment path for specific tools
     """
@@ -149,7 +148,7 @@ def find_tool_venv_path(project_path: Path, tool: str) -> Optional[Path]:
     return None
 
 
-def find_python_interpreter(venv_path: Path) -> Optional[Dict[str, str]]:
+def find_python_interpreter(venv_path: Path) -> dict[str, str] | None:
     """
     Find Python interpreter in a virtual environment
     """
@@ -173,7 +172,7 @@ def find_python_interpreter(venv_path: Path) -> Optional[Dict[str, str]]:
     return None
 
 
-def find_python_venv(project_path: Path) -> Optional[Dict[str, str]]:
+def find_python_venv(project_path: Path) -> dict[str, str] | None:
     """
     Find Python virtual environment for a project
     """
@@ -213,7 +212,7 @@ def find_python_venv(project_path: Path) -> Optional[Dict[str, str]]:
     return None
 
 
-def find_venv_management_tool(project_path: Path) -> List[str]:
+def find_venv_management_tool(project_path: Path) -> list[str]:
     """
     Detect virtual environment management tools
     """
@@ -230,7 +229,7 @@ def find_venv_management_tool(project_path: Path) -> List[str]:
     return detected_tools if detected_tools else ["unknown"]
 
 
-def scan_projects(projects_dir: Path) -> List[Dict[str, str]]:
+def scan_projects(projects_dir: Path) -> list[dict[str, str]]:
     """
     Scan projects directory for Python virtual environments
     """

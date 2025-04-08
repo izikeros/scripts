@@ -19,7 +19,7 @@ def enrich_requirements(filename):
     installed_packages_lower = {k.lower(): v for k, v in installed_packages.items()}
 
     enriched_requirements = []
-    with open(filename, "r") as f:
+    with open(filename) as f:
         for line in f:
             # non-strict splitting by '#'
             parts = line.split("#", 1)

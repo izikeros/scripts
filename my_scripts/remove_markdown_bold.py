@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-import re
-import os
 import argparse
+import re
 from pathlib import Path
 
 
@@ -16,7 +15,7 @@ def remove_bold_from_headings(content):
 
 def process_file(file_path, dry_run=False):
     """Process a single Markdown file."""
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, encoding='utf-8') as f:
         content = f.read()
 
     modified_content = remove_bold_from_headings(content)

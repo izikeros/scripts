@@ -17,12 +17,12 @@ Example:
 import sys
 
 if len(sys.argv) != 2:
-    print("Usage: {} input_filename".format(sys.argv[0]))
+    print(f"Usage: {sys.argv[0]} input_filename")
     sys.exit(1)
 
 input_filename = sys.argv[1]
 
-with open(input_filename, "r") as input_file:
+with open(input_filename) as input_file:
     input_text = input_file.read()
 
 # Remove extra line breaks within sentences

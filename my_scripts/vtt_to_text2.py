@@ -38,7 +38,7 @@ def vtt_to_text(vtt_content):
 
 def process_file(input_file, output_file=None):
     try:
-        with open(input_file, 'r', encoding='utf-8') as f:
+        with open(input_file, encoding='utf-8') as f:
             vtt_content = f.read()
 
         text = vtt_to_text(vtt_content)

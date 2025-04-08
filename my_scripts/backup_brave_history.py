@@ -77,7 +77,7 @@ try:
     print(f"{len(history)} records saved.")
 
 except Exception as e:
-    print(f"An error occurred: {str(e)}")
+    print(f"An error occurred: {e!s}")
     print("\nHelpful hint:")
     print("1. Make sure Brave browser is completely closed.")
     print("2. If the issue persists, restart your computer and try again.")

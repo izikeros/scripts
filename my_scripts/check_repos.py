@@ -5,21 +5,21 @@ import os
 
 # Define function to check if there are any uncommitted changes
 def has_uncommitted_changes(repo_path):
-    cmd = "cd {} && git status --porcelain".format(repo_path)
+    cmd = f"cd {repo_path} && git status --porcelain"
     output = os.popen(cmd).read()
     return bool(output.strip())
 
 
 # Define function to check if there are any commits to push
 def has_commits_to_push(repo_path):
-    cmd = "cd {} && git log origin/HEAD..HEAD".format(repo_path)
+    cmd = f"cd {repo_path} && git log origin/HEAD..HEAD"
     output = os.popen(cmd).read()
     return bool(output.strip())
 
 
 # Define function to check if the branch is outdated
 def is_branch_outdated(repo_path):
-    cmd = "cd {} && git status -sb".format(repo_path)
+    cmd = f"cd {repo_path} && git status -sb"
     output = os.popen(cmd).read()
     if "behind" in output:
         return True

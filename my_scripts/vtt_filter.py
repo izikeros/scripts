@@ -37,7 +37,7 @@ def filter_vtt(
     shorten_speaker: bool = False,
     only_mapping: bool = False,
 ) -> None:
-    with open(input_file, "r") as infile:
+    with open(input_file) as infile:
         # Skip the first line (WEBVTT)
         next(infile)
 
@@ -150,7 +150,7 @@ def main() -> None:
 
         if args.output != sys.stdout:
             print(f"Filtered transcript saved to {args.output.name}", file=sys.stderr)
-    except IOError as e:
+    except OSError as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
     finally:

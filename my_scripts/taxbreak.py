@@ -30,7 +30,7 @@ print("Looking for modified files in ~/Documents/EY")
 for file_type in ["Modified"]:
     print(f"{file_type} in {os.getenv('HOME')}/Documents/EY")
     files = run_command(
-        f"find ~/Documents/EY -type f -ctime -30 -exec stat -c '%w %n' {{}} \; | grep '{date}' | cut -d' ' -f1,4-"
+        rf"find ~/Documents/EY -type f -ctime -30 -exec stat -c '%w %n' {{}} \; | grep '{date}' | cut -d' ' -f1,4-"
     )
     with open(
         os.path.join(reports_dir, f"{date}_taxbreak_{file_type.lower()}_docs.txt"), "w"

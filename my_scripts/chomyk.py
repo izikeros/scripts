@@ -33,59 +33,69 @@ import threading
 import time
 from collections import OrderedDict
 from getpass import getpass
+from pathlib import Path
 from xml.etree import ElementTree as et
 
 import requests
 
 
-class Item(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
+class DownloadItem(threading.Thread):
+    """Thread for downloading a file with progress tracking.
+
+    This class handles file downloads with support for resuming interrupted downloads
+    and displaying progress information.
+    """
+
+    def __init__(self, directory="", name="", url="", item_number=1):
+        """Initialize the download thread with required parameters.
+
+        Args:
+            directory (str): Directory where the file will be saved
+            name (str): Name of the file
+            url (str): URL to download the file from
+            item_number (int): Position in the download queue
+        """
+        super().__init__()
         self.id = 0
-        self.AgreementInfo = "own"
+        self.agreement_info = "own"
         self.real_id = 0
-        self.name = ""
-        self.url = ""
-        self.num = 1
+        self.name = name
+        self.url = url
+        self.num = item_number
         self.status = "open"
-        self.directory = ""
+        self.directory = directory
         self.progress = None
 
     def get_progress(self):
-        """
-        Returns the progress of the current task.
-
-        If the progress attribute is None, it returns a formatted string indicating
-        that the task is waiting. Otherwise, it returns the current progress.
-
-        Returns:
-            str: A string representing the progress of the task or a waiting message.
-        """
+        """Return a formatted string showing download progress or waiting status."""
         if self.progress is None:
-            return "{:>2s}. {: <20s} : {}".format(
-                str(self.num),
-                self.name[:20],
-                "Oczekuje...",
-            )
-        else:
-            return self.progress
+            return f"{self.num:>2}. {self.name[:20]:<20} : Oczekuje..."
+        return self.progress
 
     def run(self):
+        """Download the file, tracking progress and handling resume functionality."""
         self.status = "inprogress"
-        path = f"{self.directory}/{self.name}"
+        path = Path(self.directory) / self.name
+
+        # Get existing file size if available
         try:
-            file_size = os.path.getsize(path)
-        except Exception:
+            file_size = path.stat().st_size
+        except (OSError, FileNotFoundError):
             file_size = 0
 
-        r = requests.get(self.url, stream=True, verify=False, allow_redirects=True)
-        total_length = int(r.headers.get("content-length"))
-        file_attr = "wb"
+        # Initial request to get file information
+        response = requests.get(
+            self.url, stream=True, verify=False, allow_redirects=True
+        )
 
+        total_length = int(response.headers.get("content-length", 0))
+        file_mode = "wb"
+
+        # Set up resume download if we already have part of the file
         if total_length > file_size > 0:
-            file_attr = "ab"
-            resume_header = {"Range": "bytes=%d-" % file_size}
-            r = requests.get(
+            file_mode = "ab"
+            resume_header = {"Range": f"bytes={file_size}-"}
+            response = requests.get(
                 self.url,
                 headers=resume_header,
                 stream=True,
@@ -93,28 +103,26 @@ class Item(threading.Thread):
                 allow_redirects=True,
             )
 
+        # Download the file if needed
         if file_size < total_length:
-
-            with open(path, file_attr) as fd:
+            with open(path, file_mode) as file:
                 dl_size = file_size
-                for chunk in r.iter_content(chunk_size=128):
+                for chunk in response.iter_content(chunk_size=128):
                     dl_size += len(chunk)
                     progress = dl_size * 100.0 / total_length
+                    progress_bar = "#" * int(progress / 4)
+
                     self.progress = (
-                        "{:>2s}. {: <20s} {: >10d}KB {: >3d}% [{: <25s}]".format(
-                            str(self.num),
-                            self.name[:20],
-                            dl_size // 1024,
-                            int(progress),
-                            "#" * int(progress / 4),
-                        )
+                        f"{self.num:>2}. {self.name[:20]:<20} "
+                        f"{dl_size // 1024:>10d}KB {int(progress):>3d}% "
+                        f"[{progress_bar:<25}]"
                     )
 
-                    fd.write(chunk)
+                    file.write(chunk)
             self.status = "done"
         elif file_size == total_length:
-            self.progress = "{:>2s}. {: <20s} : {}".format(
-                str(self.num), self.name[:20], "Plik istnieje na dysku"
+            self.progress = (
+                f"{self.num:>2}. {self.name[:20]:<20} : Plik istnieje na dysku"
             )
             self.status = "done"
 
@@ -415,15 +423,18 @@ class Chomyk:
                         if int(self.accBalance) >= int(cost):
                             self.dl_step_2(idx, agreementInfo, cost)
                         else:
-                            self.print_line(2, "Blad: brak wystarczajacego limitu transferu")
+                            self.print_line(
+                                2, "Blad: brak wystarczajacego limitu transferu"
+                            )
                     else:
-                        self.items = self.items + 1
-                        it = Item()
+                        self.items += 1
+                        it = DownloadItem(
+                            directory=self.directory,
+                            name=dlfile.find("{http://chomikuj.pl/}name").text,
+                            url=url.text,
+                            item_number=self.items,
+                        )
                         it.id = idx
-                        it.directory = self.directory
-                        it.num = self.items
-                        it.url = url.text
-                        it.name = dlfile.find("{http://chomikuj.pl/}name").text
                         it.daemon = True
                         self.threads.append(it)
 
