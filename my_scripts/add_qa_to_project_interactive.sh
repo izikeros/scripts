@@ -59,6 +59,8 @@ show_help() {
     echo "  - tox.ini"
     echo "  - pytest.ini"
     echo "  - cliff.toml"
+    echo "  - Makefile for Poetry project"
+    echo "  - Makefile for uv project"
     echo
     echo "You can quit at any time by responding with 'q'."
 }
@@ -144,5 +146,10 @@ download_file "https://gist.github.com/izikeros/946d65c15190b7cf48590f629119ab60
 download_file "https://gist.github.com/izikeros/1a2243e083d083c2a4f97cf9c19648d9/raw" "./tox.ini"
 download_file "https://gist.github.com/izikeros/4c79e2f82b68083b8a0b23badc36204d/raw" "./pytest.ini"
 download_file "https://gist.github.com/izikeros/b150d96360ee7bda5e0c7a750e90561d/raw/" "./cliff.toml"
+echo "(Makefile for Poetry project, uv will be next option)"
+  download_file "https://gist.githubusercontent.com/izikeros/4e4a7a3a0487a80b4d8f6ee77997eb9e/raw/dcc7929894b77ccac4eb2c1055e4c43a5c6ee9f8/Makefile" "./Makefile"
+echo "(Makefile for uv project)"
+download_file "https://gist.githubusercontent.com/izikeros/4e4a7a3a0487a80b4d8f6ee77997eb9e/raw/dcc7929894b77ccac4eb2c1055e4c43a5c6ee9f8/Makefile-uv" "./Makefile"
+
 # Uncomment the next line if you need to download requirements-dev.txt
 # download_file "https://gist.github.com/izikeros/beac1ca8de132ad527ab27e32a950a11/raw" "./requirements-dev.txt"
