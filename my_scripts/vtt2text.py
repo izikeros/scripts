@@ -45,3 +45,8 @@ if __name__ == "__main__":
     subs = "".join(lines)
     text = extract_text_from_vtt(subs)
     print(text)
+    
+    # write to the same file but add suffix .tr.txt
+    with open(args.input + ".tr.txt", "w") as f:
+        f.write(text)
+
