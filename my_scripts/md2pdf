@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+set -e
+
+TEMPLATE="${MD2PDF_TEMPLATE:-$HOME/.md2pdf/techspec.typ}"
+OUTPUT_DIR="${MD2PDF_OUTPUT_DIR:-build}"
+
+if [[ "$1" == "-h" || "$1" == "--help" || -z "$1" ]]; then
+  echo "Usage: md2pdf input.md [output.pdf]"
+  echo ""
+  echo "Environment variables:"
+  echo "  MD2PDF_TEMPLATE   Path to typst template (default: ~/.md2pdf/techspec.typ)"
+  echo "  MD2PDF_OUTPUT_DIR Output directory (default: build)"
+  exit 0
+fi
+
+INPUT="$1"
+
+if [[ ! -f "$INPUT" ]]; then
+  echo "Error: File '$INPUT' not found"
+  exit 1
+fi
+
+if [[ ! -f "$TEMPLATE" ]]; then
+  echo "Error: Template '$TEMPLATE' not found"
+  echo "Hint: Place your .typ template at ~/.md2pdf/techspec.typ"
+  exit 1
+fi
+
+mkdir -p "$OUTPUT_DIR"
+
+FILENAME=$(basename "$INPUT" .md)
+
+if [[ -n "$2" ]]; then
+  OUTPUT="$2"
+else
+  OUTPUT="$OUTPUT_DIR/$FILENAME.pdf"
+fi
+
+echo "Converting $INPUT → $OUTPUT"
+echo "Using template: $TEMPLATE"
+
+pandoc "$INPUT" \
+  --pdf-engine=typst \
+  --template="$TEMPLATE" \
+  --standalone \
+  -o "$OUTPUT"
+
+echo "Done: $OUTPUT"
