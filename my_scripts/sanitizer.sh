@@ -2,7 +2,7 @@
 # sanitizer.sh - A script to sanitize filenames by replacing diacritics and special characters.
 #
 # Usage:
-#   ./sanitizer.sh [-f FILE] [-t FILE_TYPE] [-d] [-r] [-l] [--undo]
+#   ./sanitizer.sh [-f FILE] [-t FILE_TYPE] [-d] [-r] [-l] [--undo [SESSION_ID]]
 #
 # Options:
 #   -f, --file       Optional. The specific file to sanitize.
@@ -10,8 +10,12 @@
 #   -d, --dry-run    Optional. Display the original and sanitized filenames without renaming.
 #   -r, --recursive  Optional. Process files recursively in subdirectories.
 #   -l, --lower-case Optional. Convert filenames to lowercase.
-#   -i,  --remove-video-id Optional. Remove video IDs in square brackets from filenames.
-#   -u, --undo           Optional. Revert the changes made by the script.
+#   -i, --remove-video-id Optional. Remove video IDs in square brackets from filenames.
+#   -u, --undo [ID]  Optional. Revert changes. If ID provided, revert that session; otherwise latest.
+#   --list           List sessions for current directory.
+#   --list-all       List all sessions across all directories.
+#   --show ID        Show details of a specific session.
+#   --clean [--days N] Remove sessions older than N days (default: 30).
 #   -h, --help       Display this help message.
 #
 # Description:
@@ -19,6 +23,8 @@
 #   It replaces Polish and other diacritics with their Latin equivalents and
 #   substitutes special characters with underscores. If no file or file type is provided,
 #   it defaults to processing all files.
+#
+#   Sessions are stored in ~/.sanitizer/sessions/ organized by working directory.
 #
 # Example:
 #   ./sanitizer.sh -f myfile.txt
@@ -37,14 +43,28 @@
 #   This will convert filenames to lowercase.
 #
 #   ./sanitizer.sh --undo
-#   This will revert the changes made by the script.
-
-# disabled:
-#   -s, --sentence-case Optional. Convert filenames to sentence case (first letter uppercase, rest lowercase).
+#   This will revert the most recent session for current directory.
+#
+#   ./sanitizer.sh --undo 20260116_143022_a1b2c3
+#   This will revert the specified session.
+#
+#   ./sanitizer.sh --list
+#   This will list all sessions for the current directory.
 
 show_help() {
   grep '^#' "$0" | sed 's/^#//'
 }
+
+# Session management configuration
+SANITIZER_HOME="${HOME}/.sanitizer"
+SESSIONS_DIR="${SANITIZER_HOME}/sessions"
+
+# Ensure session directories exist
+mkdir -p "$SESSIONS_DIR"
+
+# Current session variables (set during sanitization)
+CURRENT_SESSION_ID=""
+CURRENT_SESSION_DIR=""
 
 FILE=""
 FILE_TYPE="*"
@@ -52,84 +72,344 @@ DRY_RUN=false
 RECURSIVE=false
 LOWER_CASE=false
 UNDO=false
-BACKUP_FILE="filename_backup.log"
-LOG_FILE="sanitizer.log"
+UNDO_SESSION_ID=""
 REMOVE_VIDEO_ID=false
-SENTENCE_CASE=false
+LIST_SESSIONS=false
+LIST_ALL_SESSIONS=false
+SHOW_SESSION=""
+CLEAN_SESSIONS=false
+CLEAN_DAYS=30
+FILES_PROCESSED=0
 
-while [[ "$#" -gt 0 ]]; do
-  case "$1" in
-  -f | --file)
-    FILE="$2"
-    shift 2
-    ;;
-  -t | --file-type)
-    FILE_TYPE="$2"
-    shift 2
-    ;;
-  -d | --dry-run)
-    DRY_RUN=true
-    shift
-    ;;
-  -r | --recursive)
-    RECURSIVE=true
-    shift
-    ;;
-  -l | --lower-case)
-    LOWER_CASE=true
-    shift
-    ;;
-#  -s | --sentence-case)
-#    SENTENCE_CASE=true
-#    shift
-#    ;;
-  -u | --undo)
-    UNDO=true
-    shift
-    ;;
-  -i | --remove-video-id)
-    REMOVE_VIDEO_ID=true
-    shift
-    ;;
-  -h | --help)
-    show_help
-    exit 0
-    ;;
-  *)
-    echo "Unknown option: $1"
-    show_help
+# Generate a hash for the working directory
+get_dir_hash() {
+  local dir="$1"
+  echo -n "$dir" | md5 | cut -c1-12
+}
+
+# Generate a unique session ID
+generate_session_id() {
+  local timestamp
+  timestamp=$(date +%Y%m%d_%H%M%S)
+  local random_suffix
+  random_suffix=$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c 6)
+  echo "${timestamp}_${random_suffix}"
+}
+
+# Create a new session
+create_session() {
+  local working_dir
+  working_dir=$(pwd)
+  local dir_hash
+  dir_hash=$(get_dir_hash "$working_dir")
+  
+  CURRENT_SESSION_ID=$(generate_session_id)
+  CURRENT_SESSION_DIR="${SESSIONS_DIR}/${dir_hash}/${CURRENT_SESSION_ID}"
+  
+  mkdir -p "$CURRENT_SESSION_DIR"
+  
+  # Create metadata file
+  local options_str=""
+  [ "$RECURSIVE" = true ] && options_str="${options_str}-r "
+  [ "$LOWER_CASE" = true ] && options_str="${options_str}-l "
+  [ "$REMOVE_VIDEO_ID" = true ] && options_str="${options_str}-i "
+  [ -n "$FILE" ] && options_str="${options_str}-f $FILE "
+  [ "$FILE_TYPE" != "*" ] && options_str="${options_str}-t $FILE_TYPE "
+  
+  cat > "${CURRENT_SESSION_DIR}/metadata.json" << EOF
+{
+  "session_id": "${CURRENT_SESSION_ID}",
+  "working_dir": "${working_dir}",
+  "dir_hash": "${dir_hash}",
+  "timestamp": "$(date -Iseconds)",
+  "options": "${options_str}",
+  "files_count": 0
+}
+EOF
+  
+  # Initialize backup and log files
+  touch "${CURRENT_SESSION_DIR}/backup.log"
+  touch "${CURRENT_SESSION_DIR}/changes.log"
+  
+  echo "Session created: $CURRENT_SESSION_ID"
+}
+
+# Update session metadata with file count
+update_session_metadata() {
+  local count="$1"
+  local metadata_file="${CURRENT_SESSION_DIR}/metadata.json"
+  
+  if [ -f "$metadata_file" ]; then
+    # Update files_count in metadata
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      sed -i '' "s/\"files_count\": [0-9]*/\"files_count\": $count/" "$metadata_file"
+    else
+      sed -i "s/\"files_count\": [0-9]*/\"files_count\": $count/" "$metadata_file"
+    fi
+  fi
+}
+
+# Find session by ID (searches all directories)
+find_session() {
+  local session_id="$1"
+  local session_path=""
+  
+  while IFS= read -r -d '' dir; do
+    if [ -d "$dir/$session_id" ]; then
+      session_path="$dir/$session_id"
+      break
+    fi
+  done < <(find "$SESSIONS_DIR" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+  
+  echo "$session_path"
+}
+
+# Get latest session for current directory
+get_latest_session() {
+  local working_dir
+  working_dir=$(pwd)
+  local dir_hash
+  dir_hash=$(get_dir_hash "$working_dir")
+  local dir_sessions="${SESSIONS_DIR}/${dir_hash}"
+  
+  if [ -d "$dir_sessions" ]; then
+    # Get the most recent session (sorted by name which includes timestamp)
+    ls -1 "$dir_sessions" 2>/dev/null | sort -r | head -1
+  fi
+}
+
+# List sessions for current directory
+list_sessions() {
+  local working_dir
+  working_dir=$(pwd)
+  local dir_hash
+  dir_hash=$(get_dir_hash "$working_dir")
+  local dir_sessions="${SESSIONS_DIR}/${dir_hash}"
+  
+  echo "Sessions for: $working_dir"
+  echo ""
+  
+  if [ ! -d "$dir_sessions" ] || [ -z "$(ls -A "$dir_sessions" 2>/dev/null)" ]; then
+    echo "  No sessions found."
+    return
+  fi
+  
+  printf "  %-24s %-20s %-7s %s\n" "ID" "DATE" "FILES" "OPTIONS"
+  printf "  %-24s %-20s %-7s %s\n" "------------------------" "--------------------" "-------" "-------"
+  
+  for session_dir in "$dir_sessions"/*; do
+    if [ -d "$session_dir" ]; then
+      local session_id
+      session_id=$(basename "$session_dir")
+      local metadata_file="${session_dir}/metadata.json"
+      
+      if [ -f "$metadata_file" ]; then
+        local timestamp files_count options
+        timestamp=$(grep '"timestamp"' "$metadata_file" | cut -d'"' -f4 | cut -dT -f1,2 | tr 'T' ' ' | cut -c1-19)
+        files_count=$(grep '"files_count"' "$metadata_file" | grep -o '[0-9]*')
+        options=$(grep '"options"' "$metadata_file" | cut -d'"' -f4)
+        
+        printf "  %-24s %-20s %-7s %s\n" "$session_id" "$timestamp" "$files_count" "$options"
+      fi
+    fi
+  done
+}
+
+# List all sessions across all directories
+list_all_sessions() {
+  echo "All sanitizer sessions:"
+  echo ""
+  
+  if [ ! -d "$SESSIONS_DIR" ] || [ -z "$(ls -A "$SESSIONS_DIR" 2>/dev/null)" ]; then
+    echo "  No sessions found."
+    return
+  fi
+  
+  for dir_hash_dir in "$SESSIONS_DIR"/*; do
+    if [ -d "$dir_hash_dir" ]; then
+      for session_dir in "$dir_hash_dir"/*; do
+        if [ -d "$session_dir" ]; then
+          local session_id
+          session_id=$(basename "$session_dir")
+          local metadata_file="${session_dir}/metadata.json"
+          
+          if [ -f "$metadata_file" ]; then
+            local working_dir timestamp files_count options
+            working_dir=$(grep '"working_dir"' "$metadata_file" | cut -d'"' -f4)
+            timestamp=$(grep '"timestamp"' "$metadata_file" | cut -d'"' -f4 | cut -dT -f1,2 | tr 'T' ' ' | cut -c1-19)
+            files_count=$(grep '"files_count"' "$metadata_file" | grep -o '[0-9]*')
+            options=$(grep '"options"' "$metadata_file" | cut -d'"' -f4)
+            
+            echo "  Session: $session_id"
+            echo "    Dir:     $working_dir"
+            echo "    Date:    $timestamp"
+            echo "    Files:   $files_count"
+            echo "    Options: $options"
+            echo ""
+          fi
+        fi
+      done
+    fi
+  done
+}
+
+# Show details of a specific session
+show_session() {
+  local session_id="$1"
+  local session_path
+  session_path=$(find_session "$session_id")
+  
+  if [ -z "$session_path" ] || [ ! -d "$session_path" ]; then
+    echo "Session not found: $session_id"
     exit 1
-    ;;
-  esac
-done
+  fi
+  
+  local metadata_file="${session_path}/metadata.json"
+  local backup_file="${session_path}/backup.log"
+  
+  echo "Session: $session_id"
+  echo ""
+  
+  if [ -f "$metadata_file" ]; then
+    echo "Metadata:"
+    cat "$metadata_file" | sed 's/^/  /'
+    echo ""
+  fi
+  
+  if [ -f "$backup_file" ] && [ -s "$backup_file" ]; then
+    echo "Changes:"
+    while IFS=, read -r original new; do
+      echo "  $original -> $new"
+    done < "$backup_file"
+  else
+    echo "No changes recorded."
+  fi
+}
+
+# Clean up old sessions
+cleanup_sessions() {
+  local days="$1"
+  local cutoff_date
+  cutoff_date=$(date -v-${days}d +%Y%m%d 2>/dev/null || date -d "$days days ago" +%Y%m%d)
+  local removed=0
+  
+  echo "Removing sessions older than $days days (before $cutoff_date)..."
+  
+  for dir_hash_dir in "$SESSIONS_DIR"/*; do
+    if [ -d "$dir_hash_dir" ]; then
+      for session_dir in "$dir_hash_dir"/*; do
+        if [ -d "$session_dir" ]; then
+          local session_id
+          session_id=$(basename "$session_dir")
+          # Extract date from session ID (format: YYYYMMDD_HHMMSS_random)
+          local session_date
+          session_date=$(echo "$session_id" | cut -d'_' -f1)
+          
+          if [ "$session_date" -lt "$cutoff_date" ] 2>/dev/null; then
+            rm -rf "$session_dir"
+            echo "  Removed: $session_id"
+            ((removed++))
+          fi
+        fi
+      done
+      
+      # Remove empty directory hashes
+      if [ -z "$(ls -A "$dir_hash_dir" 2>/dev/null)" ]; then
+        rmdir "$dir_hash_dir"
+      fi
+    fi
+  done
+  
+  echo "Removed $removed session(s)."
+}
 
 log_change() {
   local original="$1"
   local new="$2"
-  echo "$original -> $new" >> "$LOG_FILE"
+  if [ -n "$CURRENT_SESSION_DIR" ]; then
+    echo "$original -> $new" >> "${CURRENT_SESSION_DIR}/changes.log"
+  fi
 }
 
 backup_filename() {
   local original="$1"
   local new="$2"
-  echo "$original,$new" >> "$BACKUP_FILE"
+  if [ -n "$CURRENT_SESSION_DIR" ]; then
+    echo "$original,$new" >> "${CURRENT_SESSION_DIR}/backup.log"
+  fi
 }
 
 undo_changes() {
-  if [ ! -f "$BACKUP_FILE" ]; then
+  local session_id="$1"
+  local session_path=""
+  local backup_file=""
+  
+  # If no session ID provided, try to find the latest for current directory
+  if [ -z "$session_id" ]; then
+    # First check for legacy local backup file
+    if [ -f "filename_backup.log" ]; then
+      echo "Found legacy backup file in current directory."
+      backup_file="filename_backup.log"
+    else
+      session_id=$(get_latest_session)
+      if [ -z "$session_id" ]; then
+        echo "No sessions found for current directory."
+        exit 1
+      fi
+      echo "Using latest session: $session_id"
+    fi
+  fi
+  
+  # If we have a session ID, find the session path
+  if [ -n "$session_id" ] && [ -z "$backup_file" ]; then
+    session_path=$(find_session "$session_id")
+    
+    if [ -z "$session_path" ] || [ ! -d "$session_path" ]; then
+      # Try current directory hash
+      local working_dir
+      working_dir=$(pwd)
+      local dir_hash
+      dir_hash=$(get_dir_hash "$working_dir")
+      session_path="${SESSIONS_DIR}/${dir_hash}/${session_id}"
+    fi
+    
+    if [ ! -d "$session_path" ]; then
+      echo "Session not found: $session_id"
+      exit 1
+    fi
+    
+    backup_file="${session_path}/backup.log"
+  fi
+  
+  if [ ! -f "$backup_file" ]; then
     echo "No backup file found. Cannot undo changes."
     exit 1
   fi
-
+  
+  echo "Reverting session${session_id:+: $session_id}..."
+  
+  local reverted=0
   while IFS=, read -r original new; do
     if [ -f "$new" ]; then
       mv "$new" "$original"
-      echo "Reverted: $new -> $original"
+      echo "  Reverted: $new -> $original"
+      ((reverted++))
+    else
+      echo "  Skipped (not found): $new"
     fi
-  done < "$BACKUP_FILE"
-
-  rm -f "$BACKUP_FILE"
-  rm -f "$LOG_FILE"
+  done < "$backup_file"
+  
+  echo "Session reverted successfully ($reverted files restored)."
+  
+  # Clean up session directory if it was a session-based undo
+  if [ -n "$session_path" ] && [ -d "$session_path" ]; then
+    rm -rf "$session_path"
+    echo "Session removed."
+  elif [ -f "filename_backup.log" ]; then
+    rm -f "filename_backup.log"
+    rm -f "sanitizer.log"
+  fi
+  
   exit 0
 }
 
@@ -210,9 +490,6 @@ sanitize_file_perl() {
   # Apply case transformations after other sanitizations
   if [ "$LOWER_CASE" = true ]; then
     nf=$(echo "$nf" | tr '[:upper:]' '[:lower:]')
-#  elif [ "$SENTENCE_CASE" = true ]; then
-#    # Convert to lowercase first, then capitalize first letter of the filename
-#    nf=$(echo "$nf" | tr '[:upper:]' '[:lower:]' | sed -e 's/\(^\|[^a-zA-Z]\)\([a-z]\)/\1\u\2/g')
   fi
 
   # Substitute special characters with underscores, make sure that there is no extra underscore added in the end of the string
@@ -236,15 +513,16 @@ sanitize_file_perl() {
   # replace '..' with '.'
   nf=$(echo "$nf" | sed -e 's/\.\./\./g')
 
-
-
   if [ "$DRY_RUN" = true ]; then
     echo " Original: $f"
     echo "Sanitized: $nf"
   else
-    mv "$f" "$nf"
-    log_change "$f" "$nf"
-    backup_filename "$f" "$nf"
+    if [ "$f" != "$nf" ]; then
+      mv "$f" "$nf"
+      log_change "$f" "$nf"
+      backup_filename "$f" "$nf"
+      ((FILES_PROCESSED++))
+    fi
   fi
 }
 
@@ -253,8 +531,107 @@ sanitize() {
   sanitize_file_perl "$f"
 }
 
+# Parse arguments
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+  -f | --file)
+    FILE="$2"
+    shift 2
+    ;;
+  -t | --file-type)
+    FILE_TYPE="$2"
+    shift 2
+    ;;
+  -d | --dry-run)
+    DRY_RUN=true
+    shift
+    ;;
+  -r | --recursive)
+    RECURSIVE=true
+    shift
+    ;;
+  -l | --lower-case)
+    LOWER_CASE=true
+    shift
+    ;;
+  -u | --undo)
+    UNDO=true
+    # Check if next argument is a session ID (not another flag)
+    if [[ -n "$2" && ! "$2" =~ ^- ]]; then
+      UNDO_SESSION_ID="$2"
+      shift
+    fi
+    shift
+    ;;
+  -i | --remove-video-id)
+    REMOVE_VIDEO_ID=true
+    shift
+    ;;
+  --list)
+    LIST_SESSIONS=true
+    shift
+    ;;
+  --list-all)
+    LIST_ALL_SESSIONS=true
+    shift
+    ;;
+  --show)
+    SHOW_SESSION="$2"
+    shift 2
+    ;;
+  --clean)
+    CLEAN_SESSIONS=true
+    # Check for --days option
+    if [[ "$2" == "--days" && -n "$3" ]]; then
+      CLEAN_DAYS="$3"
+      shift 2
+    fi
+    shift
+    ;;
+  --days)
+    CLEAN_DAYS="$2"
+    shift 2
+    ;;
+  -h | --help)
+    show_help
+    exit 0
+    ;;
+  *)
+    echo "Unknown option: $1"
+    show_help
+    exit 1
+    ;;
+  esac
+done
+
+# Handle session management commands
+if [ "$LIST_SESSIONS" = true ]; then
+  list_sessions
+  exit 0
+fi
+
+if [ "$LIST_ALL_SESSIONS" = true ]; then
+  list_all_sessions
+  exit 0
+fi
+
+if [ -n "$SHOW_SESSION" ]; then
+  show_session "$SHOW_SESSION"
+  exit 0
+fi
+
+if [ "$CLEAN_SESSIONS" = true ]; then
+  cleanup_sessions "$CLEAN_DAYS"
+  exit 0
+fi
+
 if [ "$UNDO" = true ]; then
-  undo_changes
+  undo_changes "$UNDO_SESSION_ID"
+fi
+
+# Create session for this sanitization run (unless dry run)
+if [ "$DRY_RUN" = false ]; then
+  create_session
 fi
 
 if [ -n "$FILE" ]; then
@@ -262,8 +639,6 @@ if [ -n "$FILE" ]; then
 else
   if [ "$RECURSIVE" = true ]; then
     find . -type f -iname "*.$FILE_TYPE" | while read -r f; do
-      # avoid having error message:
-      # mv: . and ./. are identical
       if [ "$f" = "." ] || [ "$f" = "./." ]; then
         continue
       fi
@@ -272,13 +647,29 @@ else
     done
   else
     find . -maxdepth 1 -type f -iname "*.$FILE_TYPE" | while read -r f; do
-      # avoid having error message:
-      # mv: . and ./. are identical
       if [ "$f" = "." ] || [ "$f" = "./." ]; then
         continue
       fi
       echo "$f"
       sanitize "$f"
     done
+  fi
+fi
+
+# Update session metadata with final file count
+if [ "$DRY_RUN" = false ] && [ -n "$CURRENT_SESSION_DIR" ]; then
+  # Count actual changes from backup file
+  if [ -f "${CURRENT_SESSION_DIR}/backup.log" ]; then
+    FILES_PROCESSED=$(wc -l < "${CURRENT_SESSION_DIR}/backup.log" | tr -d ' ')
+  fi
+  update_session_metadata "$FILES_PROCESSED"
+  
+  if [ "$FILES_PROCESSED" -eq 0 ]; then
+    echo "No files were changed."
+    rm -rf "$CURRENT_SESSION_DIR"
+  else
+    echo ""
+    echo "Session complete: $CURRENT_SESSION_ID ($FILES_PROCESSED files)"
+    echo "To undo: sanitizer.sh --undo $CURRENT_SESSION_ID"
   fi
 fi
